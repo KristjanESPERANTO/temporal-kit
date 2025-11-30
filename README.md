@@ -159,6 +159,19 @@ npm run test:coverage # Coverage report (80% threshold)
 npm run ci           # Full CI pipeline (typecheck + lint + test + build)
 ```
 
+### Release Management
+```bash
+npm run release        # Auto-bump patch version (0.0.1 → 0.0.2)
+npm run release:minor  # Bump minor version (0.0.2 → 0.1.0)
+npm run release:major  # Bump major version (0.0.2 → 1.0.0)
+```
+
+Uses [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) to automatically:
+- Generate/update `CHANGELOG.md` from conventional commits
+- Bump version in `package.json`
+- Create git commit and tag
+- Include `feat`, `fix`, `refactor`, `perf`, `chore`, and `docs` in changelog
+
 ### Features for Library Authors
 - **Type-checked tests** - Vitest validates test types against your code
 - **Modern exports** - Proper `exports` field with type/import/default conditions
