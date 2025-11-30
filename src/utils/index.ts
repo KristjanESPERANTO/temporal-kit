@@ -17,8 +17,9 @@
  * );
  * ```
  */
+// biome-ignore lint/suspicious/noExplicitAny: Required for flexible function composition
 export function pipe<T>(value: T, ...fns: Array<(arg: any) => any>): any {
-	return fns.reduce((acc, fn) => fn(acc), value);
+  return fns.reduce((acc, fn) => fn(acc), value);
 }
 
 /**
@@ -40,8 +41,7 @@ export function pipe<T>(value: T, ...fns: Array<(arg: any) => any>): any {
  * const result = addTwelveHoursToStartOfDay(date);
  * ```
  */
-export function compose<T>(
-	...fns: Array<(arg: any) => any>
-): (value: T) => any {
-	return (value: T) => fns.reduceRight((acc, fn) => fn(acc), value);
+// biome-ignore lint/suspicious/noExplicitAny: Required for flexible function composition
+export function compose<T>(...fns: Array<(arg: any) => any>): (value: T) => any {
+  return (value: T) => fns.reduceRight((acc, fn) => fn(acc), value);
 }

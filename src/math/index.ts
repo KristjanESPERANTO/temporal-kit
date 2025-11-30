@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import type { DateLike, DurationInput, DateUnit } from "../types/index.js";
+import type { DateLike, DateUnit, DurationInput } from "../types/index.js";
 
 /**
  * Add a duration to a date/time value.
@@ -18,7 +18,7 @@ import type { DateLike, DurationInput, DateUnit } from "../types/index.js";
  * ```
  */
 export function add<T extends DateLike>(date: T, duration: DurationInput): T {
-	return date.add(duration) as T;
+  return date.add(duration) as T;
 }
 
 /**
@@ -37,11 +37,8 @@ export function add<T extends DateLike>(date: T, duration: DurationInput): T {
  * subtract(date, { months: 2 }); // 2025-09-30
  * ```
  */
-export function subtract<T extends DateLike>(
-	date: T,
-	duration: DurationInput,
-): T {
-	return date.subtract(duration) as T;
+export function subtract<T extends DateLike>(date: T, duration: DurationInput): T {
+  return date.subtract(duration) as T;
 }
 
 /**
@@ -62,79 +59,79 @@ export function subtract<T extends DateLike>(
  * ```
  */
 export function startOf<T extends DateLike>(date: T, unit: DateUnit): T {
-	if (unit === "day") {
-		// For PlainDate, it's already at start of day
-		if (date instanceof Temporal.PlainDate) {
-			return date;
-		}
-		// For DateTime/ZonedDateTime, set time to 00:00:00
-		return date.with({
-			hour: 0,
-			minute: 0,
-			second: 0,
-			millisecond: 0,
-			microsecond: 0,
-			nanosecond: 0,
-		}) as T;
-	}
+  if (unit === "day") {
+    // For PlainDate, it's already at start of day
+    if (date instanceof Temporal.PlainDate) {
+      return date;
+    }
+    // For DateTime/ZonedDateTime, set time to 00:00:00
+    return date.with({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+      microsecond: 0,
+      nanosecond: 0,
+    }) as T;
+  }
 
-	if (unit === "week") {
-		// Monday is day 1, Sunday is day 7
-		const daysToSubtract = date.dayOfWeek - 1;
-		const startOfWeek = date.subtract({ days: daysToSubtract });
+  if (unit === "week") {
+    // Monday is day 1, Sunday is day 7
+    const daysToSubtract = date.dayOfWeek - 1;
+    const startOfWeek = date.subtract({ days: daysToSubtract });
 
-		// If it has time, set to start of day
-		if ("hour" in startOfWeek) {
-			return startOfWeek.with({
-				hour: 0,
-				minute: 0,
-				second: 0,
-				millisecond: 0,
-				microsecond: 0,
-				nanosecond: 0,
-			}) as T;
-		}
+    // If it has time, set to start of day
+    if ("hour" in startOfWeek) {
+      return startOfWeek.with({
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+        microsecond: 0,
+        nanosecond: 0,
+      }) as T;
+    }
 
-		return startOfWeek as T;
-	}
+    return startOfWeek as T;
+  }
 
-	if (unit === "month") {
-		const startOfMonth = date.with({ day: 1 });
+  if (unit === "month") {
+    const startOfMonth = date.with({ day: 1 });
 
-		// If it has time, set to start of day
-		if ("hour" in startOfMonth) {
-			return startOfMonth.with({
-				hour: 0,
-				minute: 0,
-				second: 0,
-				millisecond: 0,
-				microsecond: 0,
-				nanosecond: 0,
-			}) as T;
-		}
+    // If it has time, set to start of day
+    if ("hour" in startOfMonth) {
+      return startOfMonth.with({
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+        microsecond: 0,
+        nanosecond: 0,
+      }) as T;
+    }
 
-		return startOfMonth as T;
-	}
+    return startOfMonth as T;
+  }
 
-	if (unit === "year") {
-		const startOfYear = date.with({ month: 1, day: 1 });
+  if (unit === "year") {
+    const startOfYear = date.with({ month: 1, day: 1 });
 
-		// If it has time, set to start of day
-		if ("hour" in startOfYear) {
-			return startOfYear.with({
-				hour: 0,
-				minute: 0,
-				second: 0,
-				millisecond: 0,
-				microsecond: 0,
-				nanosecond: 0,
-			}) as T;
-		}
+    // If it has time, set to start of day
+    if ("hour" in startOfYear) {
+      return startOfYear.with({
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+        microsecond: 0,
+        nanosecond: 0,
+      }) as T;
+    }
 
-		return startOfYear as T;
-	}
+    return startOfYear as T;
+  }
 
-	throw new TypeError(`Invalid unit: ${unit}`);
+  throw new TypeError(`Invalid unit: ${unit}`);
 }
 
 /**
@@ -155,77 +152,77 @@ export function startOf<T extends DateLike>(date: T, unit: DateUnit): T {
  * ```
  */
 export function endOf<T extends DateLike>(date: T, unit: DateUnit): T {
-	if (unit === "day") {
-		// For PlainDate, it's already representing the whole day
-		if (date instanceof Temporal.PlainDate) {
-			return date;
-		}
-		// For DateTime/ZonedDateTime, set time to 23:59:59.999999999
-		return date.with({
-			hour: 23,
-			minute: 59,
-			second: 59,
-			millisecond: 999,
-			microsecond: 999,
-			nanosecond: 999,
-		}) as T;
-	}
+  if (unit === "day") {
+    // For PlainDate, it's already representing the whole day
+    if (date instanceof Temporal.PlainDate) {
+      return date;
+    }
+    // For DateTime/ZonedDateTime, set time to 23:59:59.999999999
+    return date.with({
+      hour: 23,
+      minute: 59,
+      second: 59,
+      millisecond: 999,
+      microsecond: 999,
+      nanosecond: 999,
+    }) as T;
+  }
 
-	if (unit === "week") {
-		// Sunday is day 7
-		const daysToAdd = 7 - date.dayOfWeek;
-		const endOfWeek = date.add({ days: daysToAdd });
+  if (unit === "week") {
+    // Sunday is day 7
+    const daysToAdd = 7 - date.dayOfWeek;
+    const endOfWeek = date.add({ days: daysToAdd });
 
-		// If it has time, set to end of day
-		if ("hour" in endOfWeek) {
-			return endOfWeek.with({
-				hour: 23,
-				minute: 59,
-				second: 59,
-				millisecond: 999,
-				microsecond: 999,
-				nanosecond: 999,
-			}) as T;
-		}
+    // If it has time, set to end of day
+    if ("hour" in endOfWeek) {
+      return endOfWeek.with({
+        hour: 23,
+        minute: 59,
+        second: 59,
+        millisecond: 999,
+        microsecond: 999,
+        nanosecond: 999,
+      }) as T;
+    }
 
-		return endOfWeek as T;
-	}
+    return endOfWeek as T;
+  }
 
-	if (unit === "month") {
-		const lastDay = date.with({ day: date.daysInMonth });
+  if (unit === "month") {
+    const lastDay = date.with({ day: date.daysInMonth });
 
-		// If it has time, set to end of day
-		if ("hour" in lastDay) {
-			return lastDay.with({
-				hour: 23,
-				minute: 59,
-				second: 59,
-				millisecond: 999,
-				microsecond: 999,
-				nanosecond: 999,
-			}) as T;
-		}
+    // If it has time, set to end of day
+    if ("hour" in lastDay) {
+      return lastDay.with({
+        hour: 23,
+        minute: 59,
+        second: 59,
+        millisecond: 999,
+        microsecond: 999,
+        nanosecond: 999,
+      }) as T;
+    }
 
-		return lastDay as T;
-	}
+    return lastDay as T;
+  }
 
-	if (unit === "year") {
-		const endOfYear = date.with({ month: 12, day: 31 });
+  if (unit === "year") {
+    const endOfYear = date.with({ month: 12, day: 31 });
 
-		// If it has time, set to end of day
-		if ("hour" in endOfYear) {
-			return endOfYear.with({
-				hour: 23,
-				minute: 59,
-				second: 59,
-				millisecond: 999,
-				microsecond: 999,
-				nanosecond: 999,
-			}) as T;
-		}
+    // If it has time, set to end of day
+    if ("hour" in endOfYear) {
+      return endOfYear.with({
+        hour: 23,
+        minute: 59,
+        second: 59,
+        millisecond: 999,
+        microsecond: 999,
+        nanosecond: 999,
+      }) as T;
+    }
 
-		return endOfYear as T;
-	}
+    return endOfYear as T;
+  }
 
-	throw new TypeError(`Invalid unit: ${unit}`);
+  throw new TypeError(`Invalid unit: ${unit}`);
 }

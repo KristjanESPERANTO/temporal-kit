@@ -90,7 +90,7 @@ src/
 ├── guards/         # ✅ Type guards (isPlainDate, isZonedDateTime, etc.)
 ├── compare/        # ✅ Comparison functions (isBefore, isAfter, min, max)
 ├── convert/        # ✅ Creation & conversion (now, fromISO, explicit conversions)
-├── format/         # 🔜 Intl-based formatting helpers
+├── format/         # ✅ Intl-based formatting (format, formatTime, formatDateTime, formatRelative)
 ├── math/           # ✅ Arithmetic (add, subtract, startOf, endOf)
 ├── utils/          # ✅ Utilities (pipe, compose)
 ├── index.ts        # ✅ Main entry (expects native Temporal)
@@ -109,10 +109,11 @@ src/
   - **Vitest** - Type-checked tests with 100% coverage threshold
   - **tsup** - ESNext bundling with optimized tree-shaking
   - **TypeScript 5.9+** - Latest compiler features enabled
-- **Testing Strategy:** 100% code coverage (116 tests) including:
+- **Testing Strategy:** 100% code coverage (165 tests) including:
   - Type guards and runtime checks
   - Comparison and conversion functions
   - Calendar arithmetic and boundary operations
+  - Intl-based formatting with locale support
   - Functional composition utilities
   - Error handling and edge cases
 
@@ -130,13 +131,14 @@ src/
 2.  **Convert:** ✅ `now`, `fromISO`, explicit type conversions ([`examples/05-conversions.js`](./examples/05-conversions.js))
 3.  **Math:** ✅ `add`, `subtract`, `startOf`, `endOf` ([`examples/06-arithmetic.js`](./examples/06-arithmetic.js), [`examples/07-boundaries.js`](./examples/07-boundaries.js))
 4.  **Utils:** ✅ `pipe`, `compose` for functional composition ([`examples/08-composition.js`](./examples/08-composition.js))
-5.  **Testing:** ✅ Comprehensive test suite with 100% coverage (116 tests)
+5.  **Format:** ✅ `format`, `formatTime`, `formatDateTime`, `formatRelative` with Intl support ([`examples/09-formatting.js`](./examples/09-formatting.js))
+6.  **Testing:** ✅ Comprehensive test suite with 100% coverage (165 tests)
 
-### 🔜 Phase 3: Formatting & Polish (NEXT)
-1.  **Formatting:** Implement `format` using `Intl.DateTimeFormat` with smart defaults ([`examples/07-formatting.js`](./examples/07-formatting.js))
+### 🚧 Phase 3: Formatting & Polish (IN PROGRESS)
+1.  **Formatting:** ✅ Implement `format` using `Intl.DateTimeFormat` with smart defaults ([`examples/09-formatting.js`](./examples/09-formatting.js))
 2.  **Documentation:** API reference, usage examples, best practices
 3.  **Parse:** Smart string-to-Temporal parsing with format detection
-4.  **Timezone Examples:** Document DST transitions and offset handling ([`examples/09-timezones.js`](./examples/09-timezones.js))
+4.  **Timezone Examples:** Document DST transitions and offset handling
 
 ### 💡 Phase 4: Advanced Features (FUTURE)
 1.  **Fluent API:** Optional chainable wrapper as separate entry point
