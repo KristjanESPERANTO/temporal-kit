@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.3](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.0.2...v0.0.3) (2025-11-30)
+
+
+### Features
+
+* add Intl-based formatting module with locale support ([fccf89f](https://github.com/KristjanESPERANTO/temporal-kit/commit/fccf89f678f06b581e77cb6a8e96c92fec713181))
+* implement math module (add, subtract, startOf, endOf) ([bf769df](https://github.com/KristjanESPERANTO/temporal-kit/commit/bf769df1fd28c48a3c7171c92f2a55b399ca17f6))
+* implement utils module (pipe, compose) ([2ab5e83](https://github.com/KristjanESPERANTO/temporal-kit/commit/2ab5e832cb533256e7d02b1d39f3f36349745024))
+* **parse:** add smart string-to-Temporal parsing with format detection ([a6d4e46](https://github.com/KristjanESPERANTO/temporal-kit/commit/a6d4e46743aa50adb536cdc41bc1889f43704b09))
+
+
+### Bug Fixes
+
+* **compare:** Handle cross-timezone ZonedDateTime comparison correctly ([481d88c](https://github.com/KristjanESPERANTO/temporal-kit/commit/481d88c43a8f158a4c8d5546532d5865c75a6b0a))
+* export Temporal from polyfilled entry and fix example ([0158094](https://github.com/KristjanESPERANTO/temporal-kit/commit/0158094d0a57d57d2259c9159ba4f4ce90f0383e))
+
+
+### Chores
+
+* update temporal-kit version to 0.0.2 in GitHub page ([d61eeee](https://github.com/KristjanESPERANTO/temporal-kit/commit/d61eeeefefd8c87dc6b9cf33fa55d558e4c700eb))
+
+
+### Documentation
+
+* add comprehensive documentation ([a11b247](https://github.com/KristjanESPERANTO/temporal-kit/commit/a11b247e63e987ca53e267b6feb15c4aa240983f))
+* **examples:** add comprehensive timezone and DST examples ([94ad492](https://github.com/KristjanESPERANTO/temporal-kit/commit/94ad49287aeae237a5d9bb161de78d1d24f7ea62))
+
 ## [0.0.2](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.0.1...v0.0.2) (2025-11-30)
 
 
