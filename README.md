@@ -1,6 +1,6 @@
 # Temporal Kit
 
-**Status:** 🚧 In Development
+**Status:** ✅ Ready for Early Adopters
 
 A modern, functional utility library for the standard `Temporal` API - built for early adopters who want to experiment with Temporal today.
 
