@@ -1,0 +1,85 @@
+{
+  "name": "temporal-kit",
+  "version": "0.0.1",
+  "description": "A modern, functional utility library for the Temporal API - experiment with Temporal today.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./polyfilled": {
+      "types": "./dist/polyfilled.d.ts",
+      "import": "./dist/polyfilled.js",
+      "default": "./dist/polyfilled.js"
+    }
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "ci": "npm run typecheck && npm run lint && npm run build",
+    "prepublishOnly": "npm run ci"
+  },
+  "keywords": [
+    "temporal",
+    "date",
+    "time",
+    "datetime",
+    "timezone",
+    "functional",
+    "immutable",
+    "tree-shakable",
+    "typescript"
+  ],
+  "author": "KristjanESPERANTO",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KristjanESPERANTO/temporal-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KristjanESPERANTO/temporal-kit/issues"
+  },
+  "homepage": "https://github.com/KristjanESPERANTO/temporal-kit#readme",
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.8",
+    "@vitest/ui": "^4.0.14",
+    "temporal-polyfill": "^0.3.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.14"
+  },
+  "peerDependencies": {
+    "temporal-polyfill": "^0.2.0"
+  },
+  "peerDependenciesMeta": {
+    "temporal-polyfill": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

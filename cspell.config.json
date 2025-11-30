@@ -1,0 +1,6 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": ["Luxon", "rrule"],
+  "ignorePaths": ["node_modules", "dist"]
+}
