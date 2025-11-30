@@ -20,6 +20,12 @@ import { isPlainDate } from 'temporal-kit/polyfilled';
 
 > **💡 See it in action:** Check out [`examples/`](./examples) for runnable code samples covering type guards, polyfill usage, TypeScript integration, and more.
 
+## Documentation
+
+- **[API Reference](./docs/API.md)** - Complete function reference with examples
+- **[Usage Examples](./docs/USAGE_EXAMPLES.md)** - Practical examples for common use cases
+- **[Best Practices](./docs/BEST_PRACTICES.md)** - Comprehensive guide for using temporal-kit effectively
+
 ## 1. Why Temporal Kit?
 
 **Temporal** is arriving as the modern standard for date/time handling in JavaScript, with precise primitives (`Instant`, `ZonedDateTime`, `PlainDate/Time`). By design, Temporal focuses on correctness and intentionally leaves out many convenience helpers—things like `startOf`/`endOf`, humanized formatting, or common comparison utilities. This is deliberate: Temporal provides the foundation, but everyday ergonomics are better handled by libraries.
@@ -136,7 +142,7 @@ src/
 
 ### 🚧 Phase 3: Formatting & Polish (IN PROGRESS)
 1.  **Formatting:** ✅ Implement `format` using `Intl.DateTimeFormat` with smart defaults ([`examples/09-formatting.js`](./examples/09-formatting.js))
-2.  **Documentation:** API reference, usage examples, best practices
+2.  **Documentation:** ✅ API reference ([`docs/API.md`](./docs/API.md)), usage examples ([`docs/USAGE_EXAMPLES.md`](./docs/USAGE_EXAMPLES.md)), best practices ([`docs/BEST_PRACTICES.md`](./docs/BEST_PRACTICES.md))
 3.  **Parse:** Smart string-to-Temporal parsing with format detection
 4.  **Timezone Examples:** Document DST transitions and offset handling
 

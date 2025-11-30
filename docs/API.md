@@ -1,0 +1,850 @@
+# API Reference
+
+Complete reference for all functions in temporal-kit.
+
+## Table of Contents
+
+- [Type Guards](#type-guards)
+- [Comparison Functions](#comparison-functions)
+- [Conversion Functions](#conversion-functions)
+- [Formatting Functions](#formatting-functions)
+- [Math Functions](#math-functions)
+- [Utility Functions](#utility-functions)
+- [Types](#types)
+
+---
+
+## Type Guards
+
+Runtime type checking functions for Temporal types.
+
+### `isPlainDate(value)`
+
+Check if a value is a `Temporal.PlainDate`.
+
+**Parameters:**
+- `value: unknown` - Value to check
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isPlainDate } from 'temporal-kit';
+
+const date = Temporal.PlainDate.from('2025-11-30');
+isPlainDate(date); // true
+isPlainDate('2025-11-30'); // false
+```
+
+---
+
+### `isPlainDateTime(value)`
+
+Check if a value is a `Temporal.PlainDateTime`.
+
+**Parameters:**
+- `value: unknown` - Value to check
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isPlainDateTime } from 'temporal-kit';
+
+const dt = Temporal.PlainDateTime.from('2025-11-30T15:30:00');
+isPlainDateTime(dt); // true
+```
+
+---
+
+### `isZonedDateTime(value)`
+
+Check if a value is a `Temporal.ZonedDateTime`.
+
+**Parameters:**
+- `value: unknown` - Value to check
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isZonedDateTime } from 'temporal-kit';
+
+const zdt = Temporal.ZonedDateTime.from('2025-11-30T15:30:00+01:00[Europe/Berlin]');
+isZonedDateTime(zdt); // true
+```
+
+---
+
+### `isInstant(value)`
+
+Check if a value is a `Temporal.Instant`.
+
+**Parameters:**
+- `value: unknown` - Value to check
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isInstant } from 'temporal-kit';
+
+const instant = Temporal.Instant.from('2025-11-30T14:30:00Z');
+isInstant(instant); // true
+```
+
+---
+
+### `isPlainTime(value)`
+
+Check if a value is a `Temporal.PlainTime`.
+
+**Parameters:**
+- `value: unknown` - Value to check
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isPlainTime } from 'temporal-kit';
+
+const time = Temporal.PlainTime.from('15:30:00');
+isPlainTime(time); // true
+```
+
+---
+
+### `isDateLike(value)`
+
+Check if a value is date-like (PlainDate, PlainDateTime, or ZonedDateTime).
+
+**Parameters:**
+- `value: unknown` - Value to check
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isDateLike } from 'temporal-kit';
+
+isDateLike(Temporal.PlainDate.from('2025-11-30')); // true
+isDateLike(Temporal.PlainDateTime.from('2025-11-30T15:30:00')); // true
+isDateLike(Temporal.PlainTime.from('15:30:00')); // false
+```
+
+---
+
+### `isTimeLike(value)`
+
+Check if a value is time-like (PlainTime, PlainDateTime, or ZonedDateTime).
+
+**Parameters:**
+- `value: unknown` - Value to check
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isTimeLike } from 'temporal-kit';
+
+isTimeLike(Temporal.PlainTime.from('15:30:00')); // true
+isTimeLike(Temporal.PlainDateTime.from('2025-11-30T15:30:00')); // true
+isTimeLike(Temporal.PlainDate.from('2025-11-30')); // false
+```
+
+---
+
+## Comparison Functions
+
+Functions for comparing and finding min/max dates.
+
+### `isBefore(a, b)`
+
+Check if date `a` is before date `b`.
+
+**Parameters:**
+- `a: DateLike` - First date
+- `b: DateLike` - Second date
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isBefore } from 'temporal-kit';
+
+const date1 = Temporal.PlainDate.from('2025-11-29');
+const date2 = Temporal.PlainDate.from('2025-11-30');
+isBefore(date1, date2); // true
+```
+
+---
+
+### `isAfter(a, b)`
+
+Check if date `a` is after date `b`.
+
+**Parameters:**
+- `a: DateLike` - First date
+- `b: DateLike` - Second date
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isAfter } from 'temporal-kit';
+
+const date1 = Temporal.PlainDate.from('2025-12-01');
+const date2 = Temporal.PlainDate.from('2025-11-30');
+isAfter(date1, date2); // true
+```
+
+---
+
+### `isSame(a, b)`
+
+Check if two dates are equal.
+
+**Parameters:**
+- `a: DateLike` - First date
+- `b: DateLike` - Second date
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isSame } from 'temporal-kit';
+
+const date1 = Temporal.PlainDate.from('2025-11-30');
+const date2 = Temporal.PlainDate.from('2025-11-30');
+isSame(date1, date2); // true
+```
+
+---
+
+### `min(dates)`
+
+Find the earliest date in an array.
+
+**Parameters:**
+- `dates: DateLike[]` - Array of dates
+
+**Returns:** `DateLike` - Earliest date
+
+**Throws:** `TypeError` if array is empty
+
+**Example:**
+```typescript
+import { min } from 'temporal-kit';
+
+const dates = [
+  Temporal.PlainDate.from('2025-12-01'),
+  Temporal.PlainDate.from('2025-11-29'),
+  Temporal.PlainDate.from('2025-11-30')
+];
+min(dates); // 2025-11-29
+```
+
+---
+
+### `max(dates)`
+
+Find the latest date in an array.
+
+**Parameters:**
+- `dates: DateLike[]` - Array of dates
+
+**Returns:** `DateLike` - Latest date
+
+**Throws:** `TypeError` if array is empty
+
+**Example:**
+```typescript
+import { max } from 'temporal-kit';
+
+const dates = [
+  Temporal.PlainDate.from('2025-11-29'),
+  Temporal.PlainDate.from('2025-12-01'),
+  Temporal.PlainDate.from('2025-11-30')
+];
+max(dates); // 2025-12-01
+```
+
+---
+
+## Conversion Functions
+
+Functions for creating and converting between Temporal types.
+
+### `now()`
+
+Get the current date/time as ZonedDateTime in the system timezone.
+
+**Returns:** `Temporal.ZonedDateTime`
+
+**Example:**
+```typescript
+import { now } from 'temporal-kit';
+
+const current = now();
+console.log(current.toString()); // e.g., "2025-11-30T15:30:00+01:00[Europe/Berlin]"
+```
+
+---
+
+### `fromISO(isoString)`
+
+Parse an ISO 8601 string and return the appropriate Temporal type.
+
+**Parameters:**
+- `isoString: string` - ISO 8601 formatted string
+
+**Returns:** `Temporal.PlainDate | Temporal.PlainDateTime | Temporal.ZonedDateTime | Temporal.Instant`
+
+**Example:**
+```typescript
+import { fromISO } from 'temporal-kit';
+
+fromISO('2025-11-30'); // PlainDate
+fromISO('2025-11-30T15:30:00'); // PlainDateTime
+fromISO('2025-11-30T15:30:00+01:00[Europe/Berlin]'); // ZonedDateTime
+fromISO('2025-11-30T15:30:00Z'); // Instant
+```
+
+---
+
+### `toPlainDate(date)`
+
+Convert any DateLike value to PlainDate.
+
+**Parameters:**
+- `date: DateLike` - Date to convert
+
+**Returns:** `Temporal.PlainDate`
+
+**Example:**
+```typescript
+import { toPlainDate } from 'temporal-kit';
+
+const dt = Temporal.PlainDateTime.from('2025-11-30T15:30:00');
+toPlainDate(dt); // 2025-11-30
+
+const zdt = Temporal.ZonedDateTime.from('2025-11-30T15:30:00+01:00[Europe/Berlin]');
+toPlainDate(zdt); // 2025-11-30
+```
+
+---
+
+### `toPlainDateTime(date)`
+
+Convert PlainDateTime or ZonedDateTime to PlainDateTime.
+
+**Parameters:**
+- `date: Temporal.PlainDateTime | Temporal.ZonedDateTime` - Date to convert
+
+**Returns:** `Temporal.PlainDateTime`
+
+**Example:**
+```typescript
+import { toPlainDateTime } from 'temporal-kit';
+
+const zdt = Temporal.ZonedDateTime.from('2025-11-30T15:30:00+01:00[Europe/Berlin]');
+toPlainDateTime(zdt); // 2025-11-30T15:30:00
+```
+
+---
+
+### `toZonedDateTime(date, timeZone?)`
+
+Convert any DateLike value to ZonedDateTime.
+
+**Parameters:**
+- `date: DateLike` - Date to convert
+- `timeZone?: string` - IANA timezone (required for PlainDate/PlainDateTime)
+
+**Returns:** `Temporal.ZonedDateTime`
+
+**Throws:** `TypeError` if timezone is missing for PlainDate/PlainDateTime
+
+**Example:**
+```typescript
+import { toZonedDateTime } from 'temporal-kit';
+
+const date = Temporal.PlainDate.from('2025-11-30');
+toZonedDateTime(date, 'Europe/Berlin'); // 2025-11-30T00:00:00+01:00[Europe/Berlin]
+
+const dt = Temporal.PlainDateTime.from('2025-11-30T15:30:00');
+toZonedDateTime(dt, 'America/New_York'); // 2025-11-30T15:30:00-05:00[America/New_York]
+```
+
+---
+
+## Formatting Functions
+
+Functions for formatting dates and times using Intl APIs.
+
+### `format(date, options?)`
+
+Format a DateLike value as a date string.
+
+**Parameters:**
+- `date: DateLike` - Date to format
+- `options?: FormatOptions` - Formatting options
+
+**FormatOptions:**
+- `locale?: string | string[]` - Locale(s) to use (default: system locale)
+- `dateStyle?: 'full' | 'long' | 'medium' | 'short'` - Date style (default: 'medium')
+- `timeStyle?: 'full' | 'long' | 'medium' | 'short'` - Time style
+- `options?: Intl.DateTimeFormatOptions` - Custom format options
+
+**Returns:** `string`
+
+**Example:**
+```typescript
+import { format } from 'temporal-kit';
+
+const date = Temporal.PlainDate.from('2025-11-30');
+
+format(date); // "Nov 30, 2025" (en-US)
+format(date, { dateStyle: 'full' }); // "Sunday, November 30, 2025"
+format(date, { locale: 'de-DE' }); // "30.11.2025"
+format(date, { 
+  options: { year: 'numeric', month: 'long' } 
+}); // "November 2025"
+```
+
+---
+
+### `formatTime(time, options?)`
+
+Format a TimeLike value as a time string.
+
+**Parameters:**
+- `time: TimeLike` - Time to format
+- `options?: FormatOptions` - Formatting options
+
+**Returns:** `string`
+
+**Example:**
+```typescript
+import { formatTime } from 'temporal-kit';
+
+const time = Temporal.PlainTime.from('15:30:45');
+
+formatTime(time); // "3:30:45 PM" (en-US)
+formatTime(time, { timeStyle: 'short' }); // "3:30 PM"
+formatTime(time, { locale: 'de-DE' }); // "15:30:45"
+```
+
+---
+
+### `formatDateTime(date, options?)`
+
+Format a DateLike value with both date and time.
+
+**Parameters:**
+- `date: DateLike` - Date to format
+- `options?: FormatOptions` - Formatting options
+
+**Returns:** `string`
+
+**Example:**
+```typescript
+import { formatDateTime } from 'temporal-kit';
+
+const dt = Temporal.PlainDateTime.from('2025-11-30T15:30:00');
+
+formatDateTime(dt); // "Nov 30, 2025, 3:30:00 PM" (en-US)
+formatDateTime(dt, { 
+  dateStyle: 'long', 
+  timeStyle: 'short' 
+}); // "November 30, 2025 at 3:30 PM"
+formatDateTime(dt, { locale: 'de-DE' }); // "30.11.2025, 15:30:00"
+```
+
+---
+
+### `formatRelative(date, base?, options?)`
+
+Format relative time (e.g., "2 days ago", "in 3 hours").
+
+**Parameters:**
+- `date: DateLike` - Date to format
+- `base?: DateLike` - Base date to compare against (default: now)
+- `options?: { locale?: string | string[] }` - Formatting options
+
+**Returns:** `string`
+
+**Example:**
+```typescript
+import { formatRelative } from 'temporal-kit';
+
+const today = Temporal.PlainDate.from('2025-11-30');
+const yesterday = today.subtract({ days: 1 });
+const tomorrow = today.add({ days: 1 });
+
+formatRelative(yesterday, today); // "yesterday"
+formatRelative(tomorrow, today); // "tomorrow"
+formatRelative(today.subtract({ days: 7 }), today); // "last week"
+formatRelative(today.add({ days: 14 }), today); // "in 2 weeks"
+
+// Different locales
+formatRelative(yesterday, today, { locale: 'de-DE' }); // "gestern"
+formatRelative(yesterday, today, { locale: 'fr-FR' }); // "hier"
+```
+
+---
+
+## Math Functions
+
+Functions for date/time arithmetic and boundary operations.
+
+### `add(date, duration)`
+
+Add a duration to a date/time value.
+
+**Parameters:**
+- `date: DateLike` - Date to add to
+- `duration: DurationInput` - Duration to add (object with years, months, days, hours, etc.)
+
+**Returns:** Same type as input
+
+**Example:**
+```typescript
+import { add } from 'temporal-kit';
+
+const date = Temporal.PlainDate.from('2025-11-30');
+
+add(date, { days: 5 }); // 2025-12-05
+add(date, { months: 2, days: 3 }); // 2026-02-02
+
+const dt = Temporal.PlainDateTime.from('2025-11-30T10:00:00');
+add(dt, { hours: 5, minutes: 30 }); // 2025-11-30T15:30:00
+```
+
+---
+
+### `subtract(date, duration)`
+
+Subtract a duration from a date/time value.
+
+**Parameters:**
+- `date: DateLike` - Date to subtract from
+- `duration: DurationInput` - Duration to subtract
+
+**Returns:** Same type as input
+
+**Example:**
+```typescript
+import { subtract } from 'temporal-kit';
+
+const date = Temporal.PlainDate.from('2025-11-30');
+
+subtract(date, { days: 5 }); // 2025-11-25
+subtract(date, { months: 2 }); // 2025-09-30
+
+const dt = Temporal.PlainDateTime.from('2025-11-30T15:00:00');
+subtract(dt, { hours: 2, minutes: 30 }); // 2025-11-30T12:30:00
+```
+
+---
+
+### `startOf(date, unit)`
+
+Get the start of a time unit (e.g., start of day, start of month).
+
+**Parameters:**
+- `date: DateLike` - Date to round down
+- `unit: DateUnit` - Time unit ('day' | 'week' | 'month' | 'year')
+
+**Returns:** Same type as input
+
+**Example:**
+```typescript
+import { startOf } from 'temporal-kit';
+
+const dt = Temporal.PlainDateTime.from('2025-11-30T15:30:45');
+
+startOf(dt, 'day');   // 2025-11-30T00:00:00
+startOf(dt, 'week');  // 2025-11-24T00:00:00 (Monday)
+startOf(dt, 'month'); // 2025-11-01T00:00:00
+startOf(dt, 'year');  // 2025-01-01T00:00:00
+
+const date = Temporal.PlainDate.from('2025-11-30');
+startOf(date, 'month'); // 2025-11-01
+```
+
+---
+
+### `endOf(date, unit)`
+
+Get the end of a time unit (e.g., end of day, end of month).
+
+**Parameters:**
+- `date: DateLike` - Date to round up
+- `unit: DateUnit` - Time unit ('day' | 'week' | 'month' | 'year')
+
+**Returns:** Same type as input
+
+**Example:**
+```typescript
+import { endOf } from 'temporal-kit';
+
+const dt = Temporal.PlainDateTime.from('2025-11-30T15:30:45');
+
+endOf(dt, 'day');   // 2025-11-30T23:59:59.999999999
+endOf(dt, 'week');  // 2025-12-07T23:59:59.999999999 (Sunday)
+endOf(dt, 'month'); // 2025-11-30T23:59:59.999999999
+endOf(dt, 'year');  // 2025-12-31T23:59:59.999999999
+
+const date = Temporal.PlainDate.from('2025-11-15');
+endOf(date, 'month'); // 2025-11-30
+```
+
+---
+
+## Utility Functions
+
+Functions for functional composition.
+
+### `pipe(value, ...fns)`
+
+Chain functions from left to right. The result of each function is passed to the next.
+
+**Parameters:**
+- `value: T` - Initial value
+- `...fns: Array<(arg: any) => any>` - Functions to apply in sequence
+
+**Returns:** Result of applying all functions
+
+**Example:**
+```typescript
+import { pipe, startOf, add } from 'temporal-kit';
+
+const result = pipe(
+  Temporal.PlainDateTime.from('2025-11-30T15:30:00'),
+  d => startOf(d, 'day'),
+  d => add(d, { hours: 12 })
+);
+// Result: 2025-11-30T12:00:00
+```
+
+---
+
+### `compose(...fns)`
+
+Chain functions from right to left. Creates a reusable composed function.
+
+**Parameters:**
+- `...fns: Array<(arg: any) => any>` - Functions to compose (applied right to left)
+
+**Returns:** `(value: T) => any` - Composed function
+
+**Example:**
+```typescript
+import { compose, startOf, add } from 'temporal-kit';
+
+const addTwelveHoursToStartOfDay = compose(
+  d => add(d, { hours: 12 }),
+  d => startOf(d, 'day')
+);
+
+const result = addTwelveHoursToStartOfDay(
+  Temporal.PlainDateTime.from('2025-11-30T15:30:00')
+);
+// Result: 2025-11-30T12:00:00
+```
+
+---
+
+## Types
+
+Type definitions used throughout temporal-kit.
+
+### `DateLike`
+
+Union type for date-like Temporal values.
+
+```typescript
+type DateLike = 
+  | Temporal.PlainDate 
+  | Temporal.PlainDateTime 
+  | Temporal.ZonedDateTime;
+```
+
+---
+
+### `TimeLike`
+
+Union type for time-like Temporal values.
+
+```typescript
+type TimeLike = 
+  | Temporal.PlainTime 
+  | Temporal.PlainDateTime 
+  | Temporal.ZonedDateTime;
+```
+
+---
+
+### `DateUnit`
+
+Valid units for `startOf` and `endOf` functions.
+
+```typescript
+type DateUnit = 'day' | 'week' | 'month' | 'year';
+```
+
+---
+
+### `DurationInput`
+
+Input format for durations (used by `add` and `subtract`).
+
+```typescript
+type DurationInput = {
+  years?: number;
+  months?: number;
+  weeks?: number;
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+  milliseconds?: number;
+  microseconds?: number;
+  nanoseconds?: number;
+};
+```
+
+---
+
+### `FormatOptions`
+
+Options for formatting functions.
+
+```typescript
+interface FormatOptions {
+  locale?: string | string[];
+  dateStyle?: 'full' | 'long' | 'medium' | 'short';
+  timeStyle?: 'full' | 'long' | 'medium' | 'short';
+  options?: Intl.DateTimeFormatOptions;
+}
+```
+
+---
+
+## Best Practices
+
+### 1. Use Type Guards for Runtime Safety
+
+When working with unknown values, use type guards to ensure type safety:
+
+```typescript
+import { isPlainDate, add } from 'temporal-kit';
+
+function processDate(value: unknown) {
+  if (isPlainDate(value)) {
+    // TypeScript knows value is PlainDate here
+    return add(value, { days: 1 });
+  }
+  throw new TypeError('Expected PlainDate');
+}
+```
+
+### 2. Prefer Explicit Conversions
+
+Be explicit about timezone when converting:
+
+```typescript
+import { toZonedDateTime } from 'temporal-kit';
+
+const date = Temporal.PlainDate.from('2025-11-30');
+// Good: explicit timezone
+const zdt = toZonedDateTime(date, 'Europe/Berlin');
+
+// Bad: would throw error
+// const zdt = toZonedDateTime(date);
+```
+
+### 3. Use Pipe for Readable Transformations
+
+Chain operations with `pipe` for better readability:
+
+```typescript
+import { pipe, startOf, add, format } from 'temporal-kit';
+
+const formatted = pipe(
+  Temporal.Now.zonedDateTimeISO(),
+  d => startOf(d, 'week'),
+  d => add(d, { days: 3 }),
+  d => format(d.toPlainDate(), { dateStyle: 'full' })
+);
+```
+
+### 4. Leverage Intl for Localization
+
+Use format functions with locales for internationalization:
+
+```typescript
+import { formatDateTime } from 'temporal-kit';
+
+const dt = Temporal.PlainDateTime.from('2025-11-30T15:30:00');
+
+// Show in user's preferred languages
+const languages = ['de-DE', 'en-US', 'fr-FR'];
+const formatted = languages.map(locale => 
+  formatDateTime(dt, { locale, dateStyle: 'long' })
+);
+```
+
+### 5. Compose Reusable Functions
+
+Create reusable date transformations with `compose`:
+
+```typescript
+import { compose, startOf, endOf, add } from 'temporal-kit';
+
+// Create reusable utilities
+const nextMonthStart = compose(
+  d => add(d, { months: 1 }),
+  d => startOf(d, 'month')
+);
+
+const thisMonthEnd = endOf.bind(null, 'month');
+
+// Use them
+const date = Temporal.PlainDate.from('2025-11-15');
+nextMonthStart(date); // 2025-12-01
+```
+
+### 6. Handle Edge Cases
+
+Be aware of calendar edge cases:
+
+```typescript
+import { add } from 'temporal-kit';
+
+// Adding months respects calendar rules
+const date = Temporal.PlainDate.from('2025-01-31');
+add(date, { months: 1 }); // 2025-02-28 (not March 3rd)
+
+// Adding days is always exact
+add(date, { days: 31 }); // 2025-03-03
+```
+
+### 7. Use startOf/endOf for Range Queries
+
+Get date ranges easily:
+
+```typescript
+import { startOf, endOf } from 'temporal-kit';
+
+const date = Temporal.PlainDate.from('2025-11-15');
+
+// Get current week range
+const weekStart = startOf(date, 'week'); // Monday
+const weekEnd = endOf(date, 'week');     // Sunday
+
+// Get month range
+const monthStart = startOf(date, 'month'); // 2025-11-01
+const monthEnd = endOf(date, 'month');     // 2025-11-30
+```
