@@ -23,7 +23,7 @@
     "dist/**/*.js",
     "dist/**/*.d.ts",
     "README.md",
-    "LICENSE"
+    "LICENSE.md"
   ],
   "publishConfig": {
     "access": "public"

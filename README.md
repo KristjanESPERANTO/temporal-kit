@@ -88,7 +88,7 @@ We adopt a robust strategy for compatibility:
 src/
 ├── types/          # ✅ Core type definitions (DateLike, TimeLike unions)
 ├── guards/         # ✅ Type guards (isPlainDate, isZonedDateTime, etc.)
-├── compare/        # 🔜 Comparison functions (isBefore, isAfter, min, max)
+├── compare/        # ✅ Comparison functions (isBefore, isAfter, min, max)
 ├── convert/        # 🔜 Creation & conversion (now, fromISO, explicit conversions)
 ├── format/         # 🔜 Intl-based formatting helpers
 ├── math/           # 🔜 Arithmetic (add, subtract, startOf, endOf)
@@ -101,8 +101,8 @@ src/
 - **Zero Dependencies:** We build directly on native `Temporal` APIs. No vendored code.
 - **Type-Safe:** Full TypeScript support with strict mode and cutting-edge compiler options.
 - **Dual Entry Points:** 
-  - `temporal-kit` - Expects native Temporal (1.2KB)
-  - `temporal-kit/polyfilled` - Auto-loads polyfill (110KB)
+  - `temporal-kit` - Expects native Temporal
+  - `temporal-kit/polyfilled` - Auto-loads polyfill
 - **Perfect Tree-Shaking:** `sideEffects: false` ensures optimal bundle sizes.
 - **Modern Tooling:** 
   - **Biome** - Fast linting/formatting with performance rules
@@ -125,7 +125,7 @@ src/
 5.  **Examples:** Comprehensive example files demonstrating usage patterns ([`examples/`](./examples)).
 
 ### 🚧 Phase 2: Core Functions (IN PROGRESS)
-1.  **Comparison:** `isBefore`, `isAfter`, `isSame`, `min`, `max` ([`examples/04-comparisons.js`](./examples/04-comparisons.js))
+1.  **Comparison:** ✅ `isBefore`, `isAfter`, `isSame`, `min`, `max` ([`examples/04-comparisons.js`](./examples/04-comparisons.js))
 2.  **Convert:** `now`, `fromISO`, explicit type conversions
 3.  **Math:** `add`, `subtract`, `startOf`, `endOf` ([`examples/05-arithmetic.js`](./examples/05-arithmetic.js), [`examples/06-boundaries.js`](./examples/06-boundaries.js))
 4.  **Utils:** `pipe`, `compose` for functional composition ([`examples/08-composition.js`](./examples/08-composition.js))
@@ -173,6 +173,6 @@ npm run ci           # Full CI pipeline (typecheck + lint + test + build)
 | **Paradigm** | Mutable / Quirky | OO / Immutable | OO / Mutable | OO / Verbose | **Functional** |
 | **Timezones** | Poor | Excellent | Plugin | Native | **Native** |
 | **Tree-Shaking**| N/A | No | No | N/A | **Yes** |
-| **Bundle Size**| N/A | ~70KB | ~7KB (+plugins) | Native | **<5KB** (native) / ~55KB (polyfilled) |
+| **Bundle Size**| N/A | ~70KB | ~7KB (+plugins) | Native | **~3KB** (native) / ~112KB (polyfilled) |
 | **Target** | Everyone | Production | Production | Future | **Early Adopters** |
 | **Philosophy** | Legacy | Battle-tested | Convenience | Standard | **Modern FP + Learning** |

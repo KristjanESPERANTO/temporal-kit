@@ -3730,6 +3730,63 @@ function isTimeLike(value) {
   return value instanceof Xn.PlainTime || value instanceof Xn.PlainDateTime || value instanceof Xn.ZonedDateTime;
 }
 
+// src/compare/index.ts
+function isBefore(a2, b2) {
+  if ("hour" in a2 && "hour" in b2) {
+    if ("timeZoneId" in a2 && "timeZoneId" in b2) {
+      return Xn.ZonedDateTime.compare(a2, b2) < 0;
+    }
+    return Xn.PlainDateTime.compare(a2, b2) < 0;
+  }
+  return Xn.PlainDate.compare(a2, b2) < 0;
+}
+function isAfter(a2, b2) {
+  if ("hour" in a2 && "hour" in b2) {
+    if ("timeZoneId" in a2 && "timeZoneId" in b2) {
+      return Xn.ZonedDateTime.compare(a2, b2) > 0;
+    }
+    return Xn.PlainDateTime.compare(a2, b2) > 0;
+  }
+  return Xn.PlainDate.compare(a2, b2) > 0;
+}
+function isSame(a2, b2) {
+  if ("hour" in a2 && "hour" in b2) {
+    if ("timeZoneId" in a2 && "timeZoneId" in b2) {
+      return Xn.ZonedDateTime.compare(a2, b2) === 0;
+    }
+    return Xn.PlainDateTime.compare(a2, b2) === 0;
+  }
+  return Xn.PlainDate.compare(a2, b2) === 0;
+}
+function min(dates) {
+  if (dates.length === 0) {
+    throw new TypeError("Cannot find min of empty array");
+  }
+  return dates.reduce((earliest, current) => {
+    if ("hour" in current && "hour" in earliest) {
+      if ("timeZoneId" in current && "timeZoneId" in earliest) {
+        return Xn.ZonedDateTime.compare(current, earliest) < 0 ? current : earliest;
+      }
+      return Xn.PlainDateTime.compare(current, earliest) < 0 ? current : earliest;
+    }
+    return Xn.PlainDate.compare(current, earliest) < 0 ? current : earliest;
+  });
+}
+function max(dates) {
+  if (dates.length === 0) {
+    throw new TypeError("Cannot find max of empty array");
+  }
+  return dates.reduce((latest, current) => {
+    if ("hour" in current && "hour" in latest) {
+      if ("timeZoneId" in current && "timeZoneId" in latest) {
+        return Xn.ZonedDateTime.compare(current, latest) > 0 ? current : latest;
+      }
+      return Xn.PlainDateTime.compare(current, latest) > 0 ? current : latest;
+    }
+    return Xn.PlainDate.compare(current, latest) > 0 ? current : latest;
+  });
+}
+
 // src/polyfilled.ts
 if (typeof globalThis.Temporal === "undefined") {
   Object.defineProperty(globalThis, "Temporal", {
@@ -3739,6 +3796,6 @@ if (typeof globalThis.Temporal === "undefined") {
   });
 }
 
-export { isDateLike, isInstant, isPlainDate, isPlainDateTime, isPlainTime, isTimeLike, isZonedDateTime };
+export { isAfter, isBefore, isDateLike, isInstant, isPlainDate, isPlainDateTime, isPlainTime, isSame, isTimeLike, isZonedDateTime, max, min };
 //# sourceMappingURL=polyfilled.js.map
 //# sourceMappingURL=polyfilled.js.map
