@@ -101,6 +101,69 @@ describe("Comparison Functions", () => {
     });
   });
 
+  describe("cross-timezone comparisons", () => {
+    it("should compare ZonedDateTime across different timezones (isBefore)", () => {
+      // 2 PM in New York = 8 PM in Berlin (same instant)
+      const nyTime = Temporal.ZonedDateTime.from("2025-06-15T14:00:00-04:00[America/New_York]");
+      const berlinTime = Temporal.ZonedDateTime.from("2025-06-15T20:00:00+02:00[Europe/Berlin]");
+
+      // They are the same instant, so neither is before the other
+      expect(isBefore(nyTime, berlinTime)).toBe(false);
+      expect(isBefore(berlinTime, nyTime)).toBe(false);
+
+      // 2 PM NY is before 9 PM Berlin (2 PM NY = 8 PM Berlin)
+      const laterBerlin = Temporal.ZonedDateTime.from("2025-06-15T21:00:00+02:00[Europe/Berlin]");
+      expect(isBefore(nyTime, laterBerlin)).toBe(true);
+      expect(isBefore(laterBerlin, nyTime)).toBe(false);
+    });
+
+    it("should compare ZonedDateTime across different timezones (isAfter)", () => {
+      const nyTime = Temporal.ZonedDateTime.from("2025-06-15T14:00:00-04:00[America/New_York]");
+      const berlinTime = Temporal.ZonedDateTime.from("2025-06-15T20:00:00+02:00[Europe/Berlin]");
+
+      // They are the same instant
+      expect(isAfter(nyTime, berlinTime)).toBe(false);
+      expect(isAfter(berlinTime, nyTime)).toBe(false);
+
+      // 3 PM NY (9 PM Berlin) is after 8 PM Berlin
+      const laterNY = Temporal.ZonedDateTime.from("2025-06-15T15:00:00-04:00[America/New_York]");
+      expect(isAfter(laterNY, berlinTime)).toBe(true);
+      expect(isAfter(berlinTime, laterNY)).toBe(false);
+    });
+
+    it("should compare ZonedDateTime across different timezones (isSame)", () => {
+      // 2 PM in New York = 8 PM in Berlin
+      const nyTime = Temporal.ZonedDateTime.from("2025-06-15T14:00:00-04:00[America/New_York]");
+      const berlinTime = Temporal.ZonedDateTime.from("2025-06-15T20:00:00+02:00[Europe/Berlin]");
+
+      expect(isSame(nyTime, berlinTime)).toBe(true);
+
+      // Different instants
+      const laterBerlin = Temporal.ZonedDateTime.from("2025-06-15T21:00:00+02:00[Europe/Berlin]");
+      expect(isSame(nyTime, laterBerlin)).toBe(false);
+    });
+
+    it("should handle min/max with cross-timezone ZonedDateTime", () => {
+      const dates = [
+        Temporal.ZonedDateTime.from("2025-06-15T14:00:00-04:00[America/New_York]"), // 6 PM UTC
+        Temporal.ZonedDateTime.from("2025-06-15T20:00:00+02:00[Europe/Berlin]"), // 6 PM UTC (same)
+        Temporal.ZonedDateTime.from("2025-06-15T21:00:00+02:00[Europe/Berlin]"), // 7 PM UTC
+        Temporal.ZonedDateTime.from("2025-06-15T13:00:00-04:00[America/New_York]"), // 5 PM UTC
+      ];
+
+      const earliest = min(dates);
+      const latest = max(dates);
+
+      // Earliest should be 1 PM NY (5 PM UTC)
+      expect(earliest.toString()).toContain("13:00:00");
+      expect(earliest.timeZoneId).toBe("America/New_York");
+
+      // Latest should be 9 PM Berlin (7 PM UTC)
+      expect(latest.toString()).toContain("21:00:00");
+      expect(latest.timeZoneId).toBe("Europe/Berlin");
+    });
+  });
+
   describe("min", () => {
     it("should return the earliest date (PlainDate)", () => {
       const dates = [

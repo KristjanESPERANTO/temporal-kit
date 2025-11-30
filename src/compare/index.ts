@@ -29,7 +29,10 @@ export function isBefore(a: DateLike, b: DateLike): boolean {
   // Use PlainDateTime.compare for DateTime, ZonedDateTime.compare for ZonedDateTime, else PlainDate.compare
   if ("hour" in a && "hour" in b) {
     if ("timeZoneId" in a && "timeZoneId" in b) {
-      return Temporal.ZonedDateTime.compare(a, b) < 0;
+      // For ZonedDateTime, convert to Instant for reliable comparison across timezones
+      const instantA = (a as Temporal.ZonedDateTime).toInstant();
+      const instantB = (b as Temporal.ZonedDateTime).toInstant();
+      return Temporal.Instant.compare(instantA, instantB) < 0;
     }
     return Temporal.PlainDateTime.compare(a, b) < 0;
   }
@@ -58,7 +61,10 @@ export function isBefore(a: DateLike, b: DateLike): boolean {
 export function isAfter(a: DateLike, b: DateLike): boolean {
   if ("hour" in a && "hour" in b) {
     if ("timeZoneId" in a && "timeZoneId" in b) {
-      return Temporal.ZonedDateTime.compare(a, b) > 0;
+      // For ZonedDateTime, convert to Instant for reliable comparison across timezones
+      const instantA = (a as Temporal.ZonedDateTime).toInstant();
+      const instantB = (b as Temporal.ZonedDateTime).toInstant();
+      return Temporal.Instant.compare(instantA, instantB) > 0;
     }
     return Temporal.PlainDateTime.compare(a, b) > 0;
   }
@@ -87,7 +93,10 @@ export function isAfter(a: DateLike, b: DateLike): boolean {
 export function isSame(a: DateLike, b: DateLike): boolean {
   if ("hour" in a && "hour" in b) {
     if ("timeZoneId" in a && "timeZoneId" in b) {
-      return Temporal.ZonedDateTime.compare(a, b) === 0;
+      // For ZonedDateTime, convert to Instant for reliable comparison across timezones
+      const instantA = (a as Temporal.ZonedDateTime).toInstant();
+      const instantB = (b as Temporal.ZonedDateTime).toInstant();
+      return Temporal.Instant.compare(instantA, instantB) === 0;
     }
     return Temporal.PlainDateTime.compare(a, b) === 0;
   }
@@ -103,7 +112,10 @@ function compareValues<T extends DateLike>(a: T, b: T): number {
   if ("hour" in a && "hour" in b) {
     // Check if both have timezone (ZonedDateTime)
     if ("timeZoneId" in a && "timeZoneId" in b) {
-      return Temporal.ZonedDateTime.compare(a, b);
+      // For ZonedDateTime, convert to Instant for reliable comparison across timezones
+      const instantA = (a as Temporal.ZonedDateTime).toInstant();
+      const instantB = (b as Temporal.ZonedDateTime).toInstant();
+      return Temporal.Instant.compare(instantA, instantB);
     }
     return Temporal.PlainDateTime.compare(a, b);
   }

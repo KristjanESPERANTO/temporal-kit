@@ -152,11 +152,10 @@ console.log("Which meeting is earlier?");
 console.log("  Meeting 1 (NY):", meeting1.toString());
 console.log("  Meeting 2 (Berlin):", meeting2.toString());
 
-// Compare using native Temporal.ZonedDateTime.compare
-const comparison = Temporal.ZonedDateTime.compare(meeting1, meeting2);
-if (comparison < 0) {
+// Compare meetings across timezones
+if (isBefore(meeting1, meeting2)) {
 	console.log("  → Meeting 1 (New York) is earlier");
-} else if (comparison > 0) {
+} else if (isAfter(meeting1, meeting2)) {
 	console.log("  → Meeting 2 (Berlin) is earlier");
 } else {
 	console.log("  → They are at the same time!");
