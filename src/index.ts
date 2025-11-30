@@ -20,10 +20,11 @@ export * from "./compare/index.js";
 export * from "./convert/index.js";
 // Re-export guards
 export * from "./guards/index.js";
+// Re-export math functions
+export * from "./math/index.js";
 // Re-export types
 export type * from "./types/index.js";
 
 // Placeholder exports for modules we'll implement next
 // export * from "./format/index.js";
-// export * from "./math/index.js";
 // export * from "./utils/index.js";

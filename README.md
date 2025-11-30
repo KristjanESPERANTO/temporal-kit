@@ -91,7 +91,7 @@ src/
 ├── compare/        # ✅ Comparison functions (isBefore, isAfter, min, max)
 ├── convert/        # ✅ Creation & conversion (now, fromISO, explicit conversions)
 ├── format/         # 🔜 Intl-based formatting helpers
-├── math/           # 🔜 Arithmetic (add, subtract, startOf, endOf)
+├── math/           # ✅ Arithmetic (add, subtract, startOf, endOf)
 ├── utils/          # 🔜 Utilities (pipe, compose)
 ├── index.ts        # ✅ Main entry (expects native Temporal)
 └── polyfilled.ts   # ✅ Auto-loads polyfill for legacy environments
@@ -127,7 +127,7 @@ src/
 ### 🚧 Phase 2: Core Functions (IN PROGRESS)
 1.  **Comparison:** ✅ `isBefore`, `isAfter`, `isSame`, `min`, `max` ([`examples/04-comparisons.js`](./examples/04-comparisons.js))
 2.  **Convert:** ✅ `now`, `fromISO`, explicit type conversions ([`examples/05-conversions.js`](./examples/05-conversions.js))
-3.  **Math:** `add`, `subtract`, `startOf`, `endOf` ([`examples/05-arithmetic.js`](./examples/05-arithmetic.js), [`examples/06-boundaries.js`](./examples/06-boundaries.js))
+3.  **Math:** ✅ `add`, `subtract`, `startOf`, `endOf` ([`examples/06-arithmetic.js`](./examples/06-arithmetic.js), [`examples/07-boundaries.js`](./examples/07-boundaries.js))
 4.  **Utils:** `pipe`, `compose` for functional composition ([`examples/08-composition.js`](./examples/08-composition.js))
 5.  **Testing:** Write comprehensive test suite
 
@@ -186,6 +186,6 @@ Uses [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag
 | **Paradigm** | Mutable / Quirky | OO / Immutable | OO / Mutable | OO / Verbose | **Functional** |
 | **Timezones** | Poor | Excellent | Plugin | Native | **Native** |
 | **Tree-Shaking**| N/A | No | No | N/A | **Yes** |
-| **Bundle Size**| N/A | ~70KB | ~7KB (+plugins) | Native | **~3KB** (native) / ~112KB (polyfilled) |
+| **Bundle Size**| N/A | ~70KB | ~7KB (+plugins) | Native | **~7KB** (native) / ~115KB (polyfilled) |
 | **Target** | Everyone | Production | Production | Future | **Early Adopters** |
 | **Philosophy** | Legacy | Battle-tested | Convenience | Standard | **Modern FP + Learning** |
