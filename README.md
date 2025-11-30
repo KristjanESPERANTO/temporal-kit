@@ -143,7 +143,7 @@ src/
 ### 🚧 Phase 3: Formatting & Polish (IN PROGRESS)
 1.  **Formatting:** ✅ Implement `format` using `Intl.DateTimeFormat` with smart defaults ([`examples/09-formatting.js`](./examples/09-formatting.js))
 2.  **Documentation:** ✅ API reference ([`docs/API.md`](./docs/API.md)), usage examples ([`docs/USAGE_EXAMPLES.md`](./docs/USAGE_EXAMPLES.md)), best practices ([`docs/BEST_PRACTICES.md`](./docs/BEST_PRACTICES.md))
-3.  **Parse:** Smart string-to-Temporal parsing with format detection
+3.  **Parse:** ✅ Smart string-to-Temporal parsing with format detection ([`examples/10-parsing.js`](./examples/10-parsing.js))
 4.  **Timezone Examples:** Document DST transitions and offset handling
 
 ### 💡 Phase 4: Advanced Features (FUTURE)

@@ -7,6 +7,7 @@ Complete reference for all functions in temporal-kit.
 - [Type Guards](#type-guards)
 - [Comparison Functions](#comparison-functions)
 - [Conversion Functions](#conversion-functions)
+- [Parsing Functions](#parsing-functions)
 - [Formatting Functions](#formatting-functions)
 - [Math Functions](#math-functions)
 - [Utility Functions](#utility-functions)
@@ -374,6 +375,205 @@ toZonedDateTime(date, 'Europe/Berlin'); // 2025-11-30T00:00:00+01:00[Europe/Berl
 
 const dt = Temporal.PlainDateTime.from('2025-11-30T15:30:00');
 toZonedDateTime(dt, 'America/New_York'); // 2025-11-30T15:30:00-05:00[America/New_York]
+```
+
+---
+
+## Parsing Functions
+
+Functions for parsing strings into Temporal types with smart format detection.
+
+### `parse(input)`
+
+Parse a string into the most appropriate Temporal type based on format detection.
+
+**Parameters:**
+- `input: string` - String to parse
+
+**Returns:** `Temporal.PlainDate | Temporal.PlainDateTime | Temporal.ZonedDateTime | Temporal.Instant | Temporal.PlainTime`
+
+**Supported Formats:**
+- ISO 8601: All variants (dates, datetimes, instants, zoned datetimes)
+- European dates: DD.MM.YYYY
+- US dates: MM/DD/YYYY
+- Alternative formats: DD-MM-YYYY, YYYY/MM/DD
+- 12-hour time: With AM/PM (e.g., "3:30 PM")
+- 24-hour time: HH:MM or HH:MM:SS
+- DateTime combinations: Space-separated date and time
+
+**Throws:** `RangeError` if string format is not recognized or contains invalid values
+
+**Example:**
+```typescript
+import { parse } from 'temporal-kit';
+
+// ISO 8601 formats
+parse('2025-11-30');                              // PlainDate
+parse('2025-11-30T15:30:00');                     // PlainDateTime
+parse('2025-11-30T15:30:00Z');                    // Instant
+parse('2025-11-30T15:30:00+01:00[Europe/Berlin]'); // ZonedDateTime
+
+// European dates
+parse('30.11.2025');                              // PlainDate
+parse('30.11.2025 15:30');                        // PlainDateTime
+
+// US dates
+parse('11/30/2025');                              // PlainDate
+parse('11/30/2025 3:30 PM');                      // PlainDateTime
+
+// Alternative formats
+parse('30-11-2025');                              // PlainDate
+parse('2025/11/30');                              // PlainDate
+
+// Time formats
+parse('15:30');                                   // PlainTime
+parse('15:30:45');                                // PlainTime
+parse('3:30 PM');                                 // PlainTime
+parse('9:00 AM');                                 // PlainTime
+
+// DateTime combinations
+parse('2025-11-30 15:30');                        // PlainDateTime
+parse('2025-11-30 3:30 PM');                      // PlainDateTime
+```
+
+---
+
+### `parseDate(input)`
+
+Parse a string specifically as a PlainDate.
+
+**Parameters:**
+- `input: string` - String to parse
+
+**Returns:** `Temporal.PlainDate`
+
+**Supported Formats:**
+- ISO 8601: YYYY-MM-DD
+- European: DD.MM.YYYY
+- US: MM/DD/YYYY
+- Alternative: DD-MM-YYYY, YYYY/MM/DD
+
+**Throws:** `RangeError` if string cannot be parsed as a date
+
+**Example:**
+```typescript
+import { parseDate } from 'temporal-kit';
+
+parseDate('2025-11-30');  // 2025-11-30
+parseDate('30.11.2025');  // 2025-11-30
+parseDate('11/30/2025');  // 2025-11-30
+parseDate('30-11-2025');  // 2025-11-30
+parseDate('2025/11/30');  // 2025-11-30
+
+// Invalid dates are rejected
+parseDate('2025-13-01');  // RangeError: Invalid month
+parseDate('2025-02-29');  // RangeError: Invalid day for non-leap year
+```
+
+---
+
+### `parseTime(input)`
+
+Parse a string specifically as a PlainTime.
+
+**Parameters:**
+- `input: string` - String to parse
+
+**Returns:** `Temporal.PlainTime`
+
+**Supported Formats:**
+- ISO 8601: HH:MM:SS, HH:MM:SS.sss
+- Simplified: HH:MM
+- 12-hour: h:MM AM/PM, h:MM:SS AM/PM
+
+**Throws:** `RangeError` if string cannot be parsed as a time
+
+**Example:**
+```typescript
+import { parseTime } from 'temporal-kit';
+
+parseTime('15:30:00');    // 15:30:00
+parseTime('15:30');       // 15:30:00
+parseTime('3:30 PM');     // 15:30:00
+parseTime('9:00 AM');     // 09:00:00
+parseTime('12:00 AM');    // 00:00:00 (midnight)
+parseTime('12:00 PM');    // 12:00:00 (noon)
+parseTime('15:30:45.123'); // 15:30:45.123
+
+// Invalid times are rejected
+parseTime('25:00');       // RangeError: Invalid hour
+parseTime('15:70');       // RangeError: Invalid minute
+```
+
+---
+
+### `parseDateTime(input)`
+
+Parse a string specifically as a PlainDateTime.
+
+**Parameters:**
+- `input: string` - String to parse
+
+**Returns:** `Temporal.PlainDateTime`
+
+**Supported Formats:**
+- ISO 8601: YYYY-MM-DDTHH:MM:SS
+- Space-separated: YYYY-MM-DD HH:MM:SS, DD.MM.YYYY HH:MM, MM/DD/YYYY HH:MM
+- With 12-hour time: YYYY-MM-DD h:MM AM/PM, DD.MM.YYYY h:MM AM/PM
+
+**Throws:** `RangeError` if string cannot be parsed as a datetime
+
+**Example:**
+```typescript
+import { parseDateTime } from 'temporal-kit';
+
+parseDateTime('2025-11-30T15:30:00');  // 2025-11-30T15:30:00
+parseDateTime('2025-11-30 15:30:00');  // 2025-11-30T15:30:00
+parseDateTime('30.11.2025 15:30');     // 2025-11-30T15:30:00
+parseDateTime('11/30/2025 15:30');     // 2025-11-30T15:30:00
+parseDateTime('2025-11-30 3:30 PM');   // 2025-11-30T15:30:00
+parseDateTime('30.11.2025 9:00 AM');   // 2025-11-30T09:00:00
+
+// Date-only or time-only strings throw
+parseDateTime('2025-11-30');           // RangeError: Not a datetime
+parseDateTime('15:30:00');             // RangeError: Not a datetime
+```
+
+**Practical Use Cases:**
+
+```typescript
+// User input parsing
+function parseUserDateInput(input: string) {
+  try {
+    return parseDate(input);
+  } catch (error) {
+    return null; // or show error to user
+  }
+}
+
+// API response parsing
+const apiResponse = {
+  createdAt: "2025-11-30T15:30:00Z",
+  publishedAt: "2025-12-01T09:00:00+01:00[Europe/Paris]",
+  date: "2025-11-30",
+  time: "15:30:00",
+};
+
+const createdAt = parse(apiResponse.createdAt);       // Instant
+const publishedAt = parse(apiResponse.publishedAt);   // ZonedDateTime
+const date = parseDate(apiResponse.date);             // PlainDate
+const time = parseTime(apiResponse.time);             // PlainTime
+
+// Form data parsing with international formats
+const formData = {
+  birthDate: "11/30/2025",      // US format
+  appointmentTime: "3:30 PM",    // 12-hour format
+  europeanDate: "30.11.2025",    // European format
+};
+
+const birthDate = parseDate(formData.birthDate);
+const appointmentTime = parseTime(formData.appointmentTime);
+const europeanDate = parseDate(formData.europeanDate);
 ```
 
 ---

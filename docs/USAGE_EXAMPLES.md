@@ -5,6 +5,7 @@ Practical examples for common use cases with temporal-kit.
 ## Table of Contents
 
 - [Getting Started](#getting-started)
+- [Parsing Strings](#parsing-strings)
 - [Working with Dates](#working-with-dates)
 - [Time Calculations](#time-calculations)
 - [Formatting](#formatting)
@@ -54,6 +55,204 @@ function processDate(value: unknown) {
 processDate(Temporal.PlainDate.from('2025-11-30'));
 processDate(Temporal.Now.zonedDateTimeISO());
 processDate('2025-11-30'); // "Not a date"
+```
+
+---
+
+## Parsing Strings
+
+### Smart Format Detection
+
+The `parse()` function automatically detects the input format and returns the most appropriate Temporal type:
+
+```typescript
+import { parse } from 'temporal-kit';
+
+// ISO 8601 - most common standard
+parse('2025-11-30');                              // PlainDate
+parse('2025-11-30T15:30:00');                     // PlainDateTime
+parse('2025-11-30T15:30:00Z');                    // Instant
+parse('2025-11-30T15:30:00+01:00[Europe/Berlin]'); // ZonedDateTime
+
+// European dates (DD.MM.YYYY)
+parse('30.11.2025');                              // PlainDate
+parse('30.11.2025 15:30');                        // PlainDateTime
+
+// US dates (MM/DD/YYYY)
+parse('11/30/2025');                              // PlainDate
+parse('11/30/2025 3:30 PM');                      // PlainDateTime
+
+// Alternative formats
+parse('30-11-2025');                              // PlainDate
+parse('2025/11/30');                              // PlainDate
+
+// Time formats
+parse('15:30');                                   // PlainTime
+parse('3:30 PM');                                 // PlainTime (12-hour with AM/PM)
+parse('9:00 AM');                                 // PlainTime
+```
+
+### Specific Type Parsing
+
+When you know the expected type, use specific parsing functions for better error messages:
+
+```typescript
+import { parseDate, parseTime, parseDateTime } from 'temporal-kit';
+
+// Parse specifically as PlainDate
+const date1 = parseDate('2025-11-30');   // ISO format
+const date2 = parseDate('30.11.2025');   // European format
+const date3 = parseDate('11/30/2025');   // US format
+
+// Parse specifically as PlainTime
+const time1 = parseTime('15:30:00');     // 24-hour with seconds
+const time2 = parseTime('15:30');        // 24-hour without seconds
+const time3 = parseTime('3:30 PM');      // 12-hour with AM/PM
+const time4 = parseTime('12:00 AM');     // Midnight
+const time5 = parseTime('12:00 PM');     // Noon
+
+// Parse specifically as PlainDateTime
+const dt1 = parseDateTime('2025-11-30T15:30:00');  // ISO format
+const dt2 = parseDateTime('2025-11-30 15:30:00');  // Space-separated
+const dt3 = parseDateTime('30.11.2025 15:30');     // European date + time
+const dt4 = parseDateTime('11/30/2025 3:30 PM');   // US date + 12-hour time
+```
+
+### Handling User Input
+
+```typescript
+import { parseDate, parseTime } from 'temporal-kit';
+
+// Flexible date input parsing
+function parseUserDateInput(input: string): Temporal.PlainDate | null {
+  try {
+    return parseDate(input);
+  } catch (error) {
+    console.error('Invalid date format:', error.message);
+    return null;
+  }
+}
+
+// Accept various date formats from users
+console.log(parseUserDateInput('2025-11-30'));   // Works: ISO
+console.log(parseUserDateInput('30.11.2025'));   // Works: European
+console.log(parseUserDateInput('11/30/2025'));   // Works: US
+console.log(parseUserDateInput('invalid'));      // Returns null
+
+// Parse appointment times
+function parseAppointmentTime(input: string): Temporal.PlainTime | null {
+  try {
+    return parseTime(input);
+  } catch (error) {
+    return null;
+  }
+}
+
+console.log(parseAppointmentTime('3:30 PM'));    // Works
+console.log(parseAppointmentTime('15:30'));      // Works
+console.log(parseAppointmentTime('not a time')); // Returns null
+```
+
+### API Response Parsing
+
+```typescript
+import { parse, parseDate, parseTime } from 'temporal-kit';
+
+interface APIResponse {
+  createdAt: string;
+  publishedAt: string;
+  date: string;
+  time: string;
+}
+
+const response: APIResponse = {
+  createdAt: "2025-11-30T15:30:00Z",
+  publishedAt: "2025-12-01T09:00:00+01:00[Europe/Paris]",
+  date: "2025-11-30",
+  time: "15:30:00"
+};
+
+// Auto-detect the appropriate type
+const createdAt = parse(response.createdAt);       // Instant
+const publishedAt = parse(response.publishedAt);   // ZonedDateTime
+const date = parseDate(response.date);             // PlainDate
+const time = parseTime(response.time);             // PlainTime
+
+console.log(createdAt instanceof Temporal.Instant);        // true
+console.log(publishedAt instanceof Temporal.ZonedDateTime); // true
+```
+
+### Form Data Parsing
+
+```typescript
+import { parseDate, parseTime } from 'temporal-kit';
+
+interface FormData {
+  birthDate: string;      // User might enter in various formats
+  appointmentTime: string; // Could be 12-hour or 24-hour
+  eventDate: string;      // International users
+}
+
+function processFormData(formData: FormData) {
+  // Parse with validation
+  const birthDate = parseDate(formData.birthDate);
+  const appointmentTime = parseTime(formData.appointmentTime);
+  const eventDate = parseDate(formData.eventDate);
+  
+  // Now you have properly typed Temporal objects
+  console.log('Birth date:', birthDate.toLocaleString());
+  console.log('Appointment:', appointmentTime.toLocaleString());
+  console.log('Event:', eventDate.toLocaleString());
+  
+  return { birthDate, appointmentTime, eventDate };
+}
+
+// Works with various input formats
+processFormData({
+  birthDate: '11/30/2025',      // US format
+  appointmentTime: '3:30 PM',    // 12-hour
+  eventDate: '30.11.2025'        // European format
+});
+```
+
+### Validation
+
+```typescript
+import { parseDate } from 'temporal-kit';
+
+// Invalid dates are automatically rejected
+try {
+  parseDate('2025-13-01');  // Month 13 doesn't exist
+} catch (error) {
+  console.error('Invalid date:', error.message);
+}
+
+try {
+  parseDate('2025-02-29');  // 2025 is not a leap year
+} catch (error) {
+  console.error('Invalid date:', error.message);
+}
+
+try {
+  parseDate('31.04.2025');  // April only has 30 days
+} catch (error) {
+  console.error('Invalid date:', error.message);
+}
+
+// Invalid times are also rejected
+import { parseTime } from 'temporal-kit';
+
+try {
+  parseTime('25:00');  // Hour 25 doesn't exist
+} catch (error) {
+  console.error('Invalid time:', error.message);
+}
+
+try {
+  parseTime('15:70');  // Minute 70 doesn't exist
+} catch (error) {
+  console.error('Invalid time:', error.message);
+}
 ```
 
 ---

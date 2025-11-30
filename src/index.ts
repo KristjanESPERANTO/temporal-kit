@@ -24,6 +24,8 @@ export * from "./format/index.js";
 export * from "./guards/index.js";
 // Re-export math functions
 export * from "./math/index.js";
+// Re-export parse functions
+export * from "./parse/index.js";
 // Re-export types
 export type * from "./types/index.js";
 // Re-export utils
