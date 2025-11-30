@@ -7,8 +7,9 @@
  * Run: node examples/dist/03-typescript-usage.js
  */
 
-import type { PlainDate, ZonedDateTime, DateLike } from '../dist/index.js';
-import { isPlainDate, isZonedDateTime, isDateLike } from '../dist/index.js';
+import { Temporal } from '../dist/polyfilled.js';
+import type { PlainDate, ZonedDateTime, DateLike } from '../dist/polyfilled.js';
+import { isPlainDate, isZonedDateTime, isDateLike } from '../dist/polyfilled.js';
 
 // Type-safe function that accepts any DateLike
 function processDate(date: DateLike): string {
@@ -45,7 +46,7 @@ function getYear(date: unknown): number | null {
 }
 
 console.log('Year from plainDate:', getYear(plainDate)); // 2025
-console.log('Year from string:', getYear('not a date')); // null
+console.log('Year from invalid input:', getYear('not a date'), '(correctly rejected)'); // null
 console.log();
 
 console.log('✅ TypeScript types work perfectly!');
