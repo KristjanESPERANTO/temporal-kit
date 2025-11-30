@@ -22,9 +22,10 @@ export * from "./convert/index.js";
 export * from "./guards/index.js";
 // Re-export math functions
 export * from "./math/index.js";
+// Re-export utils
+export * from "./utils/index.js";
 // Re-export types
 export type * from "./types/index.js";
 
 // Placeholder exports for modules we'll implement next
 // export * from "./format/index.js";
-// export * from "./utils/index.js";

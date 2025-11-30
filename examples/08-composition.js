@@ -1,89 +1,213 @@
 /**
- * Functional Composition Examples
+ * temporal-kit - Functional Composition Examples
  * 
- * Demonstrates pipe and compose utilities for elegant data flow.
- * 
- * Run with: node examples/08-composition.js
+ * Demonstrates pipe() and compose() utilities for chaining operations.
  */
 
-import { isPlainDate } from '../dist/polyfilled.js';
+import { Temporal } from "../dist/polyfilled.js";
+import {
+  pipe,
+  compose,
+  startOf,
+  endOf,
+  add,
+  subtract,
+  isBefore,
+  toZonedDateTime,
+} from "../dist/polyfilled.js";
 
-// 🔜 Coming soon
-// import { pipe, compose, add, startOf, endOf } from '../dist/polyfilled.js';
+console.log("=== Functional Composition with pipe() ===\n");
 
-console.log('=== Functional Composition (Coming Soon) ===\n');
+// Simple pipe example
+const date = Temporal.PlainDateTime.from("2025-11-30T15:45:00");
+console.log(`Starting date: ${date}`);
+console.log();
 
-const today = Temporal.Now.plainDateISO();
+// Pipe: left-to-right execution
+const result1 = pipe(
+  date,
+  (d) => startOf(d, "day"),
+  (d) => add(d, { hours: 12 })
+);
+console.log("pipe(date, startOf('day'), add({hours: 12})):");
+console.log(`  Result: ${result1}`);
+console.log();
 
-// Example 1: Pipe - Left to Right
-console.log('--- Pipe (left to right) ---');
-console.log('Start:', today.toString());
+// More complex pipe chain
+const result2 = pipe(
+  date,
+  (d) => startOf(d, "month"),
+  (d) => add(d, { weeks: 2 }),
+  (d) => endOf(d, "day")
+);
+console.log("pipe(date, startOf('month'), add({weeks: 2}), endOf('day')):");
+console.log(`  Result: ${result2}`);
+console.log();
 
-// Get the end of the week, 2 weeks from start of this month
-// const result = pipe(
-//   today,
-//   d => startOf(d, 'month'),
-//   d => add(d, { weeks: 2 }),
-//   d => endOf(d, 'week')
-// );
-// console.log('Result:', result.toString());
-console.log('⏳ Functions coming soon...\n');
+// Pipe with multiple operations
+const today = Temporal.PlainDate.from("2025-11-30");
+const nextWeekEnd = pipe(
+  today,
+  (d) => add(d, { weeks: 1 }),
+  (d) => endOf(d, "week")
+);
+console.log("Next week's end (Sunday):");
+console.log(`  From: ${today}`);
+console.log(`  To:   ${nextWeekEnd}`);
+console.log();
 
-// Example 2: Compose - Right to Left
-console.log('--- Compose (right to left) ---');
-// const transform = compose(
-//   d => endOf(d, 'week'),
-//   d => add(d, { weeks: 2 }),
-//   d => startOf(d, 'month')
-// );
-// console.log('Composed result:', transform(today).toString());
-console.log('⏳ Functions coming soon...\n');
+console.log("=== Functional Composition with compose() ===\n");
 
-// Example 3: Reusable Transformations
-console.log('--- Reusable Transformations ---');
-// const endOfNextMonth = compose(
-//   d => endOf(d, 'month'),
-//   d => add(d, { months: 1 })
-// );
-// 
-// const dates = [
-//   Temporal.PlainDate.from('2025-01-15'),
-//   Temporal.PlainDate.from('2025-06-20'),
-//   Temporal.PlainDate.from('2025-12-10')
-// ];
-// 
-// console.log('Original dates:', dates.map(d => d.toString()));
-// console.log('End of next month:', dates.map(endOfNextMonth).map(d => d.toString()));
-console.log('⏳ Functions coming soon...\n');
+// Compose: right-to-left execution
+// Creates a reusable function
+const noonOnStartOfDay = compose(
+  (d) => add(d, { hours: 12 }),
+  (d) => startOf(d, "day")
+);
 
-// Example 4: Pipeline Operator (Future JS)
-console.log('--- Future: Pipeline Operator |> ---');
-console.log('When JS gets |> operator, this will work:');
-console.log(`
-const result = today
-  |> startOf(%, 'month')
-  |> add(%, { weeks: 2 })
-  |> endOf(%, 'week');
-`);
-console.log('⏳ Temporal Kit is ready for this!\n');
+console.log("Compose: add 12 hours to start of day");
+const composedResult1 = noonOnStartOfDay(date);
+console.log(`  Input:  ${date}`);
+console.log(`  Output: ${composedResult1}`);
+console.log();
 
-// Example 5: Complex Business Logic
-console.log('--- Business Logic Example ---');
-console.log('Calculate: First Monday of next quarter');
-// const firstMondayNextQuarter = pipe(
-//   today,
-//   d => startOf(d, 'month'), // Start of current month
-//   d => add(d, { months: 3 }), // Next quarter
-//   d => startOf(d, 'month'), // Start of that month
-//   d => {
-//     // Find first Monday
-//     const dayOfWeek = d.dayOfWeek;
-//     const daysUntilMonday = dayOfWeek === 1 ? 0 : (8 - dayOfWeek);
-//     return add(d, { days: daysUntilMonday });
-//   }
-// );
-// console.log('Result:', firstMondayNextQuarter.toString());
-console.log('⏳ Functions coming soon...\n');
+// More complex composed function
+const endOfNextMonth = compose(
+  (d) => endOf(d, "month"),
+  (d) => add(d, { months: 1 }),
+  (d) => startOf(d, "month")
+);
 
-console.log('💡 Tip: pipe() and compose() are standard FP utilities');
-console.log('You can build them yourself or use libraries like Ramda for now');
+console.log("Compose: end of next month");
+const composedResult2 = endOfNextMonth(date);
+console.log(`  Input:  ${date}`);
+console.log(`  Output: ${composedResult2}`);
+console.log();
+
+console.log("=== Practical Examples ===\n");
+
+// Business hours calculation
+console.log("--- Business Hours Calculation ---");
+const businessDayStart = compose(
+  (d) => add(d, { hours: 9 }), // 9 AM
+  (d) => startOf(d, "day")
+);
+
+const businessDayEnd = compose(
+  (d) => add(d, { hours: 17 }), // 5 PM
+  (d) => startOf(d, "day")
+);
+
+const someDate = Temporal.PlainDateTime.from("2025-12-15T14:30:00");
+console.log(`Date: ${someDate}`);
+console.log(`Business day starts: ${businessDayStart(someDate)}`);
+console.log(`Business day ends:   ${businessDayEnd(someDate)}`);
+console.log();
+
+// Deadline calculator
+console.log("--- Deadline Calculator (2 weeks from month start) ---");
+const calculateDeadline = pipe(
+  Temporal.PlainDate.from("2025-12-15"),
+  (d) => startOf(d, "month"),
+  (d) => add(d, { weeks: 2 }),
+  (d) => subtract(d, { days: 1 }) // One day before
+);
+console.log(`Deadline: ${calculateDeadline}`);
+console.log();
+
+// Event scheduling with timezone
+console.log("--- Event Scheduling with Timezone ---");
+const scheduleEvent = (eventDate) =>
+  pipe(
+    eventDate,
+    (d) => startOf(d, "day"),
+    (d) => add(d, { hours: 14 }), // 2 PM
+    (d) => toZonedDateTime(d, "Europe/Berlin")
+  );
+
+const eventDay = Temporal.PlainDateTime.from("2025-12-25T00:00:00");
+const scheduledEvent = scheduleEvent(eventDay);
+console.log(`Event scheduled: ${scheduledEvent}`);
+console.log();
+
+// Data processing pipeline
+console.log("--- Data Processing Pipeline ---");
+const dates = [
+  Temporal.PlainDate.from("2025-11-15"),
+  Temporal.PlainDate.from("2025-12-01"),
+  Temporal.PlainDate.from("2025-10-30"),
+];
+
+const processDate = (d) =>
+  pipe(
+    d,
+    (date) => startOf(date, "month"),
+    (date) => endOf(date, "month")
+  );
+
+console.log("Process dates to get end of their months:");
+dates.forEach((d) => {
+  const processed = processDate(d);
+  console.log(`  ${d} → ${processed}`);
+});
+console.log();
+
+// Conditional pipeline
+console.log("--- Conditional Date Pipeline ---");
+const now = Temporal.Now.plainDateTimeISO();
+const targetDate = Temporal.PlainDateTime.from("2025-12-25T10:00:00");
+
+const adjustedDate = pipe(
+  targetDate,
+  (d) => (isBefore(d, now) ? add(d, { years: 1 }) : d),
+  (d) => startOf(d, "day"),
+  (d) => add(d, { hours: 10 })
+);
+
+console.log(`Now:           ${now}`);
+console.log(`Target:        ${targetDate}`);
+console.log(`Adjusted:      ${adjustedDate}`);
+console.log();
+
+// Reusable transformation
+console.log("--- Reusable Date Transformations ---");
+const toQuarterEnd = compose(
+  (d) => endOf(d, "month"),
+  (d) => {
+    const month = d.month;
+    const quarterEndMonth = Math.ceil(month / 3) * 3;
+    return d.with({ month: quarterEndMonth });
+  }
+);
+
+const q4Date = Temporal.PlainDate.from("2025-11-15");
+console.log(`Input (Q4):  ${q4Date}`);
+console.log(`Quarter end: ${toQuarterEnd(q4Date)}`);
+console.log();
+
+console.log("=== Comparison: pipe vs compose ===\n");
+
+const testDate = Temporal.PlainDateTime.from("2025-11-30T15:45:00");
+
+// pipe: read operations in order (left-to-right)
+const pipeResult = pipe(
+  testDate,
+  (d) => startOf(d, "day"),
+  (d) => add(d, { hours: 12 }),
+  (d) => add(d, { minutes: 30 })
+);
+
+// compose: operations applied in reverse (right-to-left)
+const composeFunc = compose(
+  (d) => add(d, { minutes: 30 }),
+  (d) => add(d, { hours: 12 }),
+  (d) => startOf(d, "day")
+);
+const composeResult = composeFunc(testDate);
+
+console.log(`Input:          ${testDate}`);
+console.log(`pipe result:    ${pipeResult}`);
+console.log(`compose result: ${composeResult}`);
+console.log(`(Both produce the same result)`);
+
+console.log("\n✅ All composition utilities working!");

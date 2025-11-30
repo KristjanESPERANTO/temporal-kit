@@ -92,7 +92,7 @@ src/
 ├── convert/        # ✅ Creation & conversion (now, fromISO, explicit conversions)
 ├── format/         # 🔜 Intl-based formatting helpers
 ├── math/           # ✅ Arithmetic (add, subtract, startOf, endOf)
-├── utils/          # 🔜 Utilities (pipe, compose)
+├── utils/          # ✅ Utilities (pipe, compose)
 ├── index.ts        # ✅ Main entry (expects native Temporal)
 └── polyfilled.ts   # ✅ Auto-loads polyfill for legacy environments
 ```
@@ -128,7 +128,7 @@ src/
 1.  **Comparison:** ✅ `isBefore`, `isAfter`, `isSame`, `min`, `max` ([`examples/04-comparisons.js`](./examples/04-comparisons.js))
 2.  **Convert:** ✅ `now`, `fromISO`, explicit type conversions ([`examples/05-conversions.js`](./examples/05-conversions.js))
 3.  **Math:** ✅ `add`, `subtract`, `startOf`, `endOf` ([`examples/06-arithmetic.js`](./examples/06-arithmetic.js), [`examples/07-boundaries.js`](./examples/07-boundaries.js))
-4.  **Utils:** `pipe`, `compose` for functional composition ([`examples/08-composition.js`](./examples/08-composition.js))
+4.  **Utils:** ✅ `pipe`, `compose` for functional composition ([`examples/08-composition.js`](./examples/08-composition.js))
 5.  **Testing:** Write comprehensive test suite
 
 ### 🔜 Phase 3: Formatting & Polish (NEXT)
