@@ -140,16 +140,20 @@ src/
 5.  **Format:** ✅ `format`, `formatTime`, `formatDateTime`, `formatRelative` with Intl support ([`examples/09-formatting.js`](./examples/09-formatting.js))
 6.  **Testing:** ✅ Comprehensive test suite with 100% coverage (165 tests)
 
-### 🚧 Phase 3: Formatting & Polish (IN PROGRESS)
+### ✅ Phase 3: Formatting & Polish (DONE)
 1.  **Formatting:** ✅ Implement `format` using `Intl.DateTimeFormat` with smart defaults ([`examples/09-formatting.js`](./examples/09-formatting.js))
 2.  **Documentation:** ✅ API reference ([`docs/API.md`](./docs/API.md)), usage examples ([`docs/USAGE_EXAMPLES.md`](./docs/USAGE_EXAMPLES.md)), best practices ([`docs/BEST_PRACTICES.md`](./docs/BEST_PRACTICES.md))
 3.  **Parse:** ✅ Smart string-to-Temporal parsing with format detection ([`examples/10-parsing.js`](./examples/10-parsing.js))
-4.  **Timezone Examples:** Document DST transitions and offset handling
+4.  **Timezone Examples:** ✅ Document DST transitions and offset handling ([`examples/11-timezones.js`](./examples/11-timezones.js))
 
 ### 💡 Phase 4: Advanced Features (FUTURE)
-1.  **Fluent API:** Optional chainable wrapper as separate entry point
-2.  **Ranges & Intervals:** Work with date/time ranges
-3.  **Recurring Patterns:** Support for recurring events
+1.  **Relative Formatting:** `formatRelative` for human-readable relative times ("2 days ago", "in 3 hours")
+2.  **Specific Comparisons:** `isSameDay`, `isSameWeek`, `isSameMonth`, `isSameYear` helpers
+3.  **Temporal Rounding:** `floor`, `ceil`, `round` for rounding to time units
+4.  **Range Operations:** `rangesOverlap`, `eachDayOfInterval`, `eachWeekOfInterval`, `stepInterval`
+5.  **Validation Helpers:** `isValidDateString`, `isValidTimeString`, `isValidDateTimeString`
+6.  **Timezone Utilities:** `getAllTimezones`, `isValidTimezone`, `getTimezoneName`
+7.  **Fluent API:** Optional chainable wrapper as separate entry point (if needed)
 
 ## 5. Developer Experience
 
