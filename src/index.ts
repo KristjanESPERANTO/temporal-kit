@@ -14,12 +14,12 @@ if (typeof (globalThis as { Temporal?: unknown }).Temporal === "undefined") {
   );
 }
 
-// Re-export guards
-export * from "./guards/index.js";
 // Re-export compare functions
 export * from "./compare/index.js";
 // Re-export convert functions
 export * from "./convert/index.js";
+// Re-export guards
+export * from "./guards/index.js";
 // Re-export types
 export type * from "./types/index.js";
 

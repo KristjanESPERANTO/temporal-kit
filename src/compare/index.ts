@@ -3,8 +3,8 @@
  * @module compare
  */
 
-import { Temporal } from 'temporal-polyfill';
-import type { DateLike } from '../types/index.js';
+import { Temporal } from "temporal-polyfill";
+import type { DateLike } from "../types/index.js";
 
 /**
  * Checks if the first date/time is before the second.
@@ -26,14 +26,14 @@ import type { DateLike } from '../types/index.js';
  * ```
  */
 export function isBefore(a: DateLike, b: DateLike): boolean {
-	// Use PlainDateTime.compare for DateTime, ZonedDateTime.compare for ZonedDateTime, else PlainDate.compare
-	if ('hour' in a && 'hour' in b) {
-		if ('timeZoneId' in a && 'timeZoneId' in b) {
-			return Temporal.ZonedDateTime.compare(a, b) < 0;
-		}
-		return Temporal.PlainDateTime.compare(a, b) < 0;
-	}
-	return Temporal.PlainDate.compare(a, b) < 0;
+  // Use PlainDateTime.compare for DateTime, ZonedDateTime.compare for ZonedDateTime, else PlainDate.compare
+  if ("hour" in a && "hour" in b) {
+    if ("timeZoneId" in a && "timeZoneId" in b) {
+      return Temporal.ZonedDateTime.compare(a, b) < 0;
+    }
+    return Temporal.PlainDateTime.compare(a, b) < 0;
+  }
+  return Temporal.PlainDate.compare(a, b) < 0;
 }
 
 /**
@@ -56,13 +56,13 @@ export function isBefore(a: DateLike, b: DateLike): boolean {
  * ```
  */
 export function isAfter(a: DateLike, b: DateLike): boolean {
-	if ('hour' in a && 'hour' in b) {
-		if ('timeZoneId' in a && 'timeZoneId' in b) {
-			return Temporal.ZonedDateTime.compare(a, b) > 0;
-		}
-		return Temporal.PlainDateTime.compare(a, b) > 0;
-	}
-	return Temporal.PlainDate.compare(a, b) > 0;
+  if ("hour" in a && "hour" in b) {
+    if ("timeZoneId" in a && "timeZoneId" in b) {
+      return Temporal.ZonedDateTime.compare(a, b) > 0;
+    }
+    return Temporal.PlainDateTime.compare(a, b) > 0;
+  }
+  return Temporal.PlainDate.compare(a, b) > 0;
 }
 
 /**
@@ -85,13 +85,29 @@ export function isAfter(a: DateLike, b: DateLike): boolean {
  * ```
  */
 export function isSame(a: DateLike, b: DateLike): boolean {
-	if ('hour' in a && 'hour' in b) {
-		if ('timeZoneId' in a && 'timeZoneId' in b) {
-			return Temporal.ZonedDateTime.compare(a, b) === 0;
-		}
-		return Temporal.PlainDateTime.compare(a, b) === 0;
-	}
-	return Temporal.PlainDate.compare(a, b) === 0;
+  if ("hour" in a && "hour" in b) {
+    if ("timeZoneId" in a && "timeZoneId" in b) {
+      return Temporal.ZonedDateTime.compare(a, b) === 0;
+    }
+    return Temporal.PlainDateTime.compare(a, b) === 0;
+  }
+  return Temporal.PlainDate.compare(a, b) === 0;
+}
+
+/**
+ * Helper function to compare two DateLike values using the appropriate compare method.
+ * @internal
+ */
+function compareValues<T extends DateLike>(a: T, b: T): number {
+  // Check if both have time components (PlainDateTime or ZonedDateTime)
+  if ("hour" in a && "hour" in b) {
+    // Check if both have timezone (ZonedDateTime)
+    if ("timeZoneId" in a && "timeZoneId" in b) {
+      return Temporal.ZonedDateTime.compare(a, b);
+    }
+    return Temporal.PlainDateTime.compare(a, b);
+  }
+  return Temporal.PlainDate.compare(a, b);
 }
 
 /**
@@ -115,20 +131,13 @@ export function isSame(a: DateLike, b: DateLike): boolean {
  * ```
  */
 export function min<T extends DateLike>(dates: T[]): T {
-	if (dates.length === 0) {
-		throw new TypeError('Cannot find min of empty array');
-	}
+  if (dates.length === 0) {
+    throw new TypeError("Cannot find min of empty array");
+  }
 
-	return dates.reduce((earliest, current) => {
-		// Use appropriate compare based on type
-		if ('hour' in current && 'hour' in earliest) {
-			if ('timeZoneId' in current && 'timeZoneId' in earliest) {
-				return Temporal.ZonedDateTime.compare(current, earliest) < 0 ? current : earliest;
-			}
-			return Temporal.PlainDateTime.compare(current, earliest) < 0 ? current : earliest;
-		}
-		return Temporal.PlainDate.compare(current, earliest) < 0 ? current : earliest;
-	});
+  return dates.reduce((earliest, current) =>
+    compareValues(current, earliest) < 0 ? current : earliest,
+  );
 }
 
 /**
@@ -152,18 +161,9 @@ export function min<T extends DateLike>(dates: T[]): T {
  * ```
  */
 export function max<T extends DateLike>(dates: T[]): T {
-	if (dates.length === 0) {
-		throw new TypeError('Cannot find max of empty array');
-	}
+  if (dates.length === 0) {
+    throw new TypeError("Cannot find max of empty array");
+  }
 
-	return dates.reduce((latest, current) => {
-		// Use appropriate compare based on type
-		if ('hour' in current && 'hour' in latest) {
-			if ('timeZoneId' in current && 'timeZoneId' in latest) {
-				return Temporal.ZonedDateTime.compare(current, latest) > 0 ? current : latest;
-			}
-			return Temporal.PlainDateTime.compare(current, latest) > 0 ? current : latest;
-		}
-		return Temporal.PlainDate.compare(current, latest) > 0 ? current : latest;
-	});
+  return dates.reduce((latest, current) => (compareValues(current, latest) > 0 ? current : latest));
 }
