@@ -77,6 +77,44 @@ function max(dates) {
     return Temporal.PlainDate.compare(current, latest) > 0 ? current : latest;
   });
 }
+function now() {
+  return Temporal.Now.zonedDateTimeISO();
+}
+function fromISO(isoString) {
+  if (isoString.includes("[") || /[+-]\d{2}:\d{2}$/.test(isoString)) {
+    return Temporal.ZonedDateTime.from(isoString);
+  }
+  if (isoString.endsWith("Z") || /[+-]\d{2}:\d{2}/.test(isoString)) {
+    return Temporal.Instant.from(isoString);
+  }
+  if (isoString.includes("T")) {
+    return Temporal.PlainDateTime.from(isoString);
+  }
+  return Temporal.PlainDate.from(isoString);
+}
+function toPlainDate(date) {
+  if (date instanceof Temporal.PlainDate) {
+    return date;
+  }
+  return date.toPlainDate();
+}
+function toPlainDateTime(date) {
+  if (date instanceof Temporal.PlainDateTime) {
+    return date;
+  }
+  return date.toPlainDateTime();
+}
+function toZonedDateTime(date, timeZone) {
+  if (date instanceof Temporal.ZonedDateTime) {
+    return timeZone ? date.withTimeZone(timeZone) : date;
+  }
+  if (!timeZone) {
+    throw new TypeError(
+      "timeZone is required when converting PlainDate or PlainDateTime to ZonedDateTime"
+    );
+  }
+  return date.toZonedDateTime(timeZone);
+}
 
 // src/index.ts
 if (typeof globalThis.Temporal === "undefined") {
@@ -85,6 +123,6 @@ if (typeof globalThis.Temporal === "undefined") {
   );
 }
 
-export { isAfter, isBefore, isDateLike, isInstant, isPlainDate, isPlainDateTime, isPlainTime, isSame, isTimeLike, isZonedDateTime, max, min };
+export { fromISO, isAfter, isBefore, isDateLike, isInstant, isPlainDate, isPlainDateTime, isPlainTime, isSame, isTimeLike, isZonedDateTime, max, min, now, toPlainDate, toPlainDateTime, toZonedDateTime };
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

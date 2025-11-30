@@ -89,7 +89,7 @@ src/
 ├── types/          # ✅ Core type definitions (DateLike, TimeLike unions)
 ├── guards/         # ✅ Type guards (isPlainDate, isZonedDateTime, etc.)
 ├── compare/        # ✅ Comparison functions (isBefore, isAfter, min, max)
-├── convert/        # 🔜 Creation & conversion (now, fromISO, explicit conversions)
+├── convert/        # ✅ Creation & conversion (now, fromISO, explicit conversions)
 ├── format/         # 🔜 Intl-based formatting helpers
 ├── math/           # 🔜 Arithmetic (add, subtract, startOf, endOf)
 ├── utils/          # 🔜 Utilities (pipe, compose)
@@ -126,7 +126,7 @@ src/
 
 ### 🚧 Phase 2: Core Functions (IN PROGRESS)
 1.  **Comparison:** ✅ `isBefore`, `isAfter`, `isSame`, `min`, `max` ([`examples/04-comparisons.js`](./examples/04-comparisons.js))
-2.  **Convert:** `now`, `fromISO`, explicit type conversions
+2.  **Convert:** ✅ `now`, `fromISO`, explicit type conversions ([`examples/05-conversions.js`](./examples/05-conversions.js))
 3.  **Math:** `add`, `subtract`, `startOf`, `endOf` ([`examples/05-arithmetic.js`](./examples/05-arithmetic.js), [`examples/06-boundaries.js`](./examples/06-boundaries.js))
 4.  **Utils:** `pipe`, `compose` for functional composition ([`examples/08-composition.js`](./examples/08-composition.js))
 5.  **Testing:** Write comprehensive test suite

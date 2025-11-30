@@ -202,4 +202,56 @@ declare function min<T extends DateLike>(dates: T[]): T;
  */
 declare function max<T extends DateLike>(dates: T[]): T;
 
-export { type DateLike, type DateTimeUnit, type DateUnit, type Duration, type DurationInput, type Instant, type LocaleOptions, type PlainDate, type PlainDateTime, type PlainTime, type TimeLike, type TimeUnit, type WeekStartOptions, type ZonedDateTime, isAfter, isBefore, isDateLike, isInstant, isPlainDate, isPlainDateTime, isPlainTime, isSame, isTimeLike, isZonedDateTime, max, min };
+/**
+ * Get current date and time in the system timezone
+ * @returns Current ZonedDateTime in system timezone
+ * @example
+ * const now = now()
+ * console.log(now.toString()) // "2025-11-30T15:30:00+01:00[Europe/Berlin]"
+ */
+declare function now(): Temporal.ZonedDateTime;
+/**
+ * Parse an ISO 8601 string into the appropriate Temporal type
+ * @param isoString - ISO 8601 formatted string
+ * @returns PlainDate, PlainDateTime, ZonedDateTime, or Instant depending on the format
+ * @example
+ * fromISO('2025-11-30') // PlainDate
+ * fromISO('2025-11-30T15:30:00') // PlainDateTime
+ * fromISO('2025-11-30T15:30:00+01:00[Europe/Berlin]') // ZonedDateTime
+ * fromISO('2025-11-30T14:30:00Z') // Instant
+ */
+declare function fromISO(isoString: string): Temporal.PlainDate | Temporal.PlainDateTime | Temporal.ZonedDateTime | Temporal.Instant;
+/**
+ * Convert any DateLike to PlainDate (discards time and timezone info)
+ * @param date - PlainDate, PlainDateTime, or ZonedDateTime
+ * @returns PlainDate representing the calendar date
+ * @example
+ * const zdt = Temporal.ZonedDateTime.from('2025-11-30T15:30:00+01:00[Europe/Berlin]')
+ * const date = toPlainDate(zdt) // 2025-11-30
+ */
+declare function toPlainDate(date: DateLike): Temporal.PlainDate;
+/**
+ * Convert PlainDateTime or ZonedDateTime to PlainDateTime (discards timezone)
+ * For PlainDate, you must provide an explicit time to convert to PlainDateTime
+ * @param date - PlainDateTime or ZonedDateTime
+ * @returns PlainDateTime
+ * @example
+ * const zdt = Temporal.ZonedDateTime.from('2025-11-30T15:30:00+01:00[Europe/Berlin]')
+ * const pdt = toPlainDateTime(zdt) // 2025-11-30T15:30:00
+ */
+declare function toPlainDateTime(date: Temporal.PlainDateTime | Temporal.ZonedDateTime): Temporal.PlainDateTime;
+/**
+ * Convert any DateLike to ZonedDateTime
+ * @param date - PlainDate, PlainDateTime, or ZonedDateTime
+ * @param timeZone - IANA timezone identifier (required for PlainDate and PlainDateTime)
+ * @returns ZonedDateTime in the specified (or existing) timezone
+ * @example
+ * const date = Temporal.PlainDate.from('2025-11-30')
+ * const zdt = toZonedDateTime(date, 'Europe/Berlin') // 2025-11-30T00:00:00+01:00[Europe/Berlin]
+ *
+ * const pdt = Temporal.PlainDateTime.from('2025-11-30T15:30:00')
+ * const zdt2 = toZonedDateTime(pdt, 'America/New_York') // 2025-11-30T15:30:00-05:00[America/New_York]
+ */
+declare function toZonedDateTime(date: DateLike, timeZone?: string): Temporal.ZonedDateTime;
+
+export { type DateLike, type DateTimeUnit, type DateUnit, type Duration, type DurationInput, type Instant, type LocaleOptions, type PlainDate, type PlainDateTime, type PlainTime, type TimeLike, type TimeUnit, type WeekStartOptions, type ZonedDateTime, fromISO, isAfter, isBefore, isDateLike, isInstant, isPlainDate, isPlainDateTime, isPlainTime, isSame, isTimeLike, isZonedDateTime, max, min, now, toPlainDate, toPlainDateTime, toZonedDateTime };

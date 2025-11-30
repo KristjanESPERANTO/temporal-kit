@@ -18,12 +18,12 @@ if (typeof (globalThis as { Temporal?: unknown }).Temporal === "undefined") {
 export * from "./guards/index.js";
 // Re-export compare functions
 export * from "./compare/index.js";
+// Re-export convert functions
+export * from "./convert/index.js";
 // Re-export types
 export type * from "./types/index.js";
 
 // Placeholder exports for modules we'll implement next
-// export * from "./compare/index.js";
-// export * from "./convert/index.js";
 // export * from "./format/index.js";
 // export * from "./math/index.js";
 // export * from "./utils/index.js";
