@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Kit - Modern Functional Utilities for Temporal API</title>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f0f4f8;
+            --bg-tertiary: #e2e8f0;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-tertiary: #718096;
+            --border-color: #cbd5e0;
+            --accent-primary: #3182ce;
+            --accent-hover: #2c5282;
+            --code-bg: #2d3748;
+            --code-border: #4a5568;
+            --code-text: #e2e8f0;
+            --success-bg: #c6f6d5;
+            --success-text: #22543d;
+            --warning-bg: #fef5e7;
+            --warning-text: #744210;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1f2937;
+                --bg-secondary: #111827;
+                --bg-tertiary: #374151;
+                --text-primary: #f9fafb;
+                --text-secondary: #d1d5db;
+                --text-tertiary: #9ca3af;
+                --border-color: #374151;
+                --accent-primary: #60a5fa;
+                --accent-hover: #93c5fd;
+                --code-bg: #0d1117;
+                --code-border: #30363d;
+                --code-text: #c9d1d9;
+                --success-bg: #1e4620;
+                --success-text: #7ee787;
+                --warning-bg: #4d3800;
+                --warning-text: #f0bf4c;
+            }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 4rem 0 3rem;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            margin: -2rem -2rem 2rem -2rem;
+            position: relative;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3182ce 0%, #805ad5 100%);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+        
+        h1::before {
+            content: '⏱️';
+            margin-right: 0.5rem;
+            font-size: 2rem;
+        }
+        
+        .tagline {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+        
+        .status {
+            display: inline-block;
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 0.375rem 0.875rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+        
+        .main-content {
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            .main-content {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+            }
+        }
+        
+        .playground {
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            .playground {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
+            }
+        }
+        
+        h2 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+        
+        .feature {
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.1);
+        }
+        
+        .feature h3 {
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .feature p {
+            color: var(--text-secondary);
+        }
+        
+        .install-box {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+            margin: 1.5rem 0;
+            position: relative;
+            border: 1px solid var(--code-border);
+        }
+        
+        .install-box code {
+            color: #90cdf4;
+            font-size: 0.95rem;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 0.875rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        .browser-check {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9375rem;
+        }
+        
+        .browser-check.supported {
+            background: var(--success-bg);
+            color: var(--success-text);
+            border: 1px solid var(--success-text);
+        }
+        
+        .browser-check.unsupported {
+            background: var(--warning-bg);
+            color: var(--warning-text);
+            border: 1px solid var(--warning-text);
+        }
+        
+        .example-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .code-output-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .code-output-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .code-section, .output-section {
+            min-width: 0;
+        }
+        
+        .code-section h3, .output-section h3 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+        
+        #codePreview {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+            white-space: pre-wrap;
+            border: 1px solid var(--code-border);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            min-height: 300px;
+        }
+        
+        .example-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .example-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        
+        .example-btn.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+        
+        #output {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+            min-height: 300px;
+            white-space: pre-wrap;
+            border: 1px solid var(--code-border);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        
+        .run-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 0.625rem 1.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        
+        .run-btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        footer {
+            text-align: center;
+            color: var(--text-tertiary);
+            padding: 3rem 0 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        a:hover {
+            color: var(--accent-hover);
+        }
+        
+        footer a {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        
+        footer a:hover {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Temporal Kit</h1>
+            <p class="tagline">Modern Functional Utilities for the Temporal API</p>
+            <span class="status">⚠️ In Development ⚠️</span>
+        </header>
+        
+        <div class="main-content">
+            <h2>Experiment with Temporal today</h2>
+            <p>A lightweight, functional utility library built on JavaScript's new <strong>Temporal API</strong>. Built for early adopters who want clean, tree-shakable date/time utilities.</p>
+            
+            <div class="install-box">
+                <button class="copy-btn" onclick="copyInstall()">Copy</button>
+                <code>npm install temporal-kit</code>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Focused Scope</h3>
+                    <p>Covers the 95% use case with well-tested utilities teams actually need.</p>
+                </div>
+                <div class="feature">
+                    <h3>Tree-Shakable</h3>
+                    <p>Pure functions, zero side effects. Bundle only what you use.</p>
+                </div>
+                <div class="feature">
+                    <h3>Lightweight</h3>
+                    <p>1.2KB native build, 110KB with polyfill included.</p>
+                </div>
+                <div class="feature">
+                    <h3>Type-Safe</h3>
+                    <p>Full TypeScript support with strict mode enabled.</p>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 2.5rem;">
+                <a href="https://github.com/KristjanESPERANTO/temporal-kit" target="_blank" style="font-size: 0.9375rem;">
+                    View Documentation on GitHub →
+                </a>
+            </p>
+        </div>
+        
+        <div class="playground">
+            <h2>Live Playground</h2>
+            
+            <div id="browserCheck" class="browser-check"></div>
+            
+            <p>Try Temporal Kit directly in your browser. Select an example and click Run:</p>
+            
+            <div class="example-selector">
+                <button class="example-btn active" data-example="basic">Type Guards</button>
+                <button class="example-btn" data-example="realworld">Real-World Patterns</button>
+                <button class="example-btn" data-example="timezones">Timezones</button>
+            </div>
+            
+            <button class="run-btn" onclick="runExample()">▶ Run Example</button>
+            
+            <div class="code-output-container">
+                <div class="code-section">
+                    <h3>Code</h3>
+                    <div id="codePreview"></div>
+                </div>
+                
+                <div class="output-section">
+                    <h3>Output</h3>
+                    <div id="output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Made with ❤️ by <a href="https://github.com/KristjanESPERANTO">KristjanESPERANTO</a></p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+            <a href="https://github.com/KristjanESPERANTO/temporal-kit">GitHub</a> • 
+            <a href="https://www.npmjs.com/package/temporal-kit">npm</a>
+        </p>
+    </footer>
+    
+    <script type="module">
+        // Check Temporal support
+        const hasNativeTemporal = typeof Temporal !== 'undefined';
+        const browserCheck = document.getElementById('browserCheck');
+        
+        if (hasNativeTemporal) {
+            browserCheck.className = 'browser-check supported';
+            browserCheck.innerHTML = '✅ Your browser supports native Temporal! Running without polyfill.';
+        } else {
+            browserCheck.className = 'browser-check unsupported';
+            browserCheck.innerHTML = '⚠️ Your browser doesn\'t support Temporal yet. Loading polyfill...';
+            // Import polyfill
+            await import('https://cdn.jsdelivr.net/npm/temporal-polyfill@0.3.0/global.js');
+        }
+        
+        // Import temporal-kit from npm
+        const { isPlainDate, isZonedDateTime, isInstant } = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.0.1/dist/polyfilled.js');
+        
+        // Store for global access
+        window.temporalKit = { isPlainDate, isZonedDateTime, isInstant };
+        
+        // Example selector
+        const buttons = document.querySelectorAll('.example-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                updateCodePreview();
+                // Clear output when switching examples
+                document.getElementById('output').textContent = '';
+            });
+        });
+        
+        // Update code preview on load
+        updateCodePreview();
+    </script>
+    
+    <script>
+        const exampleCode = {
+            basic: `import { isPlainDate, isZonedDateTime } from 'temporal-kit';
+
+const date = Temporal.PlainDate.from('2025-11-30');
+const zoned = Temporal.Now.zonedDateTimeISO();
+
+console.log('PlainDate:', date);
+console.log('isPlainDate:', isPlainDate(date));
+console.log('isZonedDateTime:', isZonedDateTime(date));
+
+console.log('ZonedDateTime:', zoned);
+console.log('Timezone:', zoned.timeZoneId);
+console.log('isZonedDateTime:', isZonedDateTime(zoned));`,
+
+            realworld: `import { isInstant } from 'temporal-kit';
+
+const now = Temporal.Now.instant();
+const today = Temporal.Now.plainDateISO();
+
+console.log('Instant:', now);
+console.log('isInstant:', isInstant(now));
+
+console.log('Today:', today);
+console.log('Day of week:', today.dayOfWeek);
+console.log('Week:', today.weekOfYear);
+
+// Same moment in different timezones
+const tokyo = now.toZonedDateTimeISO('Asia/Tokyo');
+const ny = now.toZonedDateTimeISO('America/New_York');
+
+console.log('Tokyo:', tokyo);
+console.log('New York:', ny);
+
+// Relative dates
+console.log('Tomorrow:', today.add({ days: 1 }));
+console.log('Next week:', today.add({ weeks: 1 }));`,
+
+            timezones: `const instant = Temporal.Now.instant();
+const timezones = [
+  'Europe/Berlin',
+  'America/New_York', 
+  'Asia/Tokyo',
+  'UTC'
+];
+
+timezones.forEach(tz => {
+  const zoned = instant.toZonedDateTimeISO(tz);
+  console.log(\`\${tz}: \${zoned}\`);
+});
+
+// Your system timezone
+const local = Temporal.Now.zonedDateTimeISO();
+console.log('Your timezone:', local.timeZoneId);
+console.log('Offset:', local.offset);
+console.log('Time:', local.toPlainTime());`
+        };
+        
+        function updateCodePreview() {
+            const activeBtn = document.querySelector('.example-btn.active');
+            const exampleName = activeBtn.dataset.example;
+            document.getElementById('codePreview').textContent = exampleCode[exampleName];
+        }
+        
+        const examples = {
+            basic: () => {
+                const output = [];
+                output.push('=== Type Guards Example ===\n');
+                
+                const date = Temporal.PlainDate.from('2025-11-30');
+                const dateTime = Temporal.PlainDateTime.from('2025-11-30T15:30:00');
+                const zoned = Temporal.Now.zonedDateTimeISO();
+                
+                output.push(`PlainDate: ${date}`);
+                output.push(`isPlainDate: ${window.temporalKit.isPlainDate(date)}`);
+                output.push(`isZonedDateTime: ${window.temporalKit.isZonedDateTime(date)}`);
+                output.push('');
+                
+                output.push(`ZonedDateTime: ${zoned}`);
+                output.push(`Timezone: ${zoned.timeZoneId}`);
+                output.push(`isZonedDateTime: ${window.temporalKit.isZonedDateTime(zoned)}`);
+                output.push('');
+                
+                output.push('✅ Type guards working!');
+                
+                return output.join('\n');
+            },
+            
+            realworld: () => {
+                const output = [];
+                output.push('=== Real-World Patterns ===\n');
+                
+                const now = Temporal.Now.instant();
+                const today = Temporal.Now.plainDateISO();
+                const zoned = Temporal.Now.zonedDateTimeISO();
+                
+                output.push('1. Current Time:');
+                output.push(`   Instant: ${now}`);
+                output.push(`   isInstant: ${window.temporalKit.isInstant(now)}`);
+                output.push('');
+                
+                output.push('2. Today:');
+                output.push(`   Date: ${today}`);
+                output.push(`   Day of week: ${today.dayOfWeek} (1=Monday)`);
+                output.push(`   Week: ${today.weekOfYear}`);
+                output.push('');
+                
+                output.push('3. Same moment in different timezones:');
+                const tokyo = now.toZonedDateTimeISO('Asia/Tokyo');
+                const ny = now.toZonedDateTimeISO('America/New_York');
+                output.push(`   Tokyo: ${tokyo}`);
+                output.push(`   New York: ${ny}`);
+                output.push('');
+                
+                output.push('4. Relative dates:');
+                output.push(`   Today: ${today}`);
+                output.push(`   Tomorrow: ${today.add({ days: 1 })}`);
+                output.push(`   Next week: ${today.add({ weeks: 1 })}`);
+                
+                return output.join('\n');
+            },
+            
+            timezones: () => {
+                const output = [];
+                output.push('=== Timezone Handling ===\n');
+                
+                const instant = Temporal.Now.instant();
+                
+                output.push('Same instant in different locations:');
+                const timezones = ['Europe/Berlin', 'America/New_York', 'Asia/Tokyo', 'UTC'];
+                
+                timezones.forEach(tz => {
+                    const zoned = instant.toZonedDateTimeISO(tz);
+                    output.push(`${tz.padEnd(20)} ${zoned.toString()}`);
+                });
+                
+                output.push('\n📍 Your system timezone:');
+                const local = Temporal.Now.zonedDateTimeISO();
+                output.push(`   ${local.timeZoneId}`);
+                output.push(`   Offset: ${local.offset}`);
+                output.push(`   Time: ${local.toPlainTime()}`);
+                
+                return output.join('\n');
+            }
+        };
+        
+        function runExample() {
+            const activeBtn = document.querySelector('.example-btn.active');
+            const exampleName = activeBtn.dataset.example;
+            const output = document.getElementById('output');
+            
+            try {
+                output.textContent = examples[exampleName]();
+            } catch (error) {
+                output.textContent = `❌ Error: ${error.message}\n\n${error.stack}`;
+            }
+        }
+        
+        function copyInstall() {
+            navigator.clipboard.writeText('npm install temporal-kit');
+            const btn = event.target;
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'Copy', 2000);
+        }
+        
+        // Run first example on load
+        window.addEventListener('load', () => {
+            setTimeout(() => runExample(), 500);
+        });
+    </script>
+</body>
+</html>

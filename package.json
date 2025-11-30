@@ -62,7 +62,7 @@
   "bugs": {
     "url": "https://github.com/KristjanESPERANTO/temporal-kit/issues"
   },
-  "homepage": "https://github.com/KristjanESPERANTO/temporal-kit#readme",
+  "homepage": "https://kristjanesperanto.github.io/temporal-kit/",
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",
     "@vitest/ui": "^4.0.14",

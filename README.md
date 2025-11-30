@@ -4,6 +4,8 @@
 
 A modern, functional utility library for the standard `Temporal` API - built for early adopters who want to experiment with Temporal today.
 
+🌐 **[Try it live in your browser →](https://kristjanesperanto.github.io/temporal-kit/)**
+
 ## Quick Start
 
 ```bash
