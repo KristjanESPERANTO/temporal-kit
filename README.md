@@ -106,14 +106,15 @@ src/
 - **Perfect Tree-Shaking:** `sideEffects: false` ensures optimal bundle sizes.
 - **Modern Tooling:** 
   - **Biome** - Fast linting/formatting with performance rules
-  - **Vitest** - Type-checked tests with 80% coverage threshold
+  - **Vitest** - Type-checked tests with 100% coverage threshold
   - **tsup** - ESNext bundling with optimized tree-shaking
   - **TypeScript 5.9+** - Latest compiler features enabled
-- **Testing Strategy:** High coverage for:
+- **Testing Strategy:** 100% code coverage (116 tests) including:
   - Type guards and runtime checks
-  - Timezone edge cases (DST transitions, gaps/overlaps)
-  - Calendar arithmetic behavior
-  - API semantic decisions
+  - Comparison and conversion functions
+  - Calendar arithmetic and boundary operations
+  - Functional composition utilities
+  - Error handling and edge cases
 
 ## 4. Current Status & Roadmap
 
@@ -124,12 +125,12 @@ src/
 4.  **Build:** Dual entry points with proper tree-shaking.
 5.  **Examples:** Comprehensive example files demonstrating usage patterns ([`examples/`](./examples)).
 
-### 🚧 Phase 2: Core Functions (IN PROGRESS)
+### ✅ Phase 2: Core Functions (DONE)
 1.  **Comparison:** ✅ `isBefore`, `isAfter`, `isSame`, `min`, `max` ([`examples/04-comparisons.js`](./examples/04-comparisons.js))
 2.  **Convert:** ✅ `now`, `fromISO`, explicit type conversions ([`examples/05-conversions.js`](./examples/05-conversions.js))
 3.  **Math:** ✅ `add`, `subtract`, `startOf`, `endOf` ([`examples/06-arithmetic.js`](./examples/06-arithmetic.js), [`examples/07-boundaries.js`](./examples/07-boundaries.js))
 4.  **Utils:** ✅ `pipe`, `compose` for functional composition ([`examples/08-composition.js`](./examples/08-composition.js))
-5.  **Testing:** Write comprehensive test suite
+5.  **Testing:** ✅ Comprehensive test suite with 100% coverage (116 tests)
 
 ### 🔜 Phase 3: Formatting & Polish (NEXT)
 1.  **Formatting:** Implement `format` using `Intl.DateTimeFormat` with smart defaults ([`examples/07-formatting.js`](./examples/07-formatting.js))
@@ -155,7 +156,8 @@ npm run test:ui      # Open Vitest UI
 ```bash
 npm run typecheck    # TypeScript type checking
 npm run lint         # Biome linting
-npm run test:coverage # Coverage report (80% threshold)
+npm run test:run     # Run all tests once
+npm run test:coverage # Coverage report (100% threshold)
 npm run ci           # Full CI pipeline (typecheck + lint + test + build)
 ```
 
@@ -176,7 +178,7 @@ Uses [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag
 - **Type-checked tests** - Vitest validates test types against your code
 - **Modern exports** - Proper `exports` field with type/import/default conditions
 - **Source maps** - Full debugging support in development
-- **Coverage thresholds** - Enforced 80% minimum coverage
+- **Coverage thresholds** - Strict 100% coverage requirement
 - **ESNext target** - No legacy transpilation, minimal output
 
 ## 6. Comparison

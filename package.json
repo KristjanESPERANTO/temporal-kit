@@ -39,7 +39,7 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
-    "ci": "npm run typecheck && npm run lint && npm run build",
+    "ci": "npm run typecheck && npm run lint && npm run test:run && npm run build",
     "prepublishOnly": "npm run ci",
     "release": "commit-and-tag-version",
     "release:minor": "commit-and-tag-version --release-as minor",
@@ -68,6 +68,7 @@
   "homepage": "https://kristjanesperanto.github.io/temporal-kit/",
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",
+    "@vitest/coverage-v8": "^4.0.14",
     "@vitest/ui": "^4.0.14",
     "commit-and-tag-version": "^12.6.0",
     "temporal-polyfill": "^0.3.0",
