@@ -881,9 +881,8 @@
         
         // Store for global access
         window.temporalKit = { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend };
-    </script>
     
-    <script>
+        // Examples code and rendering - moved into module script to avoid race condition
         const exampleCode = {
             relative: `import { formatRelative } from 'temporal-kit';
 
