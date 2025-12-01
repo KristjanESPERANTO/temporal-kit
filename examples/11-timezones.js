@@ -7,8 +7,8 @@
  * Run with: node examples/11-timezones.js
  */
 
+import { isAfter, isBefore, now, toZonedDateTime } from "temporal-kit/polyfilled";
 import { Temporal } from "temporal-polyfill";
-import { now, toZonedDateTime, isBefore, isAfter } from "temporal-kit/polyfilled";
 
 console.log("=== Working with Timezones ===\n");
 
@@ -43,14 +43,13 @@ console.log("  Time:", afterDST.toPlainTime().toString());
 // The hour from 2:00 to 3:00 doesn't exist!
 console.log("\n  What happens at 2:30 AM (the non-existent hour)?");
 try {
-	// Using 'reject' overflow will throw
-	const nonExistent = Temporal.ZonedDateTime.from(
-		"2025-03-09T02:30:00[America/New_York]",
-		{ disambiguation: "reject" },
-	);
-	console.log("    Won't reach here");
+  // Using 'reject' overflow will throw
+  const _nonExistent = Temporal.ZonedDateTime.from("2025-03-09T02:30:00[America/New_York]", {
+    disambiguation: "reject",
+  });
+  console.log("    Won't reach here");
 } catch (error) {
-	console.log("    'reject' throws:", error.message);
+  console.log("    'reject' throws:", error.message);
 }
 
 // Using 'compatible' (default) moves forward
@@ -60,14 +59,14 @@ console.log("    → Moves to:", compatible.toPlainTime().toString(), compatible
 
 // Using 'earlier' uses the earlier offset
 const earlier = Temporal.ZonedDateTime.from("2025-03-09T02:30:00[America/New_York]", {
-	disambiguation: "earlier",
+  disambiguation: "earlier",
 });
 console.log("    'earlier':", earlier.toString());
 console.log("    → Moves to:", earlier.toPlainTime().toString(), earlier.offset);
 
 // Using 'later' uses the later offset
 const later = Temporal.ZonedDateTime.from("2025-03-09T02:30:00[America/New_York]", {
-	disambiguation: "later",
+  disambiguation: "later",
 });
 console.log("    'later':", later.toString());
 console.log("    → Moves to:", later.toPlainTime().toString(), later.offset);
@@ -154,11 +153,11 @@ console.log("  Meeting 2 (Berlin):", meeting2.toString());
 
 // Compare meetings across timezones
 if (isBefore(meeting1, meeting2)) {
-	console.log("  → Meeting 1 (New York) is earlier");
+  console.log("  → Meeting 1 (New York) is earlier");
 } else if (isAfter(meeting1, meeting2)) {
-	console.log("  → Meeting 2 (Berlin) is earlier");
+  console.log("  → Meeting 2 (Berlin) is earlier");
 } else {
-	console.log("  → They are at the same time!");
+  console.log("  → They are at the same time!");
 }
 
 // Convert both to same timezone for clarity
@@ -172,36 +171,35 @@ console.log("=== Practical Use Cases ===\n");
 // Scheduling across timezones
 console.log("1. Scheduling a meeting for 9 AM in each participant's timezone:");
 const participants = [
-	{ name: "Alice", timezone: "America/New_York" },
-	{ name: "Bob", timezone: "Europe/London" },
-	{ name: "Charlie", timezone: "Asia/Tokyo" },
+  { name: "Alice", timezone: "America/New_York" },
+  { name: "Bob", timezone: "Europe/London" },
+  { name: "Charlie", timezone: "Asia/Tokyo" },
 ];
 
 const baseDate = Temporal.PlainDate.from("2025-06-15");
 participants.forEach(({ name, timezone }) => {
-	const meeting = baseDate.toZonedDateTime({
-		timeZone: timezone,
-		plainTime: Temporal.PlainTime.from("09:00:00"),
-	});
-	console.log(`  ${name} (${timezone}):`);
-	console.log(`    Local: ${meeting.toString()}`);
-	console.log(`    UTC: ${meeting.withTimeZone("UTC").toString()}`);
+  const meeting = baseDate.toZonedDateTime({
+    timeZone: timezone,
+    plainTime: Temporal.PlainTime.from("09:00:00"),
+  });
+  console.log(`  ${name} (${timezone}):`);
+  console.log(`    Local: ${meeting.toString()}`);
+  console.log(`    UTC: ${meeting.withTimeZone("UTC").toString()}`);
 });
 console.log();
 
 // Handling user input with timezone
 console.log("2. User enters date/time in their local timezone:");
 const userInput = {
-	date: "2025-12-25",
-	time: "14:30",
-	timezone: "America/Los_Angeles",
+  date: "2025-12-25",
+  time: "14:30",
+  timezone: "America/Los_Angeles",
 };
 
-const userDateTime = Temporal.PlainDate.from(userInput.date)
-	.toZonedDateTime({
-		timeZone: userInput.timezone,
-		plainTime: Temporal.PlainTime.from(userInput.time),
-	});
+const userDateTime = Temporal.PlainDate.from(userInput.date).toZonedDateTime({
+  timeZone: userInput.timezone,
+  plainTime: Temporal.PlainTime.from(userInput.time),
+});
 
 console.log("  User input:", `${userInput.date} ${userInput.time} (${userInput.timezone})`);
 console.log("  Parsed as:", userDateTime.toString());

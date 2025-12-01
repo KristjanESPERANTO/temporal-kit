@@ -1,11 +1,10 @@
 /**
  * temporal-kit - Arithmetic Operations Examples
- * 
+ *
  * Demonstrates add() and subtract() functions for date/time arithmetic.
  */
 
-import { Temporal } from "../dist/polyfilled.js";
-import { add, subtract } from "../dist/polyfilled.js";
+import { add, subtract, Temporal } from "../dist/polyfilled.js";
 
 console.log("=== Date Arithmetic ===\n");
 

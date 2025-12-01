@@ -8,11 +8,11 @@
  */
 
 import {
-	Temporal,
-	format,
-	formatTime,
-	formatDateTime,
-	formatRelative,
+  format,
+  formatDateTime,
+  formatRelative,
+  formatTime,
+  Temporal,
 } from "../dist/polyfilled.js";
 
 console.log("=== Date Formatting ===\n");
@@ -38,16 +38,16 @@ console.log("ja-JP:", format(date, { locale: "ja-JP" }));
 // Custom format options
 console.log("\nCustom formats:");
 console.log(
-	"Year-Month:",
-	format(date, {
-		options: { year: "numeric", month: "long" },
-	}),
+  "Year-Month:",
+  format(date, {
+    options: { year: "numeric", month: "long" },
+  }),
 );
 console.log(
-	"Weekday, Day:",
-	format(date, {
-		options: { weekday: "long", day: "numeric" },
-	}),
+  "Weekday, Day:",
+  format(date, {
+    options: { weekday: "long", day: "numeric" },
+  }),
 );
 
 console.log("\n=== Time Formatting ===\n");
@@ -70,30 +70,25 @@ const dateTime = Temporal.PlainDateTime.from("2025-11-30T15:30:45");
 
 console.log("Default:", formatDateTime(dateTime));
 console.log(
-	"Short date, short time:",
-	formatDateTime(dateTime, { dateStyle: "short", timeStyle: "short" }),
+  "Short date, short time:",
+  formatDateTime(dateTime, { dateStyle: "short", timeStyle: "short" }),
 );
 console.log(
-	"Long date, medium time:",
-	formatDateTime(dateTime, { dateStyle: "long", timeStyle: "medium" }),
+  "Long date, medium time:",
+  formatDateTime(dateTime, { dateStyle: "long", timeStyle: "medium" }),
 );
-console.log(
-	"Full:",
-	formatDateTime(dateTime, { dateStyle: "full", timeStyle: "full" }),
-);
+console.log("Full:", formatDateTime(dateTime, { dateStyle: "full", timeStyle: "full" }));
 
 console.log("\nWith ZonedDateTime:");
-const zdt = Temporal.ZonedDateTime.from(
-	"2025-11-30T15:30:45+01:00[Europe/Berlin]",
-);
+const zdt = Temporal.ZonedDateTime.from("2025-11-30T15:30:45+01:00[Europe/Berlin]");
 console.log("Berlin:", formatDateTime(zdt, { locale: "de-DE" }));
 console.log(
-	"Berlin (full):",
-	formatDateTime(zdt, {
-		locale: "de-DE",
-		dateStyle: "full",
-		timeStyle: "full",
-	}),
+  "Berlin (full):",
+  formatDateTime(zdt, {
+    locale: "de-DE",
+    dateStyle: "full",
+    timeStyle: "full",
+  }),
 );
 
 console.log("\n=== Relative Time Formatting ===\n");
@@ -136,23 +131,19 @@ console.log("\n=== Practical Examples ===\n");
 
 // Event formatting
 const event = {
-	title: "Team Meeting",
-	date: Temporal.ZonedDateTime.from(
-		"2025-12-15T14:00:00+01:00[Europe/Berlin]",
-	),
+  title: "Team Meeting",
+  date: Temporal.ZonedDateTime.from("2025-12-15T14:00:00+01:00[Europe/Berlin]"),
 };
 
 console.log(`${event.title}`);
 console.log(`When: ${formatDateTime(event.date, { dateStyle: "full", timeStyle: "short" })}`);
-console.log(
-	`Relative: ${formatRelative(event.date.toPlainDate(), today)}`,
-);
+console.log(`Relative: ${formatRelative(event.date.toPlainDate(), today)}`);
 
 // Multi-locale display
 console.log("\nMulti-locale event times:");
 const locales = ["en-US", "de-DE", "ja-JP", "ar-EG"];
 for (const loc of locales) {
-	console.log(
-		`${loc.padEnd(6)}: ${formatDateTime(event.date, { locale: loc, dateStyle: "long", timeStyle: "short" })}`,
-	);
+  console.log(
+    `${loc.padEnd(6)}: ${formatDateTime(event.date, { locale: loc, dateStyle: "long", timeStyle: "short" })}`,
+  );
 }

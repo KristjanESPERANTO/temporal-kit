@@ -1,18 +1,18 @@
 /**
  * temporal-kit - Functional Composition Examples
- * 
+ *
  * Demonstrates pipe() and compose() utilities for chaining operations.
  */
 
-import { Temporal } from "../dist/polyfilled.js";
 import {
-  pipe,
-  compose,
-  startOf,
-  endOf,
   add,
-  subtract,
+  compose,
+  endOf,
   isBefore,
+  pipe,
+  startOf,
+  subtract,
+  Temporal,
   toZonedDateTime,
 } from "../dist/polyfilled.js";
 
@@ -27,7 +27,7 @@ console.log();
 const result1 = pipe(
   date,
   (d) => startOf(d, "day"),
-  (d) => add(d, { hours: 12 })
+  (d) => add(d, { hours: 12 }),
 );
 console.log("pipe(date, startOf('day'), add({hours: 12})):");
 console.log(`  Result: ${result1}`);
@@ -38,7 +38,7 @@ const result2 = pipe(
   date,
   (d) => startOf(d, "month"),
   (d) => add(d, { weeks: 2 }),
-  (d) => endOf(d, "day")
+  (d) => endOf(d, "day"),
 );
 console.log("pipe(date, startOf('month'), add({weeks: 2}), endOf('day')):");
 console.log(`  Result: ${result2}`);
@@ -49,7 +49,7 @@ const today = Temporal.PlainDate.from("2025-11-30");
 const nextWeekEnd = pipe(
   today,
   (d) => add(d, { weeks: 1 }),
-  (d) => endOf(d, "week")
+  (d) => endOf(d, "week"),
 );
 console.log("Next week's end (Sunday):");
 console.log(`  From: ${today}`);
@@ -62,7 +62,7 @@ console.log("=== Functional Composition with compose() ===\n");
 // Creates a reusable function
 const noonOnStartOfDay = compose(
   (d) => add(d, { hours: 12 }),
-  (d) => startOf(d, "day")
+  (d) => startOf(d, "day"),
 );
 
 console.log("Compose: add 12 hours to start of day");
@@ -75,7 +75,7 @@ console.log();
 const endOfNextMonth = compose(
   (d) => endOf(d, "month"),
   (d) => add(d, { months: 1 }),
-  (d) => startOf(d, "month")
+  (d) => startOf(d, "month"),
 );
 
 console.log("Compose: end of next month");
@@ -90,12 +90,12 @@ console.log("=== Practical Examples ===\n");
 console.log("--- Business Hours Calculation ---");
 const businessDayStart = compose(
   (d) => add(d, { hours: 9 }), // 9 AM
-  (d) => startOf(d, "day")
+  (d) => startOf(d, "day"),
 );
 
 const businessDayEnd = compose(
   (d) => add(d, { hours: 17 }), // 5 PM
-  (d) => startOf(d, "day")
+  (d) => startOf(d, "day"),
 );
 
 const someDate = Temporal.PlainDateTime.from("2025-12-15T14:30:00");
@@ -110,7 +110,7 @@ const calculateDeadline = pipe(
   Temporal.PlainDate.from("2025-12-15"),
   (d) => startOf(d, "month"),
   (d) => add(d, { weeks: 2 }),
-  (d) => subtract(d, { days: 1 }) // One day before
+  (d) => subtract(d, { days: 1 }), // One day before
 );
 console.log(`Deadline: ${calculateDeadline}`);
 console.log();
@@ -122,7 +122,7 @@ const scheduleEvent = (eventDate) =>
     eventDate,
     (d) => startOf(d, "day"),
     (d) => add(d, { hours: 14 }), // 2 PM
-    (d) => toZonedDateTime(d, "Europe/Berlin")
+    (d) => toZonedDateTime(d, "Europe/Berlin"),
   );
 
 const eventDay = Temporal.PlainDateTime.from("2025-12-25T00:00:00");
@@ -142,7 +142,7 @@ const processDate = (d) =>
   pipe(
     d,
     (date) => startOf(date, "month"),
-    (date) => endOf(date, "month")
+    (date) => endOf(date, "month"),
   );
 
 console.log("Process dates to get end of their months:");
@@ -161,7 +161,7 @@ const adjustedDate = pipe(
   targetDate,
   (d) => (isBefore(d, now) ? add(d, { years: 1 }) : d),
   (d) => startOf(d, "day"),
-  (d) => add(d, { hours: 10 })
+  (d) => add(d, { hours: 10 }),
 );
 
 console.log(`Now:           ${now}`);
@@ -177,7 +177,7 @@ const toQuarterEnd = compose(
     const month = d.month;
     const quarterEndMonth = Math.ceil(month / 3) * 3;
     return d.with({ month: quarterEndMonth });
-  }
+  },
 );
 
 const q4Date = Temporal.PlainDate.from("2025-11-15");
@@ -194,14 +194,14 @@ const pipeResult = pipe(
   testDate,
   (d) => startOf(d, "day"),
   (d) => add(d, { hours: 12 }),
-  (d) => add(d, { minutes: 30 })
+  (d) => add(d, { minutes: 30 }),
 );
 
 // compose: operations applied in reverse (right-to-left)
 const composeFunc = compose(
   (d) => add(d, { minutes: 30 }),
   (d) => add(d, { hours: 12 }),
-  (d) => startOf(d, "day")
+  (d) => startOf(d, "day"),
 );
 const composeResult = composeFunc(testDate);
 

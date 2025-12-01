@@ -1104,7 +1104,7 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
             return code.replace(/(\/\/.*)/g, '<span class="comment">$1</span>');
         }
         
-        function renderAllExamples() {
+        function _renderAllExamples() {
             const container = document.getElementById('examplesContainer');
             const exampleNames = ['relative', 'nextday', 'sort', 'closest', 'timezones', 'guards'];
             
@@ -1140,7 +1140,7 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
             });
             
             // Run all examples initially
-            exampleNames.forEach(name => runExample(name));
+            exampleNames.forEach(name => { runExample(name); });
         }
         
         const examples = {
@@ -1156,16 +1156,16 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                 const nextWeek = today.add({ days: 7 });
                 
                 output.push('English:');
-                output.push('  1 day ago       -> ' + formatRelative(yesterday, today));
-                output.push('  7 days ago      -> ' + formatRelative(lastWeek, today));
-                output.push('  1 day from now  -> ' + formatRelative(tomorrow, today));
-                output.push('  7 days from now -> ' + formatRelative(nextWeek, today));
+                output.push(`  1 day ago       -> ${formatRelative(yesterday, today)}`);
+                output.push(`  7 days ago      -> ${formatRelative(lastWeek, today)}`);
+                output.push(`  1 day from now  -> ${formatRelative(tomorrow, today)}`);
+                output.push(`  7 days from now -> ${formatRelative(nextWeek, today)}`);
                 
                 output.push('\nGerman (de-DE):');
-                output.push('  1 day ago       -> ' + formatRelative(yesterday, today, { locale: 'de-DE' }));
-                output.push('  7 days ago      -> ' + formatRelative(lastWeek, today, { locale: 'de-DE' }));
-                output.push('  1 day from now  -> ' + formatRelative(tomorrow, today, { locale: 'de-DE' }));
-                output.push('  7 days from now -> ' + formatRelative(nextWeek, today, { locale: 'de-DE' }));
+                output.push(`  1 day ago       -> ${formatRelative(yesterday, today, { locale: 'de-DE' })}`);
+                output.push(`  7 days ago      -> ${formatRelative(lastWeek, today, { locale: 'de-DE' })}`);
+                output.push(`  1 day from now  -> ${formatRelative(tomorrow, today, { locale: 'de-DE' })}`);
+                output.push(`  7 days from now -> ${formatRelative(nextWeek, today, { locale: 'de-DE' })}`);
                 
                 return output.join('\n');
             },
@@ -1179,9 +1179,9 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                 const nextFriday = nextDay(today, 5);
                 const nextMonday = nextDay(today, 1);
                 
-                output.push('Today: ' + today.toString());
-                output.push('Next Friday: ' + nextFriday.toString());
-                output.push('Next Monday: ' + nextMonday.toString());
+                output.push(`Today: ${today.toString()}`);
+                output.push(`Next Friday: ${nextFriday.toString()}`);
+                output.push(`Next Monday: ${nextMonday.toString()}`);
                 
                 const daysUntil = nextFriday.since(today).days;
                 output.push(`\n${daysUntil} days until Friday`);
@@ -1202,12 +1202,12 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                 ];
                 
                 output.push('Unsorted:');
-                meetings.forEach(d => output.push('  ' + d.toString()));
+                meetings.forEach(d => { output.push(`  ${d.toString()}`); });
                 
                 const sorted = sortAsc(meetings);
                 
                 output.push('\nSorted (ascending):');
-                sorted.forEach(d => output.push('  ' + d.toString()));
+                sorted.forEach(d => { output.push(`  ${d.toString()}`); });
                 
                 return output.join('\n');
             },
@@ -1225,13 +1225,13 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                   Temporal.PlainDate.from('2025-12-20')
                 ];
                 
-                output.push('Target date: ' + target.toString());
+                output.push(`Target date: ${target.toString()}`);
                 output.push('\nAvailable dates:');
-                events.forEach(d => output.push('  ' + d.toString()));
+                events.forEach(d => { output.push(`  ${d.toString()}`); });
                 
                 const nearest = closestTo(target, events);
                 
-                output.push('\nClosest date: ' + nearest.toString());
+                output.push(`\nClosest date: ${nearest.toString()}`);
                 
                 return output.join('\n');
             },
@@ -1242,12 +1242,12 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                 const date = Temporal.PlainDate.from('2025-11-30');
                 const zoned = Temporal.Now.zonedDateTimeISO();
                 
-                output.push('PlainDate: ' + date.toString());
-                output.push('  isPlainDate? ' + window.temporalKit.isPlainDate(date));
-                output.push('  isZonedDateTime? ' + window.temporalKit.isZonedDateTime(date));
+                output.push(`PlainDate: ${date.toString()}`);
+                output.push(`  isPlainDate? ${window.temporalKit.isPlainDate(date)}`);
+                output.push(`  isZonedDateTime? ${window.temporalKit.isZonedDateTime(date)}`);
                 
-                output.push('\nZonedDateTime: ' + zoned.toString());
-                output.push('  isZonedDateTime? ' + window.temporalKit.isZonedDateTime(zoned));
+                output.push(`\nZonedDateTime: ${zoned.toString()}`);
+                output.push(`  isZonedDateTime? ${window.temporalKit.isZonedDateTime(zoned)}`);
                 
                 return output.join('\n');
             },
@@ -1260,15 +1260,15 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                 const minDate = now.subtract({ days: 5 });
                 const maxDate = now.add({ days: 5 });
                 
-                output.push('Allowed range: ' + minDate.toString() + ' to ' + maxDate.toString());
+                output.push(`Allowed range: ${minDate.toString()} to ${maxDate.toString()}`);
                 
                 const tooEarly = now.subtract({ days: 10 });
                 const tooLate = now.add({ days: 10 });
                 const justRight = now;
                 
-                output.push('\nInput: ' + tooEarly.toString() + ' -> Output: ' + clamp(tooEarly, minDate, maxDate).toString());
-                output.push('Input: ' + tooLate.toString() + '  -> Output: ' + clamp(tooLate, minDate, maxDate).toString());
-                output.push('Input: ' + justRight.toString() + ' -> Output: ' + clamp(justRight, minDate, maxDate).toString());
+                output.push(`\nInput: ${tooEarly.toString()} -> Output: ${clamp(tooEarly, minDate, maxDate).toString()}`);
+                output.push(`Input: ${tooLate.toString()}  -> Output: ${clamp(tooLate, minDate, maxDate).toString()}`);
+                output.push(`Input: ${justRight.toString()} -> Output: ${clamp(justRight, minDate, maxDate).toString()}`);
                 
                 return output.join('\n');
             },
@@ -1286,8 +1286,8 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                 });
                 
                 const local = Temporal.Now.zonedDateTimeISO();
-                output.push('\nYour timezone: ' + local.timeZoneId);
-                output.push('Offset: ' + local.offset);
+                output.push(`\nYour timezone: ${local.timeZoneId}`);
+                output.push(`Offset: ${local.offset}`);
                 
                 return output.join('\n');
             },
@@ -1335,11 +1335,11 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
             }
         }
         
-        function copyInstall() {
+        function _copyInstall() {
             navigator.clipboard.writeText('npm install temporal-kit');
             const btn = event.target;
             btn.textContent = 'Copied!';
-            setTimeout(() => btn.textContent = 'Copy', 2000);
+            setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
         }
     </script>
 </body>

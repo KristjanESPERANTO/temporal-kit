@@ -1,19 +1,13 @@
 /**
  * temporal-kit - Convert Module Examples
- * 
+ *
  * Demonstrates conversion and creation functions:
  * - now(): Get current date/time
  * - fromISO(): Parse ISO 8601 strings
  * - toPlainDate(), toPlainDateTime(), toZonedDateTime(): Type conversions
  */
 
-import {
-  now,
-  fromISO,
-  toPlainDate,
-  toPlainDateTime,
-  toZonedDateTime,
-} from "../dist/polyfilled.js";
+import { fromISO, now, toPlainDate, toPlainDateTime, toZonedDateTime } from "../dist/polyfilled.js";
 
 console.log("=== Current Time ===");
 const currentTime = now();
@@ -33,10 +27,7 @@ console.log(`fromISO('2025-12-25T10:30:00'):`, dateTime.toString());
 console.log(`Type:`, dateTime.constructor.name);
 
 const zonedDateTime = fromISO("2025-12-25T10:30:00+01:00[Europe/Berlin]");
-console.log(
-  `fromISO('2025-12-25T10:30:00+01:00[Europe/Berlin]'):`,
-  zonedDateTime.toString()
-);
+console.log(`fromISO('2025-12-25T10:30:00+01:00[Europe/Berlin]'):`, zonedDateTime.toString());
 console.log(`Type:`, zonedDateTime.constructor.name);
 
 const instant = fromISO("2025-12-25T09:30:00Z");
@@ -66,9 +57,7 @@ const toZoned1 = toZonedDateTime(date, "Europe/Berlin");
 console.log(`toZonedDateTime(..., 'Europe/Berlin'):`, toZoned1.toString());
 const toZoned2 = toZonedDateTime(date, "America/New_York");
 console.log(`toZonedDateTime(..., 'America/New_York'):`, toZoned2.toString());
-console.log(
-  `(Note: Same date, different timezones, different instants in time)`
-);
+console.log(`(Note: Same date, different timezones, different instants in time)`);
 console.log();
 
 // Convert PlainDateTime to ZonedDateTime
@@ -83,14 +72,8 @@ console.log("=== Timezone Conversion ===");
 const berlinTime = fromISO("2025-12-25T15:30:00+01:00[Europe/Berlin]");
 console.log(`Berlin time:`, berlinTime.toString());
 const nyTime = toZonedDateTime(berlinTime, "America/New_York");
-console.log(
-  `Same instant in New York:`,
-  nyTime.toString(),
-  `(${nyTime.hour}:${nyTime.minute})`
-);
-console.log(
-  `(Note: Same instant, different wall clock time due to timezone)`
-);
+console.log(`Same instant in New York:`, nyTime.toString(), `(${nyTime.hour}:${nyTime.minute})`);
+console.log(`(Note: Same instant, different wall clock time due to timezone)`);
 console.log();
 
 console.log("=== Practical Example: Event Scheduling ===");
@@ -110,7 +93,7 @@ const eventInAttendeeTime = toZonedDateTime(event, attendeeTimezone);
 console.log(
   `Event in ${attendeeTimezone}:`,
   eventInAttendeeTime.toString(),
-  `(${eventInAttendeeTime.hour}:${String(eventInAttendeeTime.minute).padStart(2, "0")})`
+  `(${eventInAttendeeTime.hour}:${String(eventInAttendeeTime.minute).padStart(2, "0")})`,
 );
 
 console.log("\n✅ All conversion functions working!");

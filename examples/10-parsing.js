@@ -7,21 +7,15 @@
  * Run with: node examples/10-parsing.js
  */
 
-import { parse, parseDate, parseTime, parseDateTime } from "temporal-kit/polyfilled";
+import { parse, parseDate, parseDateTime, parseTime } from "temporal-kit/polyfilled";
 
 console.log("=== Auto-detection with parse() ===\n");
 
 // ISO 8601 formats - most common standard
 console.log("ISO dates:");
 console.log("  '2025-11-30' →", parse("2025-11-30").toString());
-console.log(
-  "  '2025-11-30T15:30:00' →",
-  parse("2025-11-30T15:30:00").toString(),
-);
-console.log(
-  "  '2025-11-30T15:30:00Z' →",
-  parse("2025-11-30T15:30:00Z").toString(),
-);
+console.log("  '2025-11-30T15:30:00' →", parse("2025-11-30T15:30:00").toString());
+console.log("  '2025-11-30T15:30:00Z' →", parse("2025-11-30T15:30:00Z").toString());
 console.log(
   "  '2025-11-30T15:30:00+01:00[Europe/Paris]' →",
   parse("2025-11-30T15:30:00+01:00[Europe/Paris]").toString(),
@@ -31,19 +25,13 @@ console.log();
 // European format (DD.MM.YYYY)
 console.log("European dates:");
 console.log("  '30.11.2025' →", parse("30.11.2025").toString());
-console.log(
-  "  '30.11.2025 15:30' →",
-  parse("30.11.2025 15:30").toString(),
-);
+console.log("  '30.11.2025 15:30' →", parse("30.11.2025 15:30").toString());
 console.log();
 
 // US format (MM/DD/YYYY)
 console.log("US dates:");
 console.log("  '11/30/2025' →", parse("11/30/2025").toString());
-console.log(
-  "  '11/30/2025 3:30 PM' →",
-  parse("11/30/2025 3:30 PM").toString(),
-);
+console.log("  '11/30/2025 3:30 PM' →", parse("11/30/2025 3:30 PM").toString());
 console.log();
 
 // Alternative formats
@@ -62,14 +50,8 @@ console.log();
 
 // DateTime combinations
 console.log("DateTime combinations:");
-console.log(
-  "  '2025-11-30 15:30' →",
-  parse("2025-11-30 15:30").toString(),
-);
-console.log(
-  "  '2025-11-30 3:30 PM' →",
-  parse("2025-11-30 3:30 PM").toString(),
-);
+console.log("  '2025-11-30 15:30' →", parse("2025-11-30 15:30").toString());
+console.log("  '2025-11-30 3:30 PM' →", parse("2025-11-30 3:30 PM").toString());
 console.log();
 
 console.log("=== Specific type parsing ===\n");
@@ -90,18 +72,9 @@ console.log();
 
 // Force parsing as datetime
 console.log("parseDateTime() - always returns PlainDateTime:");
-console.log(
-  "  '2025-11-30T15:30:00' →",
-  parseDateTime("2025-11-30T15:30:00").toString(),
-);
-console.log(
-  "  '2025-11-30 15:30' →",
-  parseDateTime("2025-11-30 15:30").toString(),
-);
-console.log(
-  "  '11/30/2025 3:30 PM' →",
-  parseDateTime("11/30/2025 3:30 PM").toString(),
-);
+console.log("  '2025-11-30T15:30:00' →", parseDateTime("2025-11-30T15:30:00").toString());
+console.log("  '2025-11-30 15:30' →", parseDateTime("2025-11-30 15:30").toString());
+console.log("  '11/30/2025 3:30 PM' →", parseDateTime("11/30/2025 3:30 PM").toString());
 console.log();
 
 console.log("=== Whitespace handling ===\n");
@@ -147,7 +120,7 @@ console.log("=== Practical use cases ===\n");
 function parseUserDateInput(input) {
   try {
     return parseDate(input);
-  } catch (error) {
+  } catch (_error) {
     return null; // or show error to user
   }
 }

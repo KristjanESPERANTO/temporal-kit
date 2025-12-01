@@ -1,11 +1,10 @@
 /**
  * temporal-kit - Boundary Operations Examples
- * 
+ *
  * Demonstrates startOf() and endOf() functions for finding time boundaries.
  */
 
-import { Temporal } from "../dist/polyfilled.js";
-import { startOf, endOf } from "../dist/polyfilled.js";
+import { endOf, startOf, Temporal } from "../dist/polyfilled.js";
 
 console.log("=== Start/End of Time Units ===\n");
 
@@ -54,9 +53,7 @@ console.log();
 // ZonedDateTime boundaries
 console.log("=== ZonedDateTime Boundaries ===\n");
 
-const zoned = Temporal.ZonedDateTime.from(
-  "2025-11-30T15:45:30+01:00[Europe/Berlin]"
-);
+const zoned = Temporal.ZonedDateTime.from("2025-11-30T15:45:30+01:00[Europe/Berlin]");
 console.log(`Zoned time: ${zoned}`);
 console.log();
 
