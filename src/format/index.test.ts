@@ -386,5 +386,35 @@ describe("formatRelative", () => {
       const result = formatRelative(yesterday);
       expect(result).toBe("yesterday");
     });
+
+    it("formats PlainDateTime without base argument", () => {
+      const now = Temporal.Now.plainDateTimeISO();
+      const yesterday = now.subtract({ days: 1 });
+      const result = formatRelative(yesterday);
+      expect(result).toBe("yesterday");
+    });
+
+    it("formats ZonedDateTime without base argument", () => {
+      const now = Temporal.Now.zonedDateTimeISO();
+      const yesterday = now.subtract({ days: 1 });
+      const result = formatRelative(yesterday);
+      expect(result).toBe("yesterday");
+    });
+  });
+
+  describe("mixed types", () => {
+    it("formats PlainDate relative to PlainDateTime", () => {
+      const date = Temporal.PlainDate.from("2025-11-30");
+      const dt = Temporal.PlainDateTime.from("2025-12-01T12:00:00");
+      const result = formatRelative(date, dt);
+      expect(result).toBe("yesterday");
+    });
+
+    it("formats PlainDateTime relative to PlainDate", () => {
+      const dt = Temporal.PlainDateTime.from("2025-11-30T12:00:00");
+      const date = Temporal.PlainDate.from("2025-12-01");
+      const result = formatRelative(dt, date);
+      expect(result).toBe("12 hours ago");
+    });
   });
 });

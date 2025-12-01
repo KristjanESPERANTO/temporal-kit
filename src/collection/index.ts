@@ -5,6 +5,7 @@
 
 import type { Temporal } from "temporal-polyfill";
 import { compare } from "../compare/index.js";
+import { isZonedDateTime } from "../guards/index.js";
 import type { DateLike } from "../types/index.js";
 
 /**
@@ -93,7 +94,8 @@ function getAbsDifference(a: DateLike, b: DateLike): bigint {
   // If both are ZonedDateTime, use epochNanoseconds
   if ("epochNanoseconds" in a && "epochNanoseconds" in b) {
     const diff = a.epochNanoseconds - b.epochNanoseconds;
-    return diff < 0n ? -diff : diff;
+    const absDiff = diff < 0n ? -diff : diff;
+    return absDiff;
   }
 
   // For mixed types or Plain types, normalize to ZonedDateTime UTC
@@ -101,11 +103,11 @@ function getAbsDifference(a: DateLike, b: DateLike): bigint {
   const dtB = toZonedDateTime(b);
 
   const diff = dtA.epochNanoseconds - dtB.epochNanoseconds;
-  return diff < 0n ? -diff : diff;
+  const absDiff = diff < 0n ? -diff : diff;
+  return absDiff;
 }
 
 function toZonedDateTime(d: DateLike): Temporal.ZonedDateTime {
-  if ("epochNanoseconds" in d) return d as Temporal.ZonedDateTime;
-  if ("hour" in d) return (d as Temporal.PlainDateTime).toZonedDateTime("UTC");
-  return (d as Temporal.PlainDate).toZonedDateTime("UTC");
+  const result = isZonedDateTime(d) ? d : d.toZonedDateTime("UTC");
+  return result;
 }

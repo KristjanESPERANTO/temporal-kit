@@ -1,5 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
+import { isZonedDateTime } from "../guards/index.js";
 import { eachDayOfInterval, eachWeekOfInterval, rangesOverlap, stepInterval } from "./index.js";
 
 describe("range", () => {
@@ -75,6 +76,35 @@ describe("range", () => {
       expect(generator.next().value.toString()).toBe("2025-01-03");
       expect(generator.next().value.toString()).toBe("2025-01-05");
       expect(generator.next().done).toBe(true);
+    });
+    it("should iterate over PlainDateTime", () => {
+      const start = Temporal.PlainDateTime.from("2025-01-01T10:00:00");
+      const end = Temporal.PlainDateTime.from("2025-01-01T12:00:00");
+      const result = Array.from(stepInterval({ start, end }, { hours: 1 }));
+      expect(result).toHaveLength(3);
+      expect(result[0].toString()).toBe("2025-01-01T10:00:00");
+      expect(result[1].toString()).toBe("2025-01-01T11:00:00");
+      expect(result[2].toString()).toBe("2025-01-01T12:00:00");
+    });
+
+    it("should iterate over ZonedDateTime", () => {
+      const start = Temporal.ZonedDateTime.from("2025-01-01T10:00:00+01:00[Europe/Berlin]");
+      expect(isZonedDateTime(start)).toBe(true);
+      const end = Temporal.ZonedDateTime.from("2025-01-01T12:00:00+01:00[Europe/Berlin]");
+      const result = Array.from(stepInterval({ start, end }, { hours: 1 }));
+      expect(result).toHaveLength(3);
+      expect(result[0].toString()).toContain("10:00:00");
+      expect(result[1].toString()).toContain("11:00:00");
+      expect(result[2].toString()).toContain("12:00:00");
+    });
+
+    it("should throw for unsupported type", () => {
+      const start = { foo: "bar" };
+      const end = { foo: "baz" };
+      // @ts-expect-error - testing invalid type
+      const generator = stepInterval({ start, end }, { days: 1 });
+      // We need to try to iterate to trigger the error
+      expect(() => generator.next()).toThrow();
     });
   });
 

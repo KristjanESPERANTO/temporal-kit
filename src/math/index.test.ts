@@ -1,6 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
-import { add, endOf, startOf, subtract } from "./index.js";
+import { add, endOf, nextDay, previousDay, startOf, subtract } from "./index.js";
 
 describe("Math Functions", () => {
   describe("add", () => {
@@ -229,6 +229,64 @@ describe("Math Functions", () => {
       const date = Temporal.PlainDate.from("2025-11-30");
       // @ts-expect-error - testing invalid unit
       expect(() => endOf(date, "invalid")).toThrow("Invalid unit: invalid");
+    });
+  });
+
+  describe("nextDay", () => {
+    it("should find next Friday from Sunday", () => {
+      const date = Temporal.PlainDate.from("2025-11-30"); // Sunday
+      const result = nextDay(date, 5); // Friday
+      expect(result.toString()).toBe("2025-12-05");
+    });
+
+    it("should find next Monday from Sunday", () => {
+      const date = Temporal.PlainDate.from("2025-11-30"); // Sunday
+      const result = nextDay(date, 1); // Monday
+      expect(result.toString()).toBe("2025-12-01");
+    });
+
+    it("should find next Monday from Monday", () => {
+      const date = Temporal.PlainDate.from("2025-12-01"); // Monday
+      const result = nextDay(date, 1); // Next Monday
+      expect(result.toString()).toBe("2025-12-08");
+    });
+
+    it("should find next Friday from Monday", () => {
+      const date = Temporal.PlainDate.from("2025-12-01"); // Monday
+      const result = nextDay(date, 5); // Friday
+      expect(result.toString()).toBe("2025-12-05");
+    });
+
+    it("should throw for invalid day of week", () => {
+      const date = Temporal.PlainDate.from("2025-11-30");
+      expect(() => nextDay(date, 0)).toThrow();
+      expect(() => nextDay(date, 8)).toThrow();
+    });
+  });
+
+  describe("previousDay", () => {
+    it("should find previous Friday from Sunday", () => {
+      const date = Temporal.PlainDate.from("2025-11-30"); // Sunday
+      const result = previousDay(date, 5); // Friday
+      expect(result.toString()).toBe("2025-11-28");
+    });
+
+    it("should find previous Monday from Sunday", () => {
+      const date = Temporal.PlainDate.from("2025-11-30"); // Sunday
+      const result = previousDay(date, 1); // Monday
+      expect(result.toString()).toBe("2025-11-24");
+    });
+
+    it("should find previous Monday from Monday", () => {
+      const date = Temporal.PlainDate.from("2025-12-01"); // Monday
+      const result = previousDay(date, 1); // Previous Monday
+      expect(result.toString()).toBe("2025-11-24");
+    });
+
+    it("should throw for invalid day of week", () => {
+      const date = Temporal.PlainDate.from("2025-11-30");
+      expect(() => previousDay(date, 0)).toThrow();
+      expect(() => previousDay(date, 8)).toThrow();
     });
   });
 });
