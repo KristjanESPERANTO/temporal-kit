@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.0](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.1.1...v0.2.0) (2025-12-01)
+
+
+### Features
+
+* add business day utilities and missing type guards ([3dd96e1](https://github.com/KristjanESPERANTO/temporal-kit/commit/3dd96e1d3eddc06cf46d4e784dd08e0cdff0a0ee))
+* add security infrastructure ([0fc054d](https://github.com/KristjanESPERANTO/temporal-kit/commit/0fc054d0c2b56f7d98defbf7e12cabbe746946cd))
+* enhance landing page with improvements ([3efe9a5](https://github.com/KristjanESPERANTO/temporal-kit/commit/3efe9a50d06654c235aee7a728ff10fc7373e176))
+
+
+### Bug Fixes
+
+* update includes in biome.json to include examples directory; clean up README.md ([e646ec1](https://github.com/KristjanESPERANTO/temporal-kit/commit/e646ec16b132c1591f855d806fed99ee9a553564))
+
+
+### Code Refactoring
+
+* **release:** convert update-html-version script from CJS to ESM ([ad47b87](https://github.com/KristjanESPERANTO/temporal-kit/commit/ad47b87db0bc444fc386045120f409bec50be9f6))
+* switch biome to blacklist approach; fix all linting issues ([5eaba3d](https://github.com/KristjanESPERANTO/temporal-kit/commit/5eaba3d3e6b4b39f3d14cbe518a841d7bbd8ca4e))
+
 ## [0.1.1](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.1.0...v0.1.1) (2025-12-01)
 
 

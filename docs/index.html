@@ -870,11 +870,11 @@
                 temporalKit = await import('../dist/polyfilled.js');
             } else {
                 // Fallback to CDN
-                temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.1.1/dist/polyfilled.js');
+                temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.2.0/dist/polyfilled.js');
             }
         } catch (e) {
             console.warn('Primary import failed, falling back to CDN:', e);
-            temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.1.1/dist/polyfilled.js');
+            temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.2.0/dist/polyfilled.js');
         }
 
         const { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend } = temporalKit;
