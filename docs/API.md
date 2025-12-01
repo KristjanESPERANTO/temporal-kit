@@ -10,6 +10,8 @@ Complete reference for all functions in temporal-kit.
 - [Parsing Functions](#parsing-functions)
 - [Formatting Functions](#formatting-functions)
 - [Math Functions](#math-functions)
+- [Range Functions](#range-functions)
+- [Collection Functions](#collection-functions)
 - [Utility Functions](#utility-functions)
 - [Types](#types)
 
@@ -902,6 +904,83 @@ for (const date of stepInterval({ start, end }, { days: 2 })) {
 // 2025-01-01
 // 2025-01-03
 // 2025-01-05
+```
+
+---
+
+## Collection Functions
+
+Helpers for working with arrays of Temporal objects.
+
+### `sortAsc(dates)`
+
+Sorts an array of dates in ascending order. Returns a new array.
+
+**Parameters:**
+- `dates: DateLike[]` - Array of dates to sort
+
+**Returns:** `DateLike[]` - New sorted array
+
+**Example:**
+```typescript
+import { sortAsc } from 'temporal-kit';
+
+const dates = [
+  Temporal.PlainDate.from('2025-12-31'),
+  Temporal.PlainDate.from('2025-01-01')
+];
+
+const sorted = sortAsc(dates);
+// [2025-01-01, 2025-12-31]
+```
+
+---
+
+### `sortDesc(dates)`
+
+Sorts an array of dates in descending order. Returns a new array.
+
+**Parameters:**
+- `dates: DateLike[]` - Array of dates to sort
+
+**Returns:** `DateLike[]` - New sorted array
+
+**Example:**
+```typescript
+import { sortDesc } from 'temporal-kit';
+
+const dates = [
+  Temporal.PlainDate.from('2025-01-01'),
+  Temporal.PlainDate.from('2025-12-31')
+];
+
+const sorted = sortDesc(dates);
+// [2025-12-31, 2025-01-01]
+```
+
+---
+
+### `closestTo(dateToCompare, dates)`
+
+Returns the date from the array closest to the given date.
+
+**Parameters:**
+- `dateToCompare: DateLike` - The target date
+- `dates: DateLike[]` - Array of dates to search
+
+**Returns:** `DateLike | undefined` - The closest date, or undefined if array is empty
+
+**Example:**
+```typescript
+import { closestTo } from 'temporal-kit';
+
+const target = Temporal.PlainDate.from('2025-06-01');
+const dates = [
+  Temporal.PlainDate.from('2025-01-01'),
+  Temporal.PlainDate.from('2025-12-31')
+];
+
+closestTo(target, dates); // 2025-01-01
 ```
 
 ---

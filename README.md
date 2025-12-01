@@ -149,7 +149,7 @@ src/
 ### 💡 Phase 4: Advanced Features (IN PROGRESS)
 1.  **Relative Formatting:** ✅ `formatRelative` updated with time unit support (seconds, minutes, hours)
 2.  **Range Operations:** ✅ `rangesOverlap`, `eachDayOfInterval`, `eachWeekOfInterval`, `stepInterval`
-3.  **Collection Helpers:** `sortAsc`, `sortDesc`, `closestTo` (Simplifies working with arrays of dates)
+3.  **Collection Helpers:** ✅ `sortAsc`, `sortDesc`, `closestTo` (Simplifies working with arrays of dates)
 4.  **Specific Comparisons:** `isSameDay`, `isSameWeek`, `isSameMonth`, `isSameYear` helpers
 5.  **Validation Helpers:** `isValidDateString`, `isValidTimeString`, `isValidDateTimeString`
 6.  **Functional Rounding:** `floor`, `ceil`, `round` wrappers for functional composition

@@ -16,6 +16,8 @@ if (typeof (globalThis as { Temporal?: unknown }).Temporal === "undefined") {
 
 // Re-export compare functions
 export * from "./compare/index.js";
+// Re-export collection functions
+export * from "./collection/index.js";
 // Re-export convert functions
 export * from "./convert/index.js";
 // Re-export format functions
