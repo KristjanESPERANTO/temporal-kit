@@ -242,3 +242,51 @@ export function isSameWeek(a: DateLike, b: DateLike): boolean {
 export function isSameDay(a: DateLike, b: DateLike): boolean {
   return a.year === b.year && a.month === b.month && a.day === b.day;
 }
+
+/**
+ * Checks if a date is between two other dates (inclusive).
+ *
+ * @param date - The date to check
+ * @param start - The start of the range
+ * @param end - The end of the range
+ * @returns true if date is between start and end (inclusive)
+ *
+ * @example
+ * ```ts
+ * import { isBetween } from 'temporal-kit';
+ *
+ * const date = Temporal.PlainDate.from('2025-01-15');
+ * const start = Temporal.PlainDate.from('2025-01-01');
+ * const end = Temporal.PlainDate.from('2025-01-31');
+ *
+ * isBetween(date, start, end); // true
+ * ```
+ */
+export function isBetween(date: DateLike, start: DateLike, end: DateLike): boolean {
+  return compare(date, start) >= 0 && compare(date, end) <= 0;
+}
+
+/**
+ * Clamps a date within a range.
+ *
+ * @param date - The date to clamp
+ * @param minDate - The minimum allowed date
+ * @param maxDate - The maximum allowed date
+ * @returns The clamped date
+ *
+ * @example
+ * ```ts
+ * import { clamp } from 'temporal-kit';
+ *
+ * const date = Temporal.PlainDate.from('2025-02-01');
+ * const min = Temporal.PlainDate.from('2025-01-01');
+ * const max = Temporal.PlainDate.from('2025-01-31');
+ *
+ * clamp(date, min, max); // 2025-01-31
+ * ```
+ */
+export function clamp<T extends DateLike>(date: T, minDate: T, maxDate: T): T {
+  if (compare(date, minDate) < 0) return minDate;
+  if (compare(date, maxDate) > 0) return maxDate;
+  return date;
+}

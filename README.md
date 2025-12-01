@@ -20,6 +20,29 @@ import { isPlainDate } from 'temporal-kit/polyfilled';
 
 > **💡 See it in action:** Check out [`examples/`](./examples) for runnable code samples covering type guards, polyfill usage, TypeScript integration, and more.
 
+## Common Recipes
+
+```typescript
+import { formatRelative, startOf, endOf, add, pipe, isBetween } from 'temporal-kit';
+import { Temporal } from 'temporal-polyfill';
+
+const now = Temporal.Now.zonedDateTimeISO();
+
+// 1. Relative Time
+formatRelative(now.subtract({ minutes: 5 })); // "5 minutes ago"
+
+// 2. Find next Friday
+const nextFriday = pipe(
+  now,
+  d => add(d, { weeks: 1 }),
+  d => startOf(d, 'week'), // Monday
+  d => add(d, { days: 4 }) // Friday
+);
+
+// 3. Check if date is in range
+isBetween(now, startOf(now, 'year'), endOf(now, 'year')); // true
+```
+
 ## Documentation
 
 - **[API Reference](./docs/API.md)** - Complete function reference with examples
@@ -80,7 +103,8 @@ const result = pipe(
 - Modern functional patterns
 - Future-ready for JS pipeline operator (`|>`)
 
-*Note: A fluent/chainable API may be added later as a thin wrapper, but the functional core is the foundation.*
+> **Why no method chaining?**
+> Fluent APIs (like `moment().add().startOf()`) are convenient but break tree-shaking because the wrapper object must bundle *all* available methods. By sticking to pure functions, `temporal-kit` remains tiny (~11KB) and aligns with the future of JavaScript (Pipeline Operator).
 
 ### D. Polyfill Strategy (Explicit Opt-in)
 We adopt a robust strategy for compatibility:
@@ -123,38 +147,16 @@ src/
   - Functional composition utilities
   - Error handling and edge cases
 
-## 4. Current Status & Roadmap
+## 4. Features & Capabilities
 
-### ✅ Phase 1: Foundation (DONE)
-1.  **Scaffold:** TypeScript, Biome, Vitest, tsup configured.
-2.  **Types:** Core type system with `DateLike`, `TimeLike` unions.
-3.  **Guards:** Runtime type checks (`isPlainDate`, `isZonedDateTime`, etc.).
-4.  **Build:** Dual entry points with proper tree-shaking.
-5.  **Examples:** Comprehensive example files demonstrating usage patterns ([`examples/`](./examples)).
-
-### ✅ Phase 2: Core Functions (DONE)
-1.  **Comparison:** ✅ `isBefore`, `isAfter`, `isSame`, `min`, `max` ([`examples/04-comparisons.js`](./examples/04-comparisons.js))
-2.  **Convert:** ✅ `now`, `fromISO`, explicit type conversions ([`examples/05-conversions.js`](./examples/05-conversions.js))
-3.  **Math:** ✅ `add`, `subtract`, `startOf`, `endOf` ([`examples/06-arithmetic.js`](./examples/06-arithmetic.js), [`examples/07-boundaries.js`](./examples/07-boundaries.js))
-4.  **Utils:** ✅ `pipe`, `compose` for functional composition ([`examples/08-composition.js`](./examples/08-composition.js))
-5.  **Format:** ✅ `format`, `formatTime`, `formatDateTime`, `formatRelative` with Intl support ([`examples/09-formatting.js`](./examples/09-formatting.js))
-6.  **Testing:** ✅ Comprehensive test suite with 100% coverage (165 tests)
-
-### ✅ Phase 3: Formatting & Polish (DONE)
-1.  **Formatting:** ✅ Implement `format` using `Intl.DateTimeFormat` with smart defaults ([`examples/09-formatting.js`](./examples/09-formatting.js))
-2.  **Documentation:** ✅ API reference ([`docs/API.md`](./docs/API.md)), usage examples ([`docs/USAGE_EXAMPLES.md`](./docs/USAGE_EXAMPLES.md)), best practices ([`docs/BEST_PRACTICES.md`](./docs/BEST_PRACTICES.md))
-3.  **Parse:** ✅ Smart string-to-Temporal parsing with format detection ([`examples/10-parsing.js`](./examples/10-parsing.js))
-4.  **Timezone Examples:** ✅ Document DST transitions and offset handling ([`examples/11-timezones.js`](./examples/11-timezones.js))
-
-### 💡 Phase 4: Advanced Features (IN PROGRESS)
-1.  **Relative Formatting:** ✅ `formatRelative` updated with time unit support (seconds, minutes, hours)
-2.  **Range Operations:** ✅ `rangesOverlap`, `eachDayOfInterval`, `eachWeekOfInterval`, `stepInterval`
-3.  **Collection Helpers:** ✅ `sortAsc`, `sortDesc`, `closestTo` (Simplifies working with arrays of dates)
-4.  **Specific Comparisons:** ✅ `isSameDay`, `isSameWeek`, `isSameMonth`, `isSameYear` helpers
-5.  **Validation Helpers:** ✅ `isValidDateString`, `isValidTimeString`, `isValidDateTimeString`
-6.  **Functional Rounding:** ✅ `floor`, `ceil`, `round` wrappers for functional composition
-7.  **Timezone Utilities:** ✅ `isValidTimezone`, `getTimezoneName`
-8.  **Fluent API:** Optional chainable wrapper as separate entry point (Experimental)
+- **Comparison:** `isBefore`, `isAfter`, `isSame`, `isBetween`, `min`, `max`, `clamp`
+- **Arithmetic:** `add`, `subtract`, `startOf`, `endOf`
+- **Formatting:** `format`, `formatTime`, `formatDateTime`, `formatRelative` (Intl-based)
+- **Conversion:** `now`, `fromISO`
+- **Ranges:** `rangesOverlap`, `eachDayOfInterval`, `stepInterval`
+- **Collections:** `sortAsc`, `sortDesc`, `closestTo`
+- **Validation:** `isValidDateString`, `isValidTimezone`, `getTimezoneName`
+- **Functional Utils:** `pipe`, `compose`
 
 ## 5. Developer Experience
 

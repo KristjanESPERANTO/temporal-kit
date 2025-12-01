@@ -1,8 +1,10 @@
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
 import {
+  clamp,
   isAfter,
   isBefore,
+  isBetween,
   isSame,
   isSameDay,
   isSameMonth,
@@ -324,6 +326,66 @@ describe("Comparison Functions", () => {
       const d1 = Temporal.PlainDate.from("2025-01-01");
       const d2 = Temporal.PlainDate.from("2025-01-02");
       expect(isSameDay(d1, d2)).toBe(false);
+    });
+  });
+
+  describe("isBetween", () => {
+    it("returns true when date is between start and end", () => {
+      const date = Temporal.PlainDate.from("2025-01-15");
+      const start = Temporal.PlainDate.from("2025-01-01");
+      const end = Temporal.PlainDate.from("2025-01-31");
+      expect(isBetween(date, start, end)).toBe(true);
+    });
+
+    it("returns true when date is equal to start", () => {
+      const date = Temporal.PlainDate.from("2025-01-01");
+      const start = Temporal.PlainDate.from("2025-01-01");
+      const end = Temporal.PlainDate.from("2025-01-31");
+      expect(isBetween(date, start, end)).toBe(true);
+    });
+
+    it("returns true when date is equal to end", () => {
+      const date = Temporal.PlainDate.from("2025-01-31");
+      const start = Temporal.PlainDate.from("2025-01-01");
+      const end = Temporal.PlainDate.from("2025-01-31");
+      expect(isBetween(date, start, end)).toBe(true);
+    });
+
+    it("returns false when date is before start", () => {
+      const date = Temporal.PlainDate.from("2024-12-31");
+      const start = Temporal.PlainDate.from("2025-01-01");
+      const end = Temporal.PlainDate.from("2025-01-31");
+      expect(isBetween(date, start, end)).toBe(false);
+    });
+
+    it("returns false when date is after end", () => {
+      const date = Temporal.PlainDate.from("2025-02-01");
+      const start = Temporal.PlainDate.from("2025-01-01");
+      const end = Temporal.PlainDate.from("2025-01-31");
+      expect(isBetween(date, start, end)).toBe(false);
+    });
+  });
+
+  describe("clamp", () => {
+    it("returns date when within range", () => {
+      const date = Temporal.PlainDate.from("2025-01-15");
+      const minDate = Temporal.PlainDate.from("2025-01-01");
+      const maxDate = Temporal.PlainDate.from("2025-01-31");
+      expect(clamp(date, minDate, maxDate).equals(date)).toBe(true);
+    });
+
+    it("returns minDate when date is before minDate", () => {
+      const date = Temporal.PlainDate.from("2024-12-31");
+      const minDate = Temporal.PlainDate.from("2025-01-01");
+      const maxDate = Temporal.PlainDate.from("2025-01-31");
+      expect(clamp(date, minDate, maxDate).equals(minDate)).toBe(true);
+    });
+
+    it("returns maxDate when date is after maxDate", () => {
+      const date = Temporal.PlainDate.from("2025-02-01");
+      const minDate = Temporal.PlainDate.from("2025-01-01");
+      const maxDate = Temporal.PlainDate.from("2025-01-31");
+      expect(clamp(date, minDate, maxDate).equals(maxDate)).toBe(true);
     });
   });
 });
