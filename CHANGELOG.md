@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.1](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.1.0...v0.1.1) (2025-12-01)
+
+
+### Bug Fixes
+
+* disable noConsole rule in linter and clean up TypeScript example formatting ([1d8a9c0](https://github.com/KristjanESPERANTO/temporal-kit/commit/1d8a9c0d9aa8c7fc76644501a276c9c535e1fc13))
+* make format tests timezone-independent for CI ([35a68a1](https://github.com/KristjanESPERANTO/temporal-kit/commit/35a68a18b78abe17e6df6e76a68cde4ae16beabb))
+
+
+### Chores
+
+* improve npm keywords for better discoverability ([414a0c7](https://github.com/KristjanESPERANTO/temporal-kit/commit/414a0c7f948acd04b1147a351031a38866a542e3))
+
+
+### Documentation
+
+* add bundle size and license badges to README ([d9381bc](https://github.com/KristjanESPERANTO/temporal-kit/commit/d9381bcb405bb76a72bd8f154eca2b38ecb24c26))
+* add SEO meta tags to landing page ([4db6f43](https://github.com/KristjanESPERANTO/temporal-kit/commit/4db6f43598b9d9d1bb87bf9f03c29d78617d11ed))
+* cleanup examples and update readme ([0a1d0b6](https://github.com/KristjanESPERANTO/temporal-kit/commit/0a1d0b6c3037aa36497fb856836cc64a0cb6396c))
+
 ## [0.1.0](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.0.3...v0.1.0) (2025-12-01)
 
 
