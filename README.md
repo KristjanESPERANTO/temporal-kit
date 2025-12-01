@@ -146,14 +146,15 @@ src/
 3.  **Parse:** ✅ Smart string-to-Temporal parsing with format detection ([`examples/10-parsing.js`](./examples/10-parsing.js))
 4.  **Timezone Examples:** ✅ Document DST transitions and offset handling ([`examples/11-timezones.js`](./examples/11-timezones.js))
 
-### 💡 Phase 4: Advanced Features (FUTURE)
-1.  **Relative Formatting:** `formatRelative` for human-readable relative times ("2 days ago", "in 3 hours")
-2.  **Specific Comparisons:** `isSameDay`, `isSameWeek`, `isSameMonth`, `isSameYear` helpers
-3.  **Temporal Rounding:** `floor`, `ceil`, `round` for rounding to time units
-4.  **Range Operations:** `rangesOverlap`, `eachDayOfInterval`, `eachWeekOfInterval`, `stepInterval`
+### 💡 Phase 4: Advanced Features (IN PROGRESS)
+1.  **Relative Formatting:** ✅ `formatRelative` updated with time unit support (seconds, minutes, hours)
+2.  **Range Operations:** `rangesOverlap`, `eachDayOfInterval`, `eachWeekOfInterval`, `stepInterval`
+3.  **Collection Helpers:** `sortAsc`, `sortDesc`, `closestTo` (Simplifies working with arrays of dates)
+4.  **Specific Comparisons:** `isSameDay`, `isSameWeek`, `isSameMonth`, `isSameYear` helpers
 5.  **Validation Helpers:** `isValidDateString`, `isValidTimeString`, `isValidDateTimeString`
-6.  **Timezone Utilities:** `getAllTimezones`, `isValidTimezone`, `getTimezoneName`
-7.  **Fluent API:** Optional chainable wrapper as separate entry point (if needed)
+6.  **Functional Rounding:** `floor`, `ceil`, `round` wrappers for functional composition
+7.  **Timezone Utilities:** `isValidTimezone`, `getTimezoneName`
+8.  **Fluent API:** Optional chainable wrapper as separate entry point (Experimental)
 
 ## 5. Developer Experience
 

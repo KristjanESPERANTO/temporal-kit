@@ -141,46 +141,67 @@ export function formatDateTime(date: DateLike, opts: FormatOptions = {}): string
  * const now = Temporal.PlainDate.from('2025-11-30');
  * formatRelative(past, now) // "2 days ago"
  *
- * const future = Temporal.PlainDate.from('2025-12-05');
- * formatRelative(future, now) // "in 5 days"
+ * const future = Temporal.ZonedDateTime.from('2025-12-01T15:00:00+01:00[Europe/Berlin]');
+ * formatRelative(future, now) // "in 3 hours"
  */
 export function formatRelative(
   date: DateLike,
   base?: DateLike,
-  opts: { locale?: string | string[] } = {},
+  opts: { locale?: string | string[]; numeric?: "always" | "auto" } = {},
 ): string {
-  const { locale } = opts;
+  const { locale, numeric = "auto" } = opts;
 
-  // Default base to now
-  const baseDate = base || Temporal.Now.zonedDateTimeISO().toPlainDate();
-
-  // Convert both to PlainDate for comparison
-  const targetDate = date instanceof Temporal.PlainDate ? date : date.toPlainDate();
-  const referenceDate = baseDate instanceof Temporal.PlainDate ? baseDate : baseDate.toPlainDate();
-
-  // Calculate difference in days
-  const diff = targetDate.since(referenceDate, { largestUnit: "day" });
-  const days = diff.days;
-
-  // Use Intl.RelativeTimeFormat
-  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
-
-  // Choose appropriate unit
-  if (Math.abs(days) === 0) {
-    return rtf.format(0, "day"); // "today"
-  }
-  if (Math.abs(days) < 7) {
-    return rtf.format(days, "day");
-  }
-  if (Math.abs(days) < 30) {
-    const weeks = Math.round(days / 7);
-    return rtf.format(weeks, "week");
-  }
-  if (Math.abs(days) < 365) {
-    const months = Math.round(days / 30);
-    return rtf.format(months, "month");
+  // Determine reference date
+  let reference: DateLike;
+  if (base) {
+    reference = base;
+  } else {
+    // Default to now, matching the type of the input if possible
+    if (date instanceof Temporal.PlainDate) {
+      reference = Temporal.Now.plainDateISO();
+    } else if (date instanceof Temporal.PlainDateTime) {
+      reference = Temporal.Now.plainDateTimeISO();
+    } else {
+      reference = Temporal.Now.zonedDateTimeISO();
+    }
   }
 
-  const years = Math.round(days / 365);
-  return rtf.format(years, "year");
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric });
+
+  // Case 1: Both are PlainDate (Date only comparison)
+  if (date instanceof Temporal.PlainDate && reference instanceof Temporal.PlainDate) {
+    const diff = date.since(reference, { largestUnit: "day" });
+    const days = diff.days;
+
+    if (Math.abs(days) < 7) return rtf.format(days, "day");
+    if (Math.abs(days) < 30) return rtf.format(Math.round(days / 7), "week");
+    if (Math.abs(days) < 365) return rtf.format(Math.round(days / 30), "month");
+    return rtf.format(Math.round(days / 365), "year");
+  }
+
+  // Case 2: Time comparison involved
+  // Convert both to ZonedDateTime for accurate comparison (using system TZ for Plain types)
+  const toZDT = (d: DateLike): Temporal.ZonedDateTime => {
+    if ("timeZoneId" in d) return d as Temporal.ZonedDateTime;
+    if ("hour" in d) return (d as Temporal.PlainDateTime).toZonedDateTime(Temporal.Now.timeZoneId());
+    return (d as Temporal.PlainDate)
+      .toPlainDateTime("00:00")
+      .toZonedDateTime(Temporal.Now.timeZoneId());
+  };
+
+  const zdt1 = toZDT(date);
+  const zdt2 = toZDT(reference);
+
+  const diffSeconds = zdt1.since(zdt2, { largestUnit: "second" }).total("second");
+  const absSeconds = Math.abs(diffSeconds);
+
+  if (absSeconds < 60) return rtf.format(Math.round(diffSeconds), "second");
+  if (absSeconds < 3600) return rtf.format(Math.round(diffSeconds / 60), "minute");
+  if (absSeconds < 86400) return rtf.format(Math.round(diffSeconds / 3600), "hour");
+  
+  const days = diffSeconds / 86400;
+  if (Math.abs(days) < 7) return rtf.format(Math.round(days), "day");
+  if (Math.abs(days) < 30) return rtf.format(Math.round(days / 7), "week");
+  if (Math.abs(days) < 365) return rtf.format(Math.round(days / 30), "month");
+  return rtf.format(Math.round(days / 365), "year");
 }

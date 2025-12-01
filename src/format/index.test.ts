@@ -335,6 +335,45 @@ describe("formatRelative", () => {
     });
   });
 
+  describe("Time Units (ZonedDateTime/PlainDateTime)", () => {
+    const baseDT = Temporal.ZonedDateTime.from("2025-11-30T12:00:00+01:00[Europe/Berlin]");
+
+    it("formats seconds ago", () => {
+      const ago = baseDT.subtract({ seconds: 30 });
+      expect(formatRelative(ago, baseDT, { locale: "en-US" })).toBe("30 seconds ago");
+    });
+
+    it("formats in seconds", () => {
+      const later = baseDT.add({ seconds: 30 });
+      expect(formatRelative(later, baseDT, { locale: "en-US" })).toBe("in 30 seconds");
+    });
+
+    it("formats minutes ago", () => {
+      const ago = baseDT.subtract({ minutes: 10 });
+      expect(formatRelative(ago, baseDT, { locale: "en-US" })).toBe("10 minutes ago");
+    });
+
+    it("formats in minutes", () => {
+      const later = baseDT.add({ minutes: 10 });
+      expect(formatRelative(later, baseDT, { locale: "en-US" })).toBe("in 10 minutes");
+    });
+
+    it("formats hours ago", () => {
+      const ago = baseDT.subtract({ hours: 3 });
+      expect(formatRelative(ago, baseDT, { locale: "en-US" })).toBe("3 hours ago");
+    });
+
+    it("formats in hours", () => {
+      const later = baseDT.add({ hours: 3 });
+      expect(formatRelative(later, baseDT, { locale: "en-US" })).toBe("in 3 hours");
+    });
+
+    it("formats days if > 24 hours", () => {
+      const later = baseDT.add({ hours: 25 });
+      expect(formatRelative(later, baseDT, { locale: "en-US" })).toBe("tomorrow");
+    });
+  });
+
   describe("defaults to now when base not provided", () => {
     it("formats without base argument", () => {
       // This will compare against current date, so just verify it doesn't throw

@@ -670,7 +670,7 @@ Format relative time (e.g., "2 days ago", "in 3 hours").
 **Parameters:**
 - `date: DateLike` - Date to format
 - `base?: DateLike` - Base date to compare against (default: now)
-- `options?: { locale?: string | string[] }` - Formatting options
+- `options?: { locale?: string | string[], numeric?: "always" | "auto" }` - Formatting options
 
 **Returns:** `string`
 
@@ -678,18 +678,19 @@ Format relative time (e.g., "2 days ago", "in 3 hours").
 ```typescript
 import { formatRelative } from 'temporal-kit';
 
+// Date comparisons (PlainDate)
 const today = Temporal.PlainDate.from('2025-11-30');
-const yesterday = today.subtract({ days: 1 });
-const tomorrow = today.add({ days: 1 });
-
-formatRelative(yesterday, today); // "yesterday"
-formatRelative(tomorrow, today); // "tomorrow"
-formatRelative(today.subtract({ days: 7 }), today); // "last week"
+formatRelative(today.subtract({ days: 1 }), today); // "yesterday"
 formatRelative(today.add({ days: 14 }), today); // "in 2 weeks"
 
+// Time comparisons (ZonedDateTime/PlainDateTime)
+const now = Temporal.Now.zonedDateTimeISO();
+formatRelative(now.subtract({ minutes: 10 }), now); // "10 minutes ago"
+formatRelative(now.add({ hours: 3 }), now); // "in 3 hours"
+formatRelative(now.add({ seconds: 30 }), now); // "in 30 seconds"
+
 // Different locales
-formatRelative(yesterday, today, { locale: 'de-DE' }); // "gestern"
-formatRelative(yesterday, today, { locale: 'fr-FR' }); // "hier"
+formatRelative(today.subtract({ days: 1 }), today, { locale: 'de-DE' }); // "gestern"
 ```
 
 ---
