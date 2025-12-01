@@ -20,7 +20,7 @@
     },
     {
       "filename": "docs/index.html",
-      "updater": "scripts/update-html-version.cjs"
+      "updater": "scripts/update-html-version.js"
     }
   ]
 }
