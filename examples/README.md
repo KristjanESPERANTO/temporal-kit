@@ -10,7 +10,7 @@
 
 **Note:** Native Temporal is not yet available in Node.js (as of Node 25). Use the polyfilled examples.
 
-### ⭐ Recommended: Start Here
+### Recommended: Start Here
 ```bash
 npm run build
 node examples/01-basic-usage.js    # Feature overview
@@ -35,18 +35,18 @@ node examples/dist/03-typescript-usage.js
 
 ## Available Examples
 
-### ✅ Implemented & Runnable Now
-- **01-basic-usage.js** - Overview of all planned features (type guards work, rest commented)
+### Implemented & Runnable Now
+- **01-basic-usage.js** - Overview of all planned features
 - **02-real-world.js** - Practical patterns: current time, timezones, relative dates ⭐
 - **03-typescript-usage.ts** - TypeScript integration and type safety
-
-### 🔜 Prepared (run when features are implemented)
 - **04-comparisons.js** - Date comparisons (isBefore, isAfter, min, max)
-- **05-arithmetic.js** - Date arithmetic (add, subtract)
-- **06-boundaries.js** - Start/end of periods (startOf, endOf)
-- **07-formatting.js** - Intl-based formatting with locales
+- **05-conversions.js** - Creation & conversion (now, fromISO, toZonedDateTime)
+- **06-arithmetic.js** - Date arithmetic (add, subtract)
+- **07-boundaries.js** - Start/end of periods (startOf, endOf)
 - **08-composition.js** - Functional composition patterns (pipe, compose)
-- **09-timezones.js** - Timezone conversions, DST handling, offsets
+- **09-formatting.js** - Intl-based formatting with locales
+- **10-parsing.js** - Smart parsing of various date string formats
+- **11-timezones.js** - Timezone conversions, DST handling, offsets
 
 ## Notes
 

@@ -1,24 +1,32 @@
 # Temporal Kit
 
-**Status:** ✅ Ready for Early Adopters
+> **Modern, functional utilities for the Temporal API.**
+> *Experiment with the future of JavaScript dates today.*
 
-A modern, functional utility library for the standard `Temporal` API - built for early adopters who want to experiment with Temporal today.
+[![Status](https://img.shields.io/badge/Status-Ready%20for%20Early%20Adopters-success)](https://github.com/KristjanESPERANTO/temporal-kit)
+[![npm version](https://img.shields.io/npm/v/temporal-kit)](https://www.npmjs.com/package/temporal-kit)
 
-🌐 **[Try it live in your browser →](https://kristjanesperanto.github.io/temporal-kit/)**
+**Temporal Kit** is a lightweight, tree-shakable library that fills the gap between the raw `Temporal` API and the ergonomic needs of daily development. It provides the missing helper functions—like `startOf`, `isBetween`, or `formatRelative`—in a pure, functional, and type-safe way.
+
+🌐 **[Try the Live Playground →](https://kristjanesperanto.github.io/temporal-kit/)**
 
 ## Quick Start
+
+### Installation
 
 ```bash
 npm install temporal-kit
 ```
 
+### Basic Usage
+
 ```typescript
-import { isPlainDate, isZonedDateTime } from 'temporal-kit';
+import { isPlainDate, add, startOf } from 'temporal-kit';
 // Or with polyfill for legacy environments:
 import { isPlainDate } from 'temporal-kit/polyfilled';
 ```
 
-> **💡 See it in action:** Check out [`examples/`](./examples) for runnable code samples covering type guards, polyfill usage, TypeScript integration, and more.
+> **💡 See it in action:** Check out the [`examples`](examples/README.md) for runnable code samples covering type guards, polyfill usage, TypeScript integration, and more.
 
 ## Common Recipes
 
@@ -57,8 +65,6 @@ isBetween(now, startOf(now, 'year'), endOf(now, 'year')); // true
 5.  **Explicit over Magic:** No global config, no implicit conversions, no surprises
 
 **The Goal:** Stop reinventing the same small, error-prone utilities across projects. Instead, share a well-tested, modern implementation that covers 95% of everyday needs while staying lightweight and stable.
-
-**Slogan:** "Experiment with Temporal today."
 
 ## 2. Core Philosophy
 
@@ -105,26 +111,26 @@ const result = pipe(
 ### D. Polyfill Strategy (Explicit Opt-in)
 We adopt a robust strategy for compatibility:
 - **`temporal-kit`**: Lean. Expects `Temporal` to exist. Throws helpful error if missing.
-- **`temporal-kit/polyfilled`**: Imports `temporal-polyfill` automatically for legacy environments.
+- **`temporal-kit/polyfilled`**: Imports `temporal-polyfill` automatically for legacy environments (requires `temporal-polyfill` peer dependency).
 
 ## 3. Architecture
 
 ### Directory Structure
 ```
 src/
-├── types/          # ✅ Core type definitions (DateLike, TimeLike unions)
-├── guards/         # ✅ Type guards (isPlainDate, isZonedDateTime, etc.)
-├── compare/        # ✅ Comparison functions (isBefore, isAfter, min, max)
-├── convert/        # ✅ Creation & conversion (now, fromISO, explicit conversions)
-├── format/         # ✅ Intl-based formatting (format, formatTime, formatDateTime, formatRelative)
-├── math/           # ✅ Arithmetic (add, subtract, startOf, endOf)
-├── utils/          # ✅ Utilities (pipe, compose)
-├── index.ts        # ✅ Main entry (expects native Temporal)
-└── polyfilled.ts   # ✅ Auto-loads polyfill for legacy environments
+├── types/          # Core type definitions (DateLike, TimeLike unions)
+├── guards/         # Type guards (isPlainDate, isZonedDateTime, etc.)
+├── compare/        # Comparison functions (isBefore, isAfter, min, max)
+├── convert/        # Creation & conversion (now, fromISO, explicit conversions)
+├── format/         # Intl-based formatting (format, formatTime, formatDateTime, formatRelative)
+├── math/           # Arithmetic (add, subtract, startOf, endOf)
+├── utils/          # Utilities (pipe, compose)
+├── index.ts        # Main entry (expects native Temporal)
+└── polyfilled.ts   # Auto-loads polyfill for legacy environments
 ```
 
 ### Implementation Details
-- **Zero Dependencies:** We build directly on native `Temporal` APIs. No vendored code.
+- **Zero Runtime Dependencies:** We build directly on native `Temporal` APIs. Polyfill is optional.
 - **Type-Safe:** Full TypeScript support with strict mode and cutting-edge compiler options.
 - **Dual Entry Points:** 
   - `temporal-kit` - Expects native Temporal
@@ -134,8 +140,8 @@ src/
   - **Biome** - Fast linting/formatting with performance rules
   - **Vitest** - Type-checked tests with 100% coverage threshold
   - **tsup** - ESNext bundling with optimized tree-shaking
-  - **TypeScript 5.9+** - Latest compiler features enabled
-- **Testing Strategy:** 100% code coverage (165 tests) including:
+  - **TypeScript 5.x** - Latest compiler features enabled
+- **Testing Strategy:** 100% code coverage including:
   - Type guards and runtime checks
   - Comparison and conversion functions
   - Calendar arithmetic and boundary operations
@@ -154,51 +160,23 @@ src/
 - **Validation:** `isValidDateString`, `isValidTimezone`, `getTimezoneName`
 - **Functional Utils:** `pipe`, `compose`
 
-## 5. Developer Experience
+## 5. Contributing
 
-### Development
-```bash
-npm run dev          # Watch mode for development
-npm run test         # Run tests in watch mode
-npm run test:ui      # Open Vitest UI
-```
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details on:
+- Development setup
+- Quality checks (Linting, Typechecking, Testing)
+- Release process
+- Project standards
 
-### Quality Checks
-```bash
-npm run typecheck    # TypeScript type checking
-npm run lint         # Biome linting
-npm run test:run     # Run all tests once
-npm run test:coverage # Coverage report (100% threshold)
-npm run ci           # Full CI pipeline (typecheck + lint + test + build)
-```
-
-### Release Management
-```bash
-npm run release        # Auto-bump patch version (0.0.1 → 0.0.2)
-npm run release:minor  # Bump minor version (0.0.2 → 0.1.0)
-npm run release:major  # Bump major version (0.0.2 → 1.0.0)
-```
-
-Uses [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) to automatically:
-- Generate/update `CHANGELOG.md` from conventional commits
-- Bump version in `package.json`
-- Create git commit and tag
-- Include `feat`, `fix`, `refactor`, `perf`, `chore`, and `docs` in changelog
-
-### Features for Library Authors
-- **Type-checked tests** - Vitest validates test types against your code
-- **Modern exports** - Proper `exports` field with type/import/default conditions
-- **Source maps** - Full debugging support in development
-- **Coverage thresholds** - Strict 100% coverage requirement
 - **ESNext target** - No legacy transpilation, minimal output
 
 ## 6. Comparison
 
-| Feature | Date (Native) | Luxon | Day.js | Native Temporal | **Temporal Kit** |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Paradigm** | Mutable / Quirky | OO / Immutable | OO / Mutable | OO / Verbose | **Functional** |
-| **Timezones** | Poor | Excellent | Plugin | Native | **Native** |
-| **Tree-Shaking**| N/A | No | No | N/A | **Yes** |
-| **Bundle Size**| N/A | ~70KB | ~7KB (+plugins) | Native | **~11KB** (native) / ~66KB (polyfilled) |
-| **Target** | Everyone | Production | Production | Future | **Early Adopters** |
-| **Philosophy** | Legacy | Battle-tested | Convenience | Standard | **Modern FP + Learning** |
+| Feature | date-fns | Luxon | Native Temporal | **Temporal Kit** |
+| :--- | :--- | :--- | :--- | :--- |
+| **Base Object** | Legacy `Date` ⚠️ | Custom Class | `Temporal` | **`Temporal`** |
+| **Paradigm** | Functional | OO / Immutable | OO / Verbose | **Functional** |
+| **Timezones** | Separate Helpers | Built-in | Native | **Native** |
+| **Tree-Shaking**| ✅ Yes | ❌ No | N/A | **✅ Yes** |
+| **Polyfill Needed?**| No | No | No (Native) | **Optional** |
+| **Best For...** | Legacy Projects | Heavy Date Apps | Low-level Logic | **Modern Apps** |
