@@ -12,6 +12,7 @@ Complete reference for all functions in temporal-kit.
 - [Math Functions](#math-functions)
 - [Range Functions](#range-functions)
 - [Collection Functions](#collection-functions)
+- [Validation Functions](#validation-functions)
 - [Utility Functions](#utility-functions)
 - [Types](#types)
 
@@ -1065,6 +1066,67 @@ const dates = [
 ];
 
 closestTo(target, dates); // 2025-01-01
+```
+
+---
+
+## Validation Functions
+
+Helpers for validating date/time strings.
+
+### `isValidDateString(dateString)`
+
+Checks if a string is a valid ISO 8601 date string (YYYY-MM-DD).
+
+**Parameters:**
+- `dateString: string` - The string to validate
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isValidDateString } from 'temporal-kit';
+
+isValidDateString('2025-12-31'); // true
+isValidDateString('2025-13-01'); // false
+```
+
+---
+
+### `isValidTimeString(timeString)`
+
+Checks if a string is a valid ISO 8601 time string (HH:MM:SS).
+
+**Parameters:**
+- `timeString: string` - The string to validate
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isValidTimeString } from 'temporal-kit';
+
+isValidTimeString('15:30:00'); // true
+isValidTimeString('25:00:00'); // false
+```
+
+---
+
+### `isValidDateTimeString(dateTimeString)`
+
+Checks if a string is a valid ISO 8601 date-time string.
+
+**Parameters:**
+- `dateTimeString: string` - The string to validate
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isValidDateTimeString } from 'temporal-kit';
+
+isValidDateTimeString('2025-12-31T15:30:00'); // true
+isValidDateTimeString('invalid'); // false
 ```
 
 ---

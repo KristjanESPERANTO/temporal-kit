@@ -14,10 +14,10 @@ if (typeof (globalThis as { Temporal?: unknown }).Temporal === "undefined") {
   );
 }
 
-// Re-export compare functions
-export * from "./compare/index.js";
 // Re-export collection functions
 export * from "./collection/index.js";
+// Re-export compare functions
+export * from "./compare/index.js";
 // Re-export convert functions
 export * from "./convert/index.js";
 // Re-export format functions
@@ -34,3 +34,5 @@ export * from "./range/index.js";
 export type * from "./types/index.js";
 // Re-export utils
 export * from "./utils/index.js";
+// Re-export validation functions
+export * from "./validation/index.js";
