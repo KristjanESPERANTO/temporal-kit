@@ -71,3 +71,24 @@ export function isTimeLike(value: unknown): value is TimeLike {
     value instanceof Temporal.ZonedDateTime
   );
 }
+
+/**
+ * Type guard for Temporal.Duration
+ */
+export function isDuration(value: unknown): value is Temporal.Duration {
+  return value instanceof Temporal.Duration;
+}
+
+/**
+ * Type guard for Temporal.PlainYearMonth
+ */
+export function isPlainYearMonth(value: unknown): value is Temporal.PlainYearMonth {
+  return value instanceof Temporal.PlainYearMonth;
+}
+
+/**
+ * Type guard for Temporal.PlainMonthDay
+ */
+export function isPlainMonthDay(value: unknown): value is Temporal.PlainMonthDay {
+  return value instanceof Temporal.PlainMonthDay;
+}

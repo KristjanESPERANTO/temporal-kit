@@ -46,6 +46,10 @@ const nextFriday = nextDay(now, 5); // 5 = Friday
 
 // 3. Check if date is in range
 isBetween(now, startOf(now, 'year'), endOf(now, 'year')); // true
+
+// 4. Business Days
+import { addBusinessDays, isWeekend } from 'temporal-kit';
+const monday = addBusinessDays(friday, 1); // Skips weekend
 ```
 
 ## Documentation

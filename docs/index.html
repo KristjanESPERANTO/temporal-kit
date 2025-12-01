@@ -698,7 +698,7 @@
                         <ul>
                             <li><code>isBefore</code> <code>isAfter</code> compare dates</li>
                             <li><code>isSame</code> <code>isBetween</code> equality & range</li>
-                            <li><code>clamp</code> limit to range</li>
+                            <li><code>clamp</code> <code>isWeekend</code> checks</li>
                         </ul>
                     </div>
 
@@ -707,16 +707,16 @@
                         <ul>
                             <li><code>add</code> <code>subtract</code> add/sub time</li>
                             <li><code>startOf</code> <code>endOf</code> start/end unit</li>
-                            <li><code>nextDay</code> next weekday</li>
+                            <li><code>nextDay</code> <code>addBusinessDays</code> helpers</li>
                         </ul>
                     </div>
 
                     <div class="api-category">
                         <h4>🛡️ Guards & Types</h4>
                         <ul>
-                            <li><code>isPlainDate</code> <code>isInstant</code> type guards</li>
-                            <li><code>isZonedDateTime</code> type guard</li>
-                            <li><code>isDateLike</code> check type</li>
+                            <li><code>isPlainDate</code> <code>isInstant</code> <code>isDuration</code></li>
+                            <li><code>isZonedDateTime</code> <code>isPlainYearMonth</code></li>
+                            <li><code>isPlainMonthDay</code> <code>isDateLike</code></li>
                         </ul>
                     </div>
 
@@ -877,13 +877,10 @@
             temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.1.1/dist/polyfilled.js');
         }
 
-        const { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo } = temporalKit;
+        const { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend } = temporalKit;
         
         // Store for global access
-        window.temporalKit = { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo };
-        
-        // Render all examples on load
-        renderAllExamples();
+        window.temporalKit = { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend };
     </script>
     
     <script>
@@ -971,6 +968,22 @@ console.log('  isZonedDateTime?', isZonedDateTime(date));
 
 console.log('\nZonedDateTime:', zoned.toString());
 console.log('  isZonedDateTime?', isZonedDateTime(zoned));`,
+
+            business: `import { addBusinessDays, isWeekend } from 'temporal-kit';
+
+const friday = Temporal.PlainDate.from('2025-10-03');
+console.log(\`Start date: \${friday.toString()} (\${isWeekend(friday) ? "Weekend" : "Weekday"})\`);
+
+// Adding 1 business day to Friday skips Saturday/Sunday
+const nextBusinessDay = addBusinessDays(friday, 1);
+console.log(\`Next business day: \${nextBusinessDay.toString()}\`);
+
+// Adding 3 business days (Fri -> Mon, Tue, Wed)
+const threeBusinessDays = addBusinessDays(friday, 3);
+console.log(\`+3 business days: \${threeBusinessDays.toString()}\`);
+
+const saturday = Temporal.PlainDate.from('2025-10-04');
+console.log(\`\\nChecking Saturday \${saturday.toString()}: \${isWeekend(saturday) ? "Weekend" : "Weekday"}\`);`,
 
             recipes: `import { add, startOf, nextDay } from 'temporal-kit';
 
@@ -1097,6 +1110,10 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
             guards: {
                 title: 'Type Guards',
                 description: 'Runtime type checking for Temporal objects. Useful when working with mixed date types or validating API responses.'
+            },
+            business: {
+                title: 'Business Days',
+                description: 'Calculate delivery dates or deadlines by skipping weekends. Essential for business logic.'
             }
         };
         
@@ -1104,9 +1121,9 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
             return code.replace(/(\/\/.*)/g, '<span class="comment">$1</span>');
         }
         
-        function _renderAllExamples() {
+        function renderAllExamples() {
             const container = document.getElementById('examplesContainer');
-            const exampleNames = ['relative', 'nextday', 'sort', 'closest', 'timezones', 'guards'];
+            const exampleNames = ['relative', 'nextday', 'business', 'sort', 'closest', 'timezones', 'guards'];
             
             exampleNames.forEach(name => {
                 const meta = exampleMeta[name];
@@ -1251,6 +1268,25 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                 
                 return output.join('\n');
             },
+
+            business: () => {
+                const output = [];
+                const { addBusinessDays, isWeekend } = window.temporalKit;
+
+                const friday = Temporal.PlainDate.from('2025-10-03');
+                output.push(`Start date: ${friday.toString()} (${isWeekend(friday) ? "Weekend" : "Weekday"})`);
+
+                const nextBusinessDay = addBusinessDays(friday, 1);
+                output.push(`Next business day: ${nextBusinessDay.toString()}`);
+
+                const threeBusinessDays = addBusinessDays(friday, 3);
+                output.push(`+3 business days: ${threeBusinessDays.toString()}`);
+
+                const saturday = Temporal.PlainDate.from('2025-10-04');
+                output.push(`\nChecking Saturday ${saturday.toString()}: ${isWeekend(saturday) ? "Weekend" : "Weekday"}`);
+
+                return output.join('\n');
+            },
             
             clamp: () => {
                 const output = [];
@@ -1341,6 +1377,9 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
             btn.textContent = 'Copied!';
             setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
         }
+
+        // Initialize examples
+        renderAllExamples();
     </script>
 </body>
 </html>

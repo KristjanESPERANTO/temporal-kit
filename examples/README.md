@@ -24,7 +24,7 @@ For Node.js, always use the polyfilled version for now.
 npx tsc examples/03-typescript-usage.ts --outDir examples/dist --module esnext --target esnext --moduleResolution bundler
 
 # Then run
-node examples/dist/03-typescript-usage.js
+node examples/03-typescript-usage.js
 ```
 
 ## Available Examples
@@ -40,6 +40,7 @@ node examples/dist/03-typescript-usage.js
 - **09-formatting.js** - Intl-based formatting with locales
 - **10-parsing.js** - Smart parsing of various date string formats
 - **11-timezones.js** - Timezone conversions, DST handling, offsets
+- **12-business-days.js** - Business day calculations (addBusinessDays, isWeekend)
 
 ## Notes
 

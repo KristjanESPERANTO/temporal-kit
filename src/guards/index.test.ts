@@ -2,10 +2,13 @@ import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
 import {
   isDateLike,
+  isDuration,
   isInstant,
   isPlainDate,
   isPlainDateTime,
+  isPlainMonthDay,
   isPlainTime,
+  isPlainYearMonth,
   isTimeLike,
   isZonedDateTime,
 } from "./index.js";
@@ -187,6 +190,42 @@ describe("Type Guards", () => {
       expect(isTimeLike(null)).toBe(false);
       expect(isTimeLike("15:30:00")).toBe(false);
       expect(isTimeLike({})).toBe(false);
+    });
+  });
+
+  describe("isDuration", () => {
+    it("should return true for Duration", () => {
+      const duration = Temporal.Duration.from("P1D");
+      expect(isDuration(duration)).toBe(true);
+    });
+
+    it("should return false for other types", () => {
+      expect(isDuration(Temporal.PlainDate.from("2023-01-01"))).toBe(false);
+      expect(isDuration({})).toBe(false);
+    });
+  });
+
+  describe("isPlainYearMonth", () => {
+    it("should return true for PlainYearMonth", () => {
+      const ym = Temporal.PlainYearMonth.from("2023-10");
+      expect(isPlainYearMonth(ym)).toBe(true);
+    });
+
+    it("should return false for other types", () => {
+      expect(isPlainYearMonth(Temporal.PlainDate.from("2023-01-01"))).toBe(false);
+      expect(isPlainYearMonth({})).toBe(false);
+    });
+  });
+
+  describe("isPlainMonthDay", () => {
+    it("should return true for PlainMonthDay", () => {
+      const md = Temporal.PlainMonthDay.from("10-07");
+      expect(isPlainMonthDay(md)).toBe(true);
+    });
+
+    it("should return false for other types", () => {
+      expect(isPlainMonthDay(Temporal.PlainDate.from("2023-01-01"))).toBe(false);
+      expect(isPlainMonthDay({})).toBe(false);
     });
   });
 });

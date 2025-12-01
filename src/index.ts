@@ -14,6 +14,8 @@ if (typeof (globalThis as { Temporal?: unknown }).Temporal === "undefined") {
   );
 }
 
+// Re-export business functions
+export * from "./business/index.js";
 // Re-export collection functions
 export * from "./collection/index.js";
 // Re-export compare functions
