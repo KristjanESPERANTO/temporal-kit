@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.0](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.0.3...v0.1.0) (2025-12-01)
+
+
+### Features
+
+* add functional rounding utilities ([7a14ca2](https://github.com/KristjanESPERANTO/temporal-kit/commit/7a14ca29e73429e1964ea41773ca02086a224051))
+* add isBetween/clamp helpers and finalize documentation ([929e188](https://github.com/KristjanESPERANTO/temporal-kit/commit/929e1889ab7ea7e80794ae7c6c475777440c9a84))
+* add nextDay/previousDay helpers ([4859861](https://github.com/KristjanESPERANTO/temporal-kit/commit/48598611b08852b0d0e50dade474ae88dd6439d9))
+* add timezone utilities isValidTimezone() and getTimezoneName() ([4895b46](https://github.com/KristjanESPERANTO/temporal-kit/commit/4895b46c16fdde3dad6983585410f3df95c18125))
+* add version updater script for HTML documentation ([a79cd15](https://github.com/KristjanESPERANTO/temporal-kit/commit/a79cd158908dc9c46c0ae69aecc4c16000dc5b36))
+* **collection:** add sortAsc, sortDesc, closestTo helpers ([dee23d2](https://github.com/KristjanESPERANTO/temporal-kit/commit/dee23d2698cb4771eab75a92eb17d10570d6b299))
+* **compare:** add specific comparison helpers (isSameDay, isSameWeek, etc.) ([63056c4](https://github.com/KristjanESPERANTO/temporal-kit/commit/63056c4903f41b6ea738f19f01548fcf88fe3408))
+* **format:** Enhance formatRelative with time unit support ([00c8976](https://github.com/KristjanESPERANTO/temporal-kit/commit/00c89764e92eea8e4af4f2c2664b9f4c0b0ecb48))
+* implement validation helpers `isValidDateString`, `isValidTimeString`, and `isValidDateTimeString` ([039529c](https://github.com/KristjanESPERANTO/temporal-kit/commit/039529c57af1db8a053876dd2bfd35429603accf))
+* **range:** Add range operations module ([bc00773](https://github.com/KristjanESPERANTO/temporal-kit/commit/bc007733f915b910f949a07f84a7c825dcdb4379))
+
+
+### Bug Fixes
+
+* resolve type errors in parse tests ([ddd88dd](https://github.com/KristjanESPERANTO/temporal-kit/commit/ddd88dd935d3518d8104167aef796dac116956c5))
+
+
+### Chores
+
+* setup pre-commit hooks with simple-git-hooks and lint-staged ([701d0dc](https://github.com/KristjanESPERANTO/temporal-kit/commit/701d0dc403dd88b82f7177d35f83c11ccce1e401))
+* update cspell configuration words list ([6e1b610](https://github.com/KristjanESPERANTO/temporal-kit/commit/6e1b61094676890829a7e79d1784d7b1414b54ac))
+
+
+### Documentation
+
+* redesign landing page features and API overview ([ae42978](https://github.com/KristjanESPERANTO/temporal-kit/commit/ae429783841d45528bdd080cdbfcd36867ebc0a4))
+* update status to 'Ready for Early Adopters' in README and index.html ([40b00bb](https://github.com/KristjanESPERANTO/temporal-kit/commit/40b00bb80892e0db921f5dd7f4c127e0ea934ed4))
+
+
+### Code Refactoring
+
+* fix linting issues in collection and format modules ([251f0e5](https://github.com/KristjanESPERANTO/temporal-kit/commit/251f0e5b8f1ebef36dca71e3439c078eae46bacc))
+
 ## [0.0.3](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.0.2...v0.0.3) (2025-11-30)
 
 
