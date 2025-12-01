@@ -56,14 +56,20 @@
   },
   "keywords": [
     "temporal",
+    "temporal-api",
+    "temporal-polyfill",
     "date",
     "time",
     "datetime",
     "timezone",
+    "date-utilities",
+    "date-helpers",
     "functional",
     "immutable",
     "tree-shakable",
-    "typescript"
+    "typescript",
+    "startof",
+    "endof"
   ],
   "author": "KristjanESPERANTO",
   "license": "MIT",
