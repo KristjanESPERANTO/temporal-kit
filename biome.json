@@ -33,7 +33,7 @@
       },
       "suspicious": {
         "noExplicitAny": "warn",
-        "noConsole": "warn"
+        "noConsole": "off"
       },
       "performance": {
         "noAccumulatingSpread": "warn",
