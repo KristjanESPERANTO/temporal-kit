@@ -226,3 +226,63 @@ export function endOf<T extends DateLike>(date: T, unit: DateUnit): T {
 
   throw new TypeError(`Invalid unit: ${unit}`);
 }
+
+/**
+ * Returns the next occurrence of a specific day of the week.
+ *
+ * @param date - The starting date
+ * @param dayOfWeek - The day of the week (1-7, Monday is 1)
+ * @returns The next date with the specified day of the week
+ *
+ * @example
+ * ```ts
+ * import { nextDay } from 'temporal-kit';
+ *
+ * const date = Temporal.PlainDate.from('2025-11-30'); // Sunday
+ * nextDay(date, 5); // Next Friday (2025-12-05)
+ * ```
+ */
+export function nextDay<T extends DateLike>(date: T, dayOfWeek: number): T {
+  if (dayOfWeek < 1 || dayOfWeek > 7) {
+    throw new RangeError("Day of week must be between 1 (Monday) and 7 (Sunday)");
+  }
+
+  const currentDay = date.dayOfWeek;
+  let diff = dayOfWeek - currentDay;
+
+  if (diff <= 0) {
+    diff += 7;
+  }
+
+  return date.add({ days: diff }) as T;
+}
+
+/**
+ * Returns the previous occurrence of a specific day of the week.
+ *
+ * @param date - The starting date
+ * @param dayOfWeek - The day of the week (1-7, Monday is 1)
+ * @returns The previous date with the specified day of the week
+ *
+ * @example
+ * ```ts
+ * import { previousDay } from 'temporal-kit';
+ *
+ * const date = Temporal.PlainDate.from('2025-11-30'); // Sunday
+ * previousDay(date, 5); // Previous Friday (2025-11-28)
+ * ```
+ */
+export function previousDay<T extends DateLike>(date: T, dayOfWeek: number): T {
+  if (dayOfWeek < 1 || dayOfWeek > 7) {
+    throw new RangeError("Day of week must be between 1 (Monday) and 7 (Sunday)");
+  }
+
+  const currentDay = date.dayOfWeek;
+  let diff = dayOfWeek - currentDay;
+
+  if (diff >= 0) {
+    diff -= 7;
+  }
+
+  return date.add({ days: diff }) as T;
+}

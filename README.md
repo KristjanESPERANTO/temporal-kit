@@ -23,7 +23,7 @@ import { isPlainDate } from 'temporal-kit/polyfilled';
 ## Common Recipes
 
 ```typescript
-import { formatRelative, startOf, endOf, add, pipe, isBetween } from 'temporal-kit';
+import { formatRelative, startOf, endOf, add, nextDay, isBetween } from 'temporal-kit';
 import { Temporal } from 'temporal-polyfill';
 
 const now = Temporal.Now.zonedDateTimeISO();
@@ -32,12 +32,7 @@ const now = Temporal.Now.zonedDateTimeISO();
 formatRelative(now.subtract({ minutes: 5 })); // "5 minutes ago"
 
 // 2. Find next Friday
-const nextFriday = pipe(
-  now,
-  d => add(d, { weeks: 1 }),
-  d => startOf(d, 'week'), // Monday
-  d => add(d, { days: 4 }) // Friday
-);
+const nextFriday = nextDay(now, 5); // 5 = Friday
 
 // 3. Check if date is in range
 isBetween(now, startOf(now, 'year'), endOf(now, 'year')); // true
