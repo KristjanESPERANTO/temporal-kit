@@ -1,9 +1,3 @@
-/**
- * README for Examples
- * 
- * This directory contains practical examples of using Temporal Kit.
- */
-
 # Temporal Kit Examples
 
 ## Running Examples
@@ -35,9 +29,8 @@ node examples/dist/03-typescript-usage.js
 
 ## Available Examples
 
-### Implemented & Runnable Now
-- **01-basic-usage.js** - Overview of all planned features
-- **02-real-world.js** - Practical patterns: current time, timezones, relative dates ⭐
+- **01-basic-usage.js** - Overview of core features
+- **02-real-world.js** - Practical patterns: current time, timezones, relative dates
 - **03-typescript-usage.ts** - TypeScript integration and type safety
 - **04-comparisons.js** - Date comparisons (isBefore, isAfter, min, max)
 - **05-conversions.js** - Creation & conversion (now, fromISO, toZonedDateTime)
