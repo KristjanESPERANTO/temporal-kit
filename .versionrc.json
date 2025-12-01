@@ -8,5 +8,19 @@
     { "type": "refactor", "section": "Code Refactoring" },
     { "type": "perf", "section": "Performance Improvements" },
     { "type": "test", "section": "Tests", "hidden": true }
+  ],
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    },
+    {
+      "filename": "package-lock.json",
+      "type": "json"
+    },
+    {
+      "filename": "docs/index.html",
+      "updater": "scripts/update-html-version.cjs"
+    }
   ]
 }
