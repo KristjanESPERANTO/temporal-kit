@@ -159,3 +159,88 @@ export function max<T extends DateLike>(dates: T[]): T {
 
   return dates.reduce((latest, current) => (compare(current, latest) > 0 ? current : latest));
 }
+
+/**
+ * Checks if two dates are in the same year.
+ *
+ * @param a - First date
+ * @param b - Second date
+ * @returns true if both dates are in the same year
+ *
+ * @example
+ * ```ts
+ * import { isSameYear } from 'temporal-kit';
+ *
+ * isSameYear(
+ *   Temporal.PlainDate.from('2025-01-01'),
+ *   Temporal.PlainDate.from('2025-12-31')
+ * ); // true
+ * ```
+ */
+export function isSameYear(a: DateLike, b: DateLike): boolean {
+  return a.year === b.year;
+}
+
+/**
+ * Checks if two dates are in the same month (and year).
+ *
+ * @param a - First date
+ * @param b - Second date
+ * @returns true if both dates are in the same month and year
+ *
+ * @example
+ * ```ts
+ * import { isSameMonth } from 'temporal-kit';
+ *
+ * isSameMonth(
+ *   Temporal.PlainDate.from('2025-01-01'),
+ *   Temporal.PlainDate.from('2025-01-31')
+ * ); // true
+ * ```
+ */
+export function isSameMonth(a: DateLike, b: DateLike): boolean {
+  return a.year === b.year && a.month === b.month;
+}
+
+/**
+ * Checks if two dates are in the same week (and year).
+ * Uses ISO week numbering by default (Monday start).
+ *
+ * @param a - First date
+ * @param b - Second date
+ * @returns true if both dates are in the same week and year
+ *
+ * @example
+ * ```ts
+ * import { isSameWeek } from 'temporal-kit';
+ *
+ * isSameWeek(
+ *   Temporal.PlainDate.from('2025-01-01'), // Wednesday
+ *   Temporal.PlainDate.from('2025-01-05')  // Sunday
+ * ); // true
+ * ```
+ */
+export function isSameWeek(a: DateLike, b: DateLike): boolean {
+  return a.yearOfWeek === b.yearOfWeek && a.weekOfYear === b.weekOfYear;
+}
+
+/**
+ * Checks if two dates are on the same day (year, month, and day).
+ *
+ * @param a - First date
+ * @param b - Second date
+ * @returns true if both dates are on the same day
+ *
+ * @example
+ * ```ts
+ * import { isSameDay } from 'temporal-kit';
+ *
+ * isSameDay(
+ *   Temporal.PlainDate.from('2025-01-01'),
+ *   Temporal.PlainDateTime.from('2025-01-01T15:00')
+ * ); // true
+ * ```
+ */
+export function isSameDay(a: DateLike, b: DateLike): boolean {
+  return a.year === b.year && a.month === b.month && a.day === b.day;
+}

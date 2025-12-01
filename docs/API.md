@@ -224,6 +224,90 @@ isSame(date1, date2); // true
 
 ---
 
+### `isSameYear(a, b)`
+
+Check if two dates are in the same year.
+
+**Parameters:**
+- `a: DateLike` - First date
+- `b: DateLike` - Second date
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isSameYear } from 'temporal-kit';
+
+const date1 = Temporal.PlainDate.from('2025-01-01');
+const date2 = Temporal.PlainDate.from('2025-12-31');
+isSameYear(date1, date2); // true
+```
+
+---
+
+### `isSameMonth(a, b)`
+
+Check if two dates are in the same month and year.
+
+**Parameters:**
+- `a: DateLike` - First date
+- `b: DateLike` - Second date
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isSameMonth } from 'temporal-kit';
+
+const date1 = Temporal.PlainDate.from('2025-01-01');
+const date2 = Temporal.PlainDate.from('2025-01-31');
+isSameMonth(date1, date2); // true
+```
+
+---
+
+### `isSameWeek(a, b)`
+
+Check if two dates are in the same week and year (ISO week numbering).
+
+**Parameters:**
+- `a: DateLike` - First date
+- `b: DateLike` - Second date
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isSameWeek } from 'temporal-kit';
+
+const date1 = Temporal.PlainDate.from('2025-01-01'); // Wednesday
+const date2 = Temporal.PlainDate.from('2025-01-05'); // Sunday
+isSameWeek(date1, date2); // true
+```
+
+---
+
+### `isSameDay(a, b)`
+
+Check if two dates are on the same calendar day (year, month, day).
+
+**Parameters:**
+- `a: DateLike` - First date
+- `b: DateLike` - Second date
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isSameDay } from 'temporal-kit';
+
+const date1 = Temporal.PlainDate.from('2025-01-01');
+const date2 = Temporal.PlainDateTime.from('2025-01-01T15:00');
+isSameDay(date1, date2); // true
+```
+
+---
+
 ### `min(dates)`
 
 Find the earliest date in an array.

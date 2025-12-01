@@ -1,6 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
-import { isAfter, isBefore, isSame, max, min } from "./index.js";
+import { isAfter, isBefore, isSame, isSameDay, isSameMonth, isSameWeek, isSameYear, max, min } from "./index.js";
 
 describe("Comparison Functions", () => {
   describe("isBefore", () => {
@@ -245,6 +245,75 @@ describe("Comparison Functions", () => {
       ];
       const result = max(dates);
       expect(result.toString()).toContain("15:00:00");
+    });
+  });
+
+  describe("isSameYear", () => {
+    it("returns true for same year", () => {
+      const d1 = Temporal.PlainDate.from("2025-01-01");
+      const d2 = Temporal.PlainDate.from("2025-12-31");
+      expect(isSameYear(d1, d2)).toBe(true);
+    });
+
+    it("returns false for different years", () => {
+      const d1 = Temporal.PlainDate.from("2025-12-31");
+      const d2 = Temporal.PlainDate.from("2026-01-01");
+      expect(isSameYear(d1, d2)).toBe(false);
+    });
+  });
+
+  describe("isSameMonth", () => {
+    it("returns true for same month and year", () => {
+      const d1 = Temporal.PlainDate.from("2025-01-01");
+      const d2 = Temporal.PlainDate.from("2025-01-31");
+      expect(isSameMonth(d1, d2)).toBe(true);
+    });
+
+    it("returns false for different months", () => {
+      const d1 = Temporal.PlainDate.from("2025-01-31");
+      const d2 = Temporal.PlainDate.from("2025-02-01");
+      expect(isSameMonth(d1, d2)).toBe(false);
+    });
+
+    it("returns false for same month different year", () => {
+      const d1 = Temporal.PlainDate.from("2025-01-01");
+      const d2 = Temporal.PlainDate.from("2026-01-01");
+      expect(isSameMonth(d1, d2)).toBe(false);
+    });
+  });
+
+  describe("isSameWeek", () => {
+    it("returns true for same week", () => {
+      const d1 = Temporal.PlainDate.from("2025-01-01"); // Wednesday
+      const d2 = Temporal.PlainDate.from("2025-01-05"); // Sunday
+      expect(isSameWeek(d1, d2)).toBe(true);
+    });
+
+    it("returns false for different weeks", () => {
+      const d1 = Temporal.PlainDate.from("2025-01-05"); // Sunday
+      const d2 = Temporal.PlainDate.from("2025-01-06"); // Monday (next week)
+      expect(isSameWeek(d1, d2)).toBe(false);
+    });
+
+    it("handles year boundaries correctly", () => {
+      // Dec 29 2025 is Monday, Week 1 of 2026
+      const d1 = Temporal.PlainDate.from("2025-12-29");
+      const d2 = Temporal.PlainDate.from("2026-01-01");
+      expect(isSameWeek(d1, d2)).toBe(true);
+    });
+  });
+
+  describe("isSameDay", () => {
+    it("returns true for same day", () => {
+      const d1 = Temporal.PlainDate.from("2025-01-01");
+      const d2 = Temporal.PlainDateTime.from("2025-01-01T15:00");
+      expect(isSameDay(d1, d2)).toBe(true);
+    });
+
+    it("returns false for different days", () => {
+      const d1 = Temporal.PlainDate.from("2025-01-01");
+      const d2 = Temporal.PlainDate.from("2025-01-02");
+      expect(isSameDay(d1, d2)).toBe(false);
     });
   });
 });
