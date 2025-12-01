@@ -53,7 +53,8 @@ isBetween(now, startOf(now, 'year'), endOf(now, 'year')); // true
 1.  **Common Ergonomic Helpers:** The everyday utilities teams need (`startOf`, `endOf`, `add`, `subtract`, `isBefore`, `isAfter`)
 2.  **Intl-First Formatting:** Locale-aware formatting without massive locale files
 3.  **Functional-First Design:** Pure functions, tree-shakable, composable—no hidden state
-4.  **Explicit over Magic:** No global config, no implicit conversions, no surprises
+4.  **Universal Compatibility:** Runs anywhere JavaScript runs (Browsers, Node.js, Edge) with native Temporal or polyfill
+5.  **Explicit over Magic:** No global config, no implicit conversions, no surprises
 
 **The Goal:** Stop reinventing the same small, error-prone utilities across projects. Instead, share a well-tested, modern implementation that covers 95% of everyday needs while staying lightweight and stable.
 

@@ -24,13 +24,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp docs/index.html _site/index.html
+          cp dist/polyfilled.js _site/temporal-kit.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs'
+          path: './_site'
       
       - name: Deploy to GitHub Pages
         id: deployment

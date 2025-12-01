@@ -156,9 +156,21 @@
         
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr;
             gap: 1.5rem;
             margin: 2.5rem 0;
+        }
+
+        @media (min-width: 640px) {
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .feature-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
         
         .feature {
@@ -183,6 +195,47 @@
         
         .feature p {
             color: var(--text-secondary);
+        }
+
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .api-category h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .api-category ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .api-category li {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .api-category code {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+            color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.25rem;
+            font-size: 0.85em;
         }
         
         .install-box {
@@ -240,102 +293,101 @@
             border: 1px solid var(--warning-text);
         }
         
-        .example-selector {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
+        .example-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
         }
         
-        .code-output-container {
+        .example-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+        
+        .example-title {
+            flex: 1;
+        }
+        
+        .example-title h3 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .example-title p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+        
+        .rerun-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .rerun-btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        .code-output-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
-            margin-top: 1.5rem;
         }
         
         @media (max-width: 768px) {
-            .code-output-container {
+            .code-output-grid {
                 grid-template-columns: 1fr;
             }
         }
         
-        .code-section, .output-section {
+        .code-block, .output-block {
             min-width: 0;
+            display: flex;
+            flex-direction: column;
         }
         
-        .code-section h3, .output-section h3 {
-            color: var(--text-primary);
-            font-size: 1rem;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-        }
-        
-        #codePreview {
-            background: var(--code-bg);
-            color: var(--code-text);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
-            white-space: pre-wrap;
-            border: 1px solid var(--code-border);
-            font-size: 0.875rem;
-            line-height: 1.6;
-            overflow-x: auto;
-            min-height: 300px;
-        }
-        
-        .example-btn {
-            padding: 0.5rem 1rem;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
+        .code-block h4, .output-block h4 {
             color: var(--text-secondary);
-            border-radius: 0.375rem;
-            cursor: pointer;
             font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
-        .example-btn:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-        }
-        
-        .example-btn.active {
-            background: var(--accent-primary);
-            color: white;
-            border-color: var(--accent-primary);
-        }
-        
-        #output {
+        .code-content, .output-content {
             background: var(--code-bg);
             color: var(--code-text);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
+            padding: 1.25rem;
+            border-radius: 0.375rem;
             font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
-            min-height: 300px;
             white-space: pre-wrap;
             border: 1px solid var(--code-border);
             font-size: 0.875rem;
             line-height: 1.6;
             overflow-x: auto;
+            flex: 1;
         }
-        
-        .run-btn {
-            background: var(--accent-primary);
-            color: white;
-            border: none;
-            padding: 0.625rem 1.5rem;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            font-size: 0.9375rem;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        
-        .run-btn:hover {
-            background: var(--accent-hover);
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
         }
         
         footer {
@@ -386,20 +438,89 @@
             
             <div class="feature-grid">
                 <div class="feature">
-                    <h3>Focused Scope</h3>
-                    <p>Covers the 95% use case with well-tested utilities teams actually need.</p>
+                    <h3>Functional & Composable</h3>
+                    <p>Build complex logic with <code>pipe</code> and <code>compose</code>. Data-last design for better readability.</p>
                 </div>
                 <div class="feature">
                     <h3>Tree-Shakable</h3>
-                    <p>Pure functions, zero side effects. Bundle only what you use.</p>
-                </div>
-                <div class="feature">
-                    <h3>Lightweight</h3>
-                    <p>Minimal native build, includes optional polyfill for legacy browsers and Node.js.</p>
+                    <p>Modular architecture. Import only what you need, keep your bundle size tiny.</p>
                 </div>
                 <div class="feature">
                     <h3>Type-Safe</h3>
-                    <p>Full TypeScript support with strict mode enabled.</p>
+                    <p>Written in TypeScript with strict mode. Catch errors at compile time, not runtime.</p>
+                </div>
+                <div class="feature">
+                    <h3>Future-Proof</h3>
+                    <p>Built directly on the ECMAScript Temporal API. No proprietary date objects to learn.</p>
+                </div>
+                <div class="feature">
+                    <h3>Locale-Aware</h3>
+                    <p>Leverages <code>Intl</code> for robust, localized date formatting and relative time strings.</p>
+                </div>
+                <div class="feature">
+                    <h3>Universal</h3>
+                    <p>Runs anywhere JavaScript runs. Works with native Temporal or any standard polyfill.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--border-color);">
+                <h3 style="margin-bottom: 0.5rem;">API Overview</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem;">A quick look at the available utilities.</p>
+                
+                <div class="api-grid">
+                    <div class="api-category">
+                        <h4>🔍 Comparison & Range</h4>
+                        <ul>
+                            <li><code>isBefore</code> <code>isAfter</code> compare dates</li>
+                            <li><code>isSame</code> <code>isBetween</code> equality & range</li>
+                            <li><code>clamp</code> limit to range</li>
+                        </ul>
+                    </div>
+
+                    <div class="api-category">
+                        <h4>🧮 Arithmetic</h4>
+                        <ul>
+                            <li><code>add</code> <code>subtract</code> add/sub time</li>
+                            <li><code>startOf</code> <code>endOf</code> start/end unit</li>
+                            <li><code>nextDay</code> next weekday</li>
+                        </ul>
+                    </div>
+
+                    <div class="api-category">
+                        <h4>🛡️ Guards & Types</h4>
+                        <ul>
+                            <li><code>isPlainDate</code> <code>isInstant</code> type guards</li>
+                            <li><code>isZonedDateTime</code> type guard</li>
+                            <li><code>isDateLike</code> check type</li>
+                        </ul>
+                    </div>
+
+                    <div class="api-category">
+                        <h4>🌐 Formatting & Convert</h4>
+                        <ul>
+                            <li><code>format</code> localized string</li>
+                            <li><code>formatRelative</code> relative time</li>
+                            <li><code>toZonedDateTime</code> convert zone</li>
+                        </ul>
+                    </div>
+
+                    <div class="api-category">
+                        <h4>📦 Collections</h4>
+                        <ul>
+                            <li><code>sortAsc</code> <code>sortDesc</code> sort dates</li>
+                            <li><code>closestTo</code> find nearest</li>
+                            <li><code>eachDayOfInterval</code> make range</li>
+                        </ul>
+                    </div>
+
+                    <div class="api-category">
+                        <h4>🔧 Functional</h4>
+                        <ul>
+                            <li><code>pipe</code> chain functions</li>
+                            <li><code>compose</code> combine functions</li>
+                            <li><code>now</code> <code>fromISO</code> helpers</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
@@ -415,27 +536,9 @@
             
             <div id="browserCheck" class="browser-check"></div>
             
-            <p>Try Temporal Kit directly in your browser. Select an example and click Run:</p>
+            <p>Try Temporal Kit directly in your browser. Each example runs independently:</p>
             
-            <div class="example-selector">
-                <button class="example-btn active" data-example="basic">Type Guards</button>
-                <button class="example-btn" data-example="realworld">Real-World Patterns</button>
-                <button class="example-btn" data-example="timezones">Timezones</button>
-            </div>
-            
-            <button class="run-btn" onclick="runExample()">▶ Run Example</button>
-            
-            <div class="code-output-container">
-                <div class="code-section">
-                    <h3>Code</h3>
-                    <div id="codePreview"></div>
-                </div>
-                
-                <div class="output-section">
-                    <h3>Output</h3>
-                    <div id="output"></div>
-                </div>
-            </div>
+            <div id="examplesContainer"></div>
         </div>
     </div>
     
@@ -462,67 +565,139 @@
             await import('https://cdn.jsdelivr.net/npm/temporal-polyfill@0.3.0/global.js');
         }
         
-        // Import temporal-kit from npm
-        const { isPlainDate, isZonedDateTime, isInstant } = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.0.3/dist/polyfilled.js');
+        // Import temporal-kit
+        let temporalKit;
+        try {
+            // 1. Try production path (GitHub Pages / deployed)
+            temporalKit = await import('./temporal-kit.js');
+        } catch (e) {
+            try {
+                // 2. Try local development path
+                temporalKit = await import('../dist/polyfilled.js');
+            } catch (e2) {
+                console.warn('Local import failed, falling back to CDN');
+                // 3. Fallback to CDN
+                temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.0.3/dist/polyfilled.js');
+            }
+        }
+
+        const { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo } = temporalKit;
         
         // Store for global access
-        window.temporalKit = { isPlainDate, isZonedDateTime, isInstant };
+        window.temporalKit = { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo };
         
-        // Example selector
-        const buttons = document.querySelectorAll('.example-btn');
-        buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                buttons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                updateCodePreview();
-                // Clear output when switching examples
-                document.getElementById('output').textContent = '';
-            });
-        });
-        
-        // Update code preview on load
-        updateCodePreview();
+        // Render all examples on load
+        renderAllExamples();
     </script>
     
     <script>
         const exampleCode = {
-            basic: `import { isPlainDate, isZonedDateTime } from 'temporal-kit';
+            relative: `import { formatRelative } from 'temporal-kit';
+
+const today = Temporal.Now.plainDateISO();
+
+const yesterday = today.subtract({ days: 1 });
+const lastWeek = today.subtract({ days: 7 });
+const tomorrow = today.add({ days: 1 });
+const nextWeek = today.add({ days: 7 });
+
+console.log('English:');
+console.log('  1 day ago       ->', formatRelative(yesterday, today));
+console.log('  7 days ago      ->', formatRelative(lastWeek, today));
+console.log('  1 day from now  ->', formatRelative(tomorrow, today));
+console.log('  7 days from now ->', formatRelative(nextWeek, today));
+
+console.log('\nGerman (de-DE):');
+console.log('  1 day ago       ->', formatRelative(yesterday, today, { locale: 'de-DE' }));
+console.log('  7 days ago      ->', formatRelative(lastWeek, today, { locale: 'de-DE' }));
+console.log('  1 day from now  ->', formatRelative(tomorrow, today, { locale: 'de-DE' }));
+console.log('  7 days from now ->', formatRelative(nextWeek, today, { locale: 'de-DE' }));`,
+
+            nextday: `import { nextDay } from 'temporal-kit';
+
+const today = Temporal.Now.plainDateISO();
+
+// 1=Monday, 5=Friday, 7=Sunday
+const nextFriday = nextDay(today, 5);
+const nextMonday = nextDay(today, 1);
+
+console.log('Today:', today.toString());
+console.log('Next Friday:', nextFriday.toString());
+console.log('Next Monday:', nextMonday.toString());
+
+const daysUntil = nextFriday.since(today).days;
+console.log(\`\${daysUntil} days until Friday\`);`,
+
+            sort: `import { sortAsc } from 'temporal-kit';
+
+// Unsorted meeting dates
+const meetings = [
+  Temporal.PlainDate.from('2025-12-15'),
+  Temporal.PlainDate.from('2025-12-05'),
+  Temporal.PlainDate.from('2025-12-20'),
+  Temporal.PlainDate.from('2025-12-01')
+];
+
+console.log('Unsorted:');
+meetings.forEach(d => console.log('  ' + d.toString()));
+
+const sorted = sortAsc(meetings);
+
+console.log('\nSorted (ascending):');
+sorted.forEach(d => console.log('  ' + d.toString()));`,
+
+            closest: `import { closestTo } from 'temporal-kit';
+
+const target = Temporal.PlainDate.from('2025-12-10');
+
+const events = [
+  Temporal.PlainDate.from('2025-12-01'),
+  Temporal.PlainDate.from('2025-12-15'),
+  Temporal.PlainDate.from('2025-12-20')
+];
+
+console.log('Target date:', target.toString());
+console.log('\nAvailable dates:');
+events.forEach(d => console.log('  ' + d.toString()));
+
+const nearest = closestTo(target, events);
+
+console.log('\nClosest date:', nearest.toString());`,
+
+            guards: `import { isPlainDate, isZonedDateTime } from 'temporal-kit';
 
 const date = Temporal.PlainDate.from('2025-11-30');
 const zoned = Temporal.Now.zonedDateTimeISO();
 
-console.log('PlainDate:', date);
-console.log('isPlainDate:', isPlainDate(date));
-console.log('isZonedDateTime:', isZonedDateTime(date));
+console.log('PlainDate:', date.toString());
+console.log('  isPlainDate?', isPlainDate(date));
+console.log('  isZonedDateTime?', isZonedDateTime(date));
 
-console.log('ZonedDateTime:', zoned);
-console.log('Timezone:', zoned.timeZoneId);
-console.log('isZonedDateTime:', isZonedDateTime(zoned));`,
+console.log('\nZonedDateTime:', zoned.toString());
+console.log('  isZonedDateTime?', isZonedDateTime(zoned));`,
 
-            realworld: `import { isInstant } from 'temporal-kit';
+            recipes: `import { add, startOf, nextDay } from 'temporal-kit';
 
-const now = Temporal.Now.instant();
-const today = Temporal.Now.plainDateISO();
+const now = Temporal.Now.zonedDateTimeISO();
+console.log(\`Start Date: \${now}\`);
 
-console.log('Instant:', now);
-console.log('isInstant:', isInstant(now));
+// 1. Find next Friday
+// We use the 'nextDay' helper (1=Monday, ..., 5=Friday)
+const nextFriday = nextDay(now, 5);
 
-console.log('Today:', today);
-console.log('Day of week:', today.dayOfWeek);
-console.log('Week:', today.weekOfYear);
+console.log('\\n1. Next Friday calculation:');
+console.log(\`Result: \${nextFriday}\`);
 
-// Same moment in different timezones
-const tokyo = now.toZonedDateTimeISO('Asia/Tokyo');
-const ny = now.toZonedDateTimeISO('America/New_York');
+// 2. Simple Arithmetic
+const nextMonth = add(now, { months: 1 });
+const startOfYear = startOf(now, 'year');
 
-console.log('Tokyo:', tokyo);
-console.log('New York:', ny);
-
-// Relative dates
-console.log('Tomorrow:', today.add({ days: 1 }));
-console.log('Next week:', today.add({ weeks: 1 }));`,
+console.log('\\n2. Simple operations:');
+console.log(\`Next Month: \${nextMonth}\`);
+console.log(\`Start of Year: \${startOfYear}\`);`,
 
             timezones: `const instant = Temporal.Now.instant();
+
 const timezones = [
   'Europe/Berlin',
   'America/New_York', 
@@ -532,108 +707,330 @@ const timezones = [
 
 timezones.forEach(tz => {
   const zoned = instant.toZonedDateTimeISO(tz);
-  console.log(\`\${tz}: \${zoned}\`);
+  // Note how the hour changes, but it's the same moment
+  console.log(\`\${tz.padEnd(18)} -> \${zoned}\`);
 });
 
-// Your system timezone
+// Your local timezone
 const local = Temporal.Now.zonedDateTimeISO();
-console.log('Your timezone:', local.timeZoneId);
-console.log('Offset:', local.offset);
-console.log('Time:', local.toPlainTime());`
+console.log('\nYour timezone:', local.timeZoneId);
+console.log('Offset:', local.offset);`,
+
+            collections: `import { sortAsc, closestTo } from 'temporal-kit';
+
+// Scenario: Sort upcoming meetings by date
+const meetings = [
+  Temporal.PlainDate.from('2025-12-15'),
+  Temporal.PlainDate.from('2025-12-05'),
+  Temporal.PlainDate.from('2025-12-20'),
+  Temporal.PlainDate.from('2025-12-01')
+];
+
+console.log('Unsorted meetings:');
+meetings.forEach(m => console.log(\`  \${m.toString()}\`));
+
+const sorted = sortAsc(meetings);
+console.log('\\nSorted meetings:');
+sorted.forEach(m => console.log(\`  \${m.toString()}\`));
+
+// Find the closest meeting to a target date
+const targetDate = Temporal.PlainDate.from('2025-12-10');
+const nearest = closestTo(targetDate, meetings);
+
+console.log(\`\\nClosest meeting to \${targetDate.toString()}:\`);
+console.log(\`  -> \${nearest.toString()}\`);`,
+
+            ranges: `import { isBetween, clamp } from 'temporal-kit';
+
+const now = Temporal.Now.plainDateISO();
+const start = now.subtract({ days: 5 });
+const end = now.add({ days: 5 });
+
+console.log(\`Range: \${start.toString()} to \${end.toString()}\`);
+
+// 1. Check if date is in range
+// isBetween returns true if the date is within the range (inclusive)
+const check1 = isBetween(now, start, end);
+const check2 = isBetween(
+  now.add({ days: 10 }), 
+  start, 
+  end
+);
+
+console.log(\`Is \${now.toString()} in range? \${check1}\`);
+console.log(\`Is \${now.add({ days: 10 }).toString()} in range? \${check2}\`);
+
+// 2. Clamp date to range
+// clamp ensures a date stays within the min/max limits.
+// If it's before min, it returns min. If after max, it returns max.
+const tooEarly = now.subtract({ days: 10 });
+const tooLate = now.add({ days: 10 });
+
+const clamped1 = clamp(tooEarly, start, end);
+const clamped2 = clamp(tooLate, start, end);
+
+console.log(\`\nClamping \${tooEarly.toString()} (too early) -> \${clamped1.toString()}\`);
+console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toString()}\`);`
         };
         
-        function updateCodePreview() {
-            const activeBtn = document.querySelector('.example-btn.active');
-            const exampleName = activeBtn.dataset.example;
-            document.getElementById('codePreview').textContent = exampleCode[exampleName];
+        const exampleMeta = {
+            relative: {
+                title: 'Relative Time',
+                description: 'Convert dates to human-readable relative time like "yesterday" or "in 2 weeks". Perfect for activity feeds and notifications.'
+            },
+            nextday: {
+                title: 'Find Next Weekday',
+                description: 'Find the next occurrence of any weekday. Great for scheduling and planning features.'
+            },
+            sort: {
+                title: 'Sort Dates',
+                description: 'Sort arrays of dates in ascending or descending order. Essential for timeline views and event lists.'
+            },
+            closest: {
+                title: 'Find Closest Date',
+                description: 'Find which date in an array is closest to a target date. Useful for "find nearest appointment" features.'
+            },
+            timezones: {
+                title: 'Timezones',
+                description: 'Work with the same moment in time across different timezones. The same instant appears as different local times.'
+            },
+            clamp: {
+                title: 'Limit Dates to Range',
+                description: 'Keep dates within allowed boundaries. If a date is outside min/max limits, it gets adjusted to the nearest boundary.'
+            },
+            guards: {
+                title: 'Type Guards',
+                description: 'Runtime type checking for Temporal objects. Useful when working with mixed date types or validating API responses.'
+            }
+        };
+        
+        function highlightCode(code) {
+            return code.replace(/(\/\/.*)/g, '<span class="comment">$1</span>');
+        }
+        
+        function renderAllExamples() {
+            const container = document.getElementById('examplesContainer');
+            const exampleNames = ['relative', 'nextday', 'sort', 'closest', 'timezones', 'clamp', 'guards'];
+            
+            exampleNames.forEach(name => {
+                const meta = exampleMeta[name];
+                const code = exampleCode[name];
+                
+                const card = document.createElement('div');
+                card.className = 'example-card';
+                card.id = `example-${name}`;
+                
+                card.innerHTML = `
+                    <div class="example-header">
+                        <div class="example-title">
+                            <h3>${meta.title}</h3>
+                            <p>${meta.description}</p>
+                        </div>
+                        <button class="rerun-btn" onclick="runExample('${name}')">▶ Run</button>
+                    </div>
+                    <div class="code-output-grid">
+                        <div class="code-block">
+                            <h4>Code</h4>
+                            <div class="code-content">${highlightCode(code)}</div>
+                        </div>
+                        <div class="output-block">
+                            <h4>Output</h4>
+                            <div class="output-content" id="output-${name}"></div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+            
+            // Run all examples initially
+            exampleNames.forEach(name => runExample(name));
         }
         
         const examples = {
-            basic: () => {
+            relative: () => {
                 const output = [];
-                output.push('=== Type Guards Example ===\n');
+                
+                const { formatRelative } = window.temporalKit;
+                const today = Temporal.Now.plainDateISO();
+                
+                const yesterday = today.subtract({ days: 1 });
+                const lastWeek = today.subtract({ days: 7 });
+                const tomorrow = today.add({ days: 1 });
+                const nextWeek = today.add({ days: 7 });
+                
+                output.push('English:');
+                output.push('  1 day ago       -> ' + formatRelative(yesterday, today));
+                output.push('  7 days ago      -> ' + formatRelative(lastWeek, today));
+                output.push('  1 day from now  -> ' + formatRelative(tomorrow, today));
+                output.push('  7 days from now -> ' + formatRelative(nextWeek, today));
+                
+                output.push('\nGerman (de-DE):');
+                output.push('  1 day ago       -> ' + formatRelative(yesterday, today, { locale: 'de-DE' }));
+                output.push('  7 days ago      -> ' + formatRelative(lastWeek, today, { locale: 'de-DE' }));
+                output.push('  1 day from now  -> ' + formatRelative(tomorrow, today, { locale: 'de-DE' }));
+                output.push('  7 days from now -> ' + formatRelative(nextWeek, today, { locale: 'de-DE' }));
+                
+                return output.join('\n');
+            },
+
+            nextday: () => {
+                const output = [];
+                
+                const { nextDay } = window.temporalKit;
+                const today = Temporal.Now.plainDateISO();
+                
+                const nextFriday = nextDay(today, 5);
+                const nextMonday = nextDay(today, 1);
+                
+                output.push('Today: ' + today.toString());
+                output.push('Next Friday: ' + nextFriday.toString());
+                output.push('Next Monday: ' + nextMonday.toString());
+                
+                const daysUntil = nextFriday.since(today).days;
+                output.push(`\n${daysUntil} days until Friday`);
+                
+                return output.join('\n');
+            },
+
+            sort: () => {
+                const output = [];
+                
+                const { sortAsc } = window.temporalKit;
+                
+                const meetings = [
+                  Temporal.PlainDate.from('2025-12-15'),
+                  Temporal.PlainDate.from('2025-12-05'),
+                  Temporal.PlainDate.from('2025-12-20'),
+                  Temporal.PlainDate.from('2025-12-01')
+                ];
+                
+                output.push('Unsorted:');
+                meetings.forEach(d => output.push('  ' + d.toString()));
+                
+                const sorted = sortAsc(meetings);
+                
+                output.push('\nSorted (ascending):');
+                sorted.forEach(d => output.push('  ' + d.toString()));
+                
+                return output.join('\n');
+            },
+
+            closest: () => {
+                const output = [];
+                
+                const { closestTo } = window.temporalKit;
+                
+                const target = Temporal.PlainDate.from('2025-12-10');
+                
+                const events = [
+                  Temporal.PlainDate.from('2025-12-01'),
+                  Temporal.PlainDate.from('2025-12-15'),
+                  Temporal.PlainDate.from('2025-12-20')
+                ];
+                
+                output.push('Target date: ' + target.toString());
+                output.push('\nAvailable dates:');
+                events.forEach(d => output.push('  ' + d.toString()));
+                
+                const nearest = closestTo(target, events);
+                
+                output.push('\nClosest date: ' + nearest.toString());
+                
+                return output.join('\n');
+            },
+
+            guards: () => {
+                const output = [];
                 
                 const date = Temporal.PlainDate.from('2025-11-30');
-                const dateTime = Temporal.PlainDateTime.from('2025-11-30T15:30:00');
                 const zoned = Temporal.Now.zonedDateTimeISO();
                 
-                output.push(`PlainDate: ${date}`);
-                output.push(`isPlainDate: ${window.temporalKit.isPlainDate(date)}`);
-                output.push(`isZonedDateTime: ${window.temporalKit.isZonedDateTime(date)}`);
-                output.push('');
+                output.push('PlainDate: ' + date.toString());
+                output.push('  isPlainDate? ' + window.temporalKit.isPlainDate(date));
+                output.push('  isZonedDateTime? ' + window.temporalKit.isZonedDateTime(date));
                 
-                output.push(`ZonedDateTime: ${zoned}`);
-                output.push(`Timezone: ${zoned.timeZoneId}`);
-                output.push(`isZonedDateTime: ${window.temporalKit.isZonedDateTime(zoned)}`);
-                output.push('');
-                
-                output.push('✅ Type guards working!');
+                output.push('\nZonedDateTime: ' + zoned.toString());
+                output.push('  isZonedDateTime? ' + window.temporalKit.isZonedDateTime(zoned));
                 
                 return output.join('\n');
             },
             
-            realworld: () => {
+            clamp: () => {
                 const output = [];
-                output.push('=== Real-World Patterns ===\n');
                 
-                const now = Temporal.Now.instant();
-                const today = Temporal.Now.plainDateISO();
-                const zoned = Temporal.Now.zonedDateTimeISO();
+                const { clamp } = window.temporalKit;
+                const now = Temporal.Now.plainDateISO();
+                const minDate = now.subtract({ days: 5 });
+                const maxDate = now.add({ days: 5 });
                 
-                output.push('1. Current Time:');
-                output.push(`   Instant: ${now}`);
-                output.push(`   isInstant: ${window.temporalKit.isInstant(now)}`);
-                output.push('');
+                output.push('Allowed range: ' + minDate.toString() + ' to ' + maxDate.toString());
                 
-                output.push('2. Today:');
-                output.push(`   Date: ${today}`);
-                output.push(`   Day of week: ${today.dayOfWeek} (1=Monday)`);
-                output.push(`   Week: ${today.weekOfYear}`);
-                output.push('');
+                const tooEarly = now.subtract({ days: 10 });
+                const tooLate = now.add({ days: 10 });
+                const justRight = now;
                 
-                output.push('3. Same moment in different timezones:');
-                const tokyo = now.toZonedDateTimeISO('Asia/Tokyo');
-                const ny = now.toZonedDateTimeISO('America/New_York');
-                output.push(`   Tokyo: ${tokyo}`);
-                output.push(`   New York: ${ny}`);
-                output.push('');
-                
-                output.push('4. Relative dates:');
-                output.push(`   Today: ${today}`);
-                output.push(`   Tomorrow: ${today.add({ days: 1 })}`);
-                output.push(`   Next week: ${today.add({ weeks: 1 })}`);
+                output.push('\nInput: ' + tooEarly.toString() + ' -> Output: ' + clamp(tooEarly, minDate, maxDate).toString());
+                output.push('Input: ' + tooLate.toString() + '  -> Output: ' + clamp(tooLate, minDate, maxDate).toString());
+                output.push('Input: ' + justRight.toString() + ' -> Output: ' + clamp(justRight, minDate, maxDate).toString());
                 
                 return output.join('\n');
             },
             
             timezones: () => {
                 const output = [];
-                output.push('=== Timezone Handling ===\n');
                 
                 const instant = Temporal.Now.instant();
-                
-                output.push('Same instant in different locations:');
+
                 const timezones = ['Europe/Berlin', 'America/New_York', 'Asia/Tokyo', 'UTC'];
                 
                 timezones.forEach(tz => {
                     const zoned = instant.toZonedDateTimeISO(tz);
-                    output.push(`${tz.padEnd(20)} ${zoned.toString()}`);
+                    output.push(`${tz.padEnd(18)} -> ${zoned}`);
                 });
                 
-                output.push('\n📍 Your system timezone:');
                 const local = Temporal.Now.zonedDateTimeISO();
-                output.push(`   ${local.timeZoneId}`);
-                output.push(`   Offset: ${local.offset}`);
-                output.push(`   Time: ${local.toPlainTime()}`);
+                output.push('\nYour timezone: ' + local.timeZoneId);
+                output.push('Offset: ' + local.offset);
+                
+                return output.join('\n');
+            },
+
+            ranges: () => {
+                const output = [];
+                
+                const { isBetween, clamp } = window.temporalKit;
+                const now = Temporal.Now.plainDateISO();
+                const start = now.subtract({ days: 5 });
+                const end = now.add({ days: 5 });
+                
+                output.push(`Range: ${start.toString()} to ${end.toString()}`);
+                
+                const check1 = isBetween(now, start, end);
+                const check2 = isBetween(
+                  now.add({ days: 10 }), 
+                  start, 
+                  end
+                );
+                
+                output.push(`Is ${now.toString()} in range? ${check1}`);
+                output.push(`Is ${now.add({ days: 10 }).toString()} in range? ${check2}`);
+                
+                const tooEarly = now.subtract({ days: 10 });
+                const tooLate = now.add({ days: 10 });
+                
+                const clamped1 = clamp(tooEarly, start, end);
+                const clamped2 = clamp(tooLate, start, end);
+                
+                output.push(`\nClamping ${tooEarly.toString()} (too early) -> ${clamped1.toString()}`);
+                output.push(`Clamping ${tooLate.toString()} (too late)  -> ${clamped2.toString()}`);
                 
                 return output.join('\n');
             }
         };
         
-        function runExample() {
-            const activeBtn = document.querySelector('.example-btn.active');
-            const exampleName = activeBtn.dataset.example;
-            const output = document.getElementById('output');
+        function runExample(exampleName) {
+            const output = document.getElementById(`output-${exampleName}`);
             
             try {
                 output.textContent = examples[exampleName]();
@@ -648,11 +1045,6 @@ console.log('Time:', local.toPlainTime());`
             btn.textContent = 'Copied!';
             setTimeout(() => btn.textContent = 'Copy', 2000);
         }
-        
-        // Run first example on load
-        window.addEventListener('load', () => {
-            setTimeout(() => runExample(), 500);
-        });
     </script>
 </body>
 </html>
