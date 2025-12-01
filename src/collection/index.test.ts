@@ -1,6 +1,6 @@
-import { describe, it, expect } from "vitest";
 import { Temporal } from "temporal-polyfill";
-import { sortAsc, sortDesc, closestTo } from "./index.js";
+import { describe, expect, it } from "vitest";
+import { closestTo, sortAsc, sortDesc } from "./index.js";
 
 describe("collection", () => {
   describe("sortAsc", () => {
@@ -17,10 +17,7 @@ describe("collection", () => {
     });
 
     it("does not mutate original array", () => {
-      const dates = [
-        Temporal.PlainDate.from("2025-03-01"),
-        Temporal.PlainDate.from("2025-01-01"),
-      ];
+      const dates = [Temporal.PlainDate.from("2025-03-01"), Temporal.PlainDate.from("2025-01-01")];
       const original = [...dates];
       sortAsc(dates);
       expect(dates).toEqual(original);

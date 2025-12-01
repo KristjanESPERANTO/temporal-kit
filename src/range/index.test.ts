@@ -1,11 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
-import {
-  eachDayOfInterval,
-  eachWeekOfInterval,
-  rangesOverlap,
-  stepInterval,
-} from "./index.js";
+import { eachDayOfInterval, eachWeekOfInterval, rangesOverlap, stepInterval } from "./index.js";
 
 describe("range", () => {
   describe("rangesOverlap", () => {

@@ -150,40 +150,40 @@ export function formatRelative(
   opts: { locale?: string | string[]; numeric?: "always" | "auto" } = {},
 ): string {
   const { locale, numeric = "auto" } = opts;
-
-  // Determine reference date
-  let reference: DateLike;
-  if (base) {
-    reference = base;
-  } else {
-    // Default to now, matching the type of the input if possible
-    if (date instanceof Temporal.PlainDate) {
-      reference = Temporal.Now.plainDateISO();
-    } else if (date instanceof Temporal.PlainDateTime) {
-      reference = Temporal.Now.plainDateTimeISO();
-    } else {
-      reference = Temporal.Now.zonedDateTimeISO();
-    }
-  }
-
+  const reference = getReferenceDate(date, base);
   const rtf = new Intl.RelativeTimeFormat(locale, { numeric });
 
   // Case 1: Both are PlainDate (Date only comparison)
   if (date instanceof Temporal.PlainDate && reference instanceof Temporal.PlainDate) {
     const diff = date.since(reference, { largestUnit: "day" });
-    const days = diff.days;
-
-    if (Math.abs(days) < 7) return rtf.format(days, "day");
-    if (Math.abs(days) < 30) return rtf.format(Math.round(days / 7), "week");
-    if (Math.abs(days) < 365) return rtf.format(Math.round(days / 30), "month");
-    return rtf.format(Math.round(days / 365), "year");
+    return formatDaysDiff(diff.days, rtf);
   }
 
   // Case 2: Time comparison involved
+  return formatTimeDiff(date, reference, rtf);
+}
+
+function getReferenceDate(date: DateLike, base?: DateLike): DateLike {
+  if (base) return base;
+  if (date instanceof Temporal.PlainDate) return Temporal.Now.plainDateISO();
+  if (date instanceof Temporal.PlainDateTime) return Temporal.Now.plainDateTimeISO();
+  return Temporal.Now.zonedDateTimeISO();
+}
+
+function formatDaysDiff(days: number, rtf: Intl.RelativeTimeFormat): string {
+  const absDays = Math.abs(days);
+  if (absDays < 7) return rtf.format(days, "day");
+  if (absDays < 30) return rtf.format(Math.round(days / 7), "week");
+  if (absDays < 365) return rtf.format(Math.round(days / 30), "month");
+  return rtf.format(Math.round(days / 365), "year");
+}
+
+function formatTimeDiff(date: DateLike, reference: DateLike, rtf: Intl.RelativeTimeFormat): string {
   // Convert both to ZonedDateTime for accurate comparison (using system TZ for Plain types)
   const toZDT = (d: DateLike): Temporal.ZonedDateTime => {
     if ("timeZoneId" in d) return d as Temporal.ZonedDateTime;
-    if ("hour" in d) return (d as Temporal.PlainDateTime).toZonedDateTime(Temporal.Now.timeZoneId());
+    if ("hour" in d)
+      return (d as Temporal.PlainDateTime).toZonedDateTime(Temporal.Now.timeZoneId());
     return (d as Temporal.PlainDate)
       .toPlainDateTime("00:00")
       .toZonedDateTime(Temporal.Now.timeZoneId());
@@ -198,10 +198,6 @@ export function formatRelative(
   if (absSeconds < 60) return rtf.format(Math.round(diffSeconds), "second");
   if (absSeconds < 3600) return rtf.format(Math.round(diffSeconds / 60), "minute");
   if (absSeconds < 86400) return rtf.format(Math.round(diffSeconds / 3600), "hour");
-  
-  const days = diffSeconds / 86400;
-  if (Math.abs(days) < 7) return rtf.format(Math.round(days), "day");
-  if (Math.abs(days) < 30) return rtf.format(Math.round(days / 7), "week");
-  if (Math.abs(days) < 365) return rtf.format(Math.round(days / 30), "month");
-  return rtf.format(Math.round(days / 365), "year");
+
+  return formatDaysDiff(Math.round(diffSeconds / 86400), rtf);
 }

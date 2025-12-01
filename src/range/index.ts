@@ -37,9 +37,7 @@ export function rangesOverlap<T extends DateLike>(
   range2: Interval<T>,
 ): boolean {
   // Two ranges overlap if (StartA < EndB) and (EndA > StartB)
-  return (
-    isBefore(range1.start, range2.end) && isAfter(range1.end, range2.start)
-  );
+  return isBefore(range1.start, range2.end) && isAfter(range1.end, range2.start);
 }
 
 /**
@@ -59,7 +57,7 @@ export function* stepInterval<T extends DateLike>(
   // Determine if we should stop (current > end)
   while (!isAfter(current, end)) {
     yield current;
-    
+
     // Add duration. We need to cast because .add is generic on the instance
     // but TypeScript doesn't know 'current' has .add method from DateLike union strictly without narrowing
     // However, all DateLike types (PlainDate, PlainDateTime, ZonedDateTime) have .add
@@ -70,7 +68,7 @@ export function* stepInterval<T extends DateLike>(
     } else if (current instanceof Temporal.ZonedDateTime) {
       current = current.add(duration) as T;
     } else {
-        throw new TypeError("Unsupported Temporal type");
+      throw new TypeError("Unsupported Temporal type");
     }
   }
 }
@@ -89,9 +87,7 @@ export function* stepInterval<T extends DateLike>(
  * // [2025-01-01, 2025-01-02, 2025-01-03]
  * ```
  */
-export function eachDayOfInterval<T extends DateLike>(
-  interval: Interval<T>,
-): T[] {
+export function eachDayOfInterval<T extends DateLike>(interval: Interval<T>): T[] {
   return Array.from(stepInterval(interval, { days: 1 }));
 }
 
@@ -101,8 +97,6 @@ export function eachDayOfInterval<T extends DateLike>(
  * @param interval - The interval
  * @returns Array of dates separated by 1 week
  */
-export function eachWeekOfInterval<T extends DateLike>(
-  interval: Interval<T>,
-): T[] {
+export function eachWeekOfInterval<T extends DateLike>(interval: Interval<T>): T[] {
   return Array.from(stepInterval(interval, { weeks: 1 }));
 }

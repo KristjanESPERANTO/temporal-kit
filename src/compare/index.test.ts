@@ -1,6 +1,16 @@
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
-import { isAfter, isBefore, isSame, isSameDay, isSameMonth, isSameWeek, isSameYear, max, min } from "./index.js";
+import {
+  isAfter,
+  isBefore,
+  isSame,
+  isSameDay,
+  isSameMonth,
+  isSameWeek,
+  isSameYear,
+  max,
+  min,
+} from "./index.js";
 
 describe("Comparison Functions", () => {
   describe("isBefore", () => {

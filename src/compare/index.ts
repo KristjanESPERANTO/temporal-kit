@@ -127,9 +127,7 @@ export function min<T extends DateLike>(dates: T[]): T {
     throw new TypeError("Cannot find min of empty array");
   }
 
-  return dates.reduce((earliest, current) =>
-    compare(current, earliest) < 0 ? current : earliest,
-  );
+  return dates.reduce((earliest, current) => (compare(current, earliest) < 0 ? current : earliest));
 }
 
 /**

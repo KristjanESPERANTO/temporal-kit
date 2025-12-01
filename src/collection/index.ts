@@ -3,7 +3,7 @@
  * @module collection
  */
 
-import { Temporal } from "temporal-polyfill";
+import type { Temporal } from "temporal-polyfill";
 import { compare } from "../compare/index.js";
 import type { DateLike } from "../types/index.js";
 
@@ -78,20 +78,11 @@ export function sortDesc<T extends DateLike>(dates: T[]): T[] {
 export function closestTo<T extends DateLike>(dateToCompare: T, dates: T[]): T | undefined {
   if (dates.length === 0) return undefined;
 
-  let closest = dates[0]!;
-  let minDiff = getAbsDifference(dateToCompare, closest);
-
-  for (let i = 1; i < dates.length; i++) {
-    const current = dates[i]!;
-    const diff = getAbsDifference(dateToCompare, current);
-
-    if (diff < minDiff) {
-      minDiff = diff;
-      closest = current;
-    }
-  }
-
-  return closest;
+  return dates.reduce((closest, current) => {
+    const diffCurrent = getAbsDifference(dateToCompare, current);
+    const diffClosest = getAbsDifference(dateToCompare, closest);
+    return diffCurrent < diffClosest ? current : closest;
+  });
 }
 
 /**
