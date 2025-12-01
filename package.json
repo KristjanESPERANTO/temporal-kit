@@ -43,7 +43,16 @@
     "prepublishOnly": "npm run ci",
     "release": "commit-and-tag-version",
     "release:minor": "commit-and-tag-version --release-as minor",
-    "release:major": "commit-and-tag-version --release-as major"
+    "release:major": "commit-and-tag-version --release-as major",
+    "prepare": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,json,md}": [
+      "biome check --write"
+    ]
   },
   "keywords": [
     "temporal",
@@ -71,6 +80,8 @@
     "@vitest/coverage-v8": "^4.0.14",
     "@vitest/ui": "^4.0.14",
     "commit-and-tag-version": "^12.6.0",
+    "lint-staged": "^16.2.7",
+    "simple-git-hooks": "^2.13.1",
     "temporal-polyfill": "^0.3.0",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
