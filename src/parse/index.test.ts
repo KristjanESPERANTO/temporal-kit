@@ -42,7 +42,7 @@ describe("parse", () => {
     it("parses ISO with timezone as ZonedDateTime", () => {
       const result = parse("2025-11-30T15:30:00+01:00[Europe/Berlin]");
       expect(result).toBeInstanceOf(Temporal.ZonedDateTime);
-      expect(result.timeZoneId).toBe("Europe/Berlin");
+      expect((result as Temporal.ZonedDateTime).timeZoneId).toBe("Europe/Berlin");
     });
 
     it("parses time-only string as PlainTime", () => {
@@ -66,7 +66,7 @@ describe("parse", () => {
 
   describe("European date formats (DD.MM.YYYY)", () => {
     it("parses European date format", () => {
-      const result = parse("30.11.2025");
+      const result = parse("30.11.2025") as Temporal.PlainDate;
       expect(result).toBeInstanceOf(Temporal.PlainDate);
       expect(result.year).toBe(2025);
       expect(result.month).toBe(11);
@@ -74,7 +74,7 @@ describe("parse", () => {
     });
 
     it("parses European date with single digit day and month", () => {
-      const result = parse("5.3.2025");
+      const result = parse("5.3.2025") as Temporal.PlainDate;
       expect(result).toBeInstanceOf(Temporal.PlainDate);
       expect(result.year).toBe(2025);
       expect(result.month).toBe(3);
@@ -96,7 +96,7 @@ describe("parse", () => {
 
   describe("US date formats (MM/DD/YYYY)", () => {
     it("parses US date format", () => {
-      const result = parse("11/30/2025");
+      const result = parse("11/30/2025") as Temporal.PlainDate;
       expect(result).toBeInstanceOf(Temporal.PlainDate);
       expect(result.year).toBe(2025);
       expect(result.month).toBe(11);
@@ -104,7 +104,7 @@ describe("parse", () => {
     });
 
     it("parses US date with single digit month and day", () => {
-      const result = parse("3/5/2025");
+      const result = parse("3/5/2025") as Temporal.PlainDate;
       expect(result).toBeInstanceOf(Temporal.PlainDate);
       expect(result.year).toBe(2025);
       expect(result.month).toBe(3);
@@ -126,7 +126,7 @@ describe("parse", () => {
 
   describe("Alternative date formats", () => {
     it("parses DD-MM-YYYY format", () => {
-      const result = parse("30-11-2025");
+      const result = parse("30-11-2025") as Temporal.PlainDate;
       expect(result).toBeInstanceOf(Temporal.PlainDate);
       expect(result.year).toBe(2025);
       expect(result.month).toBe(11);
@@ -142,33 +142,33 @@ describe("parse", () => {
 
   describe("12-hour time formats", () => {
     it("parses 12-hour time with AM", () => {
-      const result = parse("9:30 AM");
+      const result = parse("9:30 AM") as Temporal.PlainTime;
       expect(result).toBeInstanceOf(Temporal.PlainTime);
       expect(result.hour).toBe(9);
       expect(result.minute).toBe(30);
     });
 
     it("parses 12-hour time with PM", () => {
-      const result = parse("3:30 PM");
+      const result = parse("3:30 PM") as Temporal.PlainTime;
       expect(result).toBeInstanceOf(Temporal.PlainTime);
       expect(result.hour).toBe(15);
       expect(result.minute).toBe(30);
     });
 
     it("parses 12:00 AM as midnight", () => {
-      const result = parse("12:00 AM");
+      const result = parse("12:00 AM") as Temporal.PlainTime;
       expect(result).toBeInstanceOf(Temporal.PlainTime);
       expect(result.hour).toBe(0);
     });
 
     it("parses 12:00 PM as noon", () => {
-      const result = parse("12:00 PM");
+      const result = parse("12:00 PM") as Temporal.PlainTime;
       expect(result).toBeInstanceOf(Temporal.PlainTime);
       expect(result.hour).toBe(12);
     });
 
     it("parses 12-hour time with seconds", () => {
-      const result = parse("3:30:45 PM");
+      const result = parse("3:30:45 PM") as Temporal.PlainTime;
       expect(result).toBeInstanceOf(Temporal.PlainTime);
       expect(result.hour).toBe(15);
       expect(result.minute).toBe(30);
@@ -176,7 +176,7 @@ describe("parse", () => {
     });
 
     it("parses 12-hour time with lowercase am/pm", () => {
-      const result = parse("3:30 pm");
+      const result = parse("3:30 pm") as Temporal.PlainTime;
       expect(result).toBeInstanceOf(Temporal.PlainTime);
       expect(result.hour).toBe(15);
     });
@@ -184,7 +184,7 @@ describe("parse", () => {
 
   describe("DateTime combinations", () => {
     it("parses ISO date with space and time", () => {
-      const result = parse("2025-11-30 15:30:00");
+      const result = parse("2025-11-30 15:30:00") as Temporal.PlainDateTime;
       expect(result).toBeInstanceOf(Temporal.PlainDateTime);
       expect(result.year).toBe(2025);
       expect(result.month).toBe(11);
@@ -195,7 +195,7 @@ describe("parse", () => {
     });
 
     it("parses European date with time", () => {
-      const result = parse("30.11.2025 15:30");
+      const result = parse("30.11.2025 15:30") as Temporal.PlainDateTime;
       expect(result).toBeInstanceOf(Temporal.PlainDateTime);
       expect(result.year).toBe(2025);
       expect(result.month).toBe(11);
@@ -205,7 +205,7 @@ describe("parse", () => {
     });
 
     it("parses US date with time", () => {
-      const result = parse("11/30/2025 3:30 PM");
+      const result = parse("11/30/2025 3:30 PM") as Temporal.PlainDateTime;
       expect(result).toBeInstanceOf(Temporal.PlainDateTime);
       expect(result.year).toBe(2025);
       expect(result.month).toBe(11);
@@ -215,7 +215,7 @@ describe("parse", () => {
     });
 
     it("parses date with 12-hour time", () => {
-      const result = parse("2025-11-30 9:00 AM");
+      const result = parse("2025-11-30 9:00 AM") as Temporal.PlainDateTime;
       expect(result).toBeInstanceOf(Temporal.PlainDateTime);
       expect(result.hour).toBe(9);
     });
