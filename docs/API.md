@@ -803,6 +803,109 @@ endOf(date, 'month'); // 2025-11-30
 
 ---
 
+## Range Functions
+
+Functions for working with date intervals and ranges.
+
+### `rangesOverlap(range1, range2)`
+
+Checks if two time intervals overlap.
+
+**Parameters:**
+- `range1: { start: DateLike, end: DateLike }` - First interval
+- `range2: { start: DateLike, end: DateLike }` - Second interval
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { rangesOverlap } from 'temporal-kit';
+
+const range1 = {
+  start: Temporal.PlainDate.from('2025-01-01'),
+  end: Temporal.PlainDate.from('2025-01-10')
+};
+const range2 = {
+  start: Temporal.PlainDate.from('2025-01-05'),
+  end: Temporal.PlainDate.from('2025-01-15')
+};
+
+rangesOverlap(range1, range2); // true
+```
+
+---
+
+### `eachDayOfInterval(interval)`
+
+Returns an array of days within the specified interval.
+
+**Parameters:**
+- `interval: { start: DateLike, end: DateLike }` - The interval
+
+**Returns:** `DateLike[]` - Array of dates
+
+**Example:**
+```typescript
+import { eachDayOfInterval } from 'temporal-kit';
+
+const start = Temporal.PlainDate.from('2025-01-01');
+const end = Temporal.PlainDate.from('2025-01-03');
+
+eachDayOfInterval({ start, end });
+// [2025-01-01, 2025-01-02, 2025-01-03]
+```
+
+---
+
+### `eachWeekOfInterval(interval)`
+
+Returns an array of weeks within the specified interval.
+
+**Parameters:**
+- `interval: { start: DateLike, end: DateLike }` - The interval
+
+**Returns:** `DateLike[]` - Array of dates separated by 1 week
+
+**Example:**
+```typescript
+import { eachWeekOfInterval } from 'temporal-kit';
+
+const start = Temporal.PlainDate.from('2025-01-01');
+const end = Temporal.PlainDate.from('2025-01-15');
+
+eachWeekOfInterval({ start, end });
+// [2025-01-01, 2025-01-08, 2025-01-15]
+```
+
+---
+
+### `stepInterval(interval, duration)`
+
+Generator that yields each step in an interval.
+
+**Parameters:**
+- `interval: { start: DateLike, end: DateLike }` - The interval
+- `duration: Temporal.DurationLike` - The duration to step by
+
+**Returns:** `Generator<DateLike>`
+
+**Example:**
+```typescript
+import { stepInterval } from 'temporal-kit';
+
+const start = Temporal.PlainDate.from('2025-01-01');
+const end = Temporal.PlainDate.from('2025-01-05');
+
+for (const date of stepInterval({ start, end }, { days: 2 })) {
+  console.log(date.toString());
+}
+// 2025-01-01
+// 2025-01-03
+// 2025-01-05
+```
+
+---
+
 ## Utility Functions
 
 Functions for functional composition.

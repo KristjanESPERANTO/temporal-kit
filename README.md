@@ -148,7 +148,7 @@ src/
 
 ### 💡 Phase 4: Advanced Features (IN PROGRESS)
 1.  **Relative Formatting:** ✅ `formatRelative` updated with time unit support (seconds, minutes, hours)
-2.  **Range Operations:** `rangesOverlap`, `eachDayOfInterval`, `eachWeekOfInterval`, `stepInterval`
+2.  **Range Operations:** ✅ `rangesOverlap`, `eachDayOfInterval`, `eachWeekOfInterval`, `stepInterval`
 3.  **Collection Helpers:** `sortAsc`, `sortDesc`, `closestTo` (Simplifies working with arrays of dates)
 4.  **Specific Comparisons:** `isSameDay`, `isSameWeek`, `isSameMonth`, `isSameYear` helpers
 5.  **Validation Helpers:** `isValidDateString`, `isValidTimeString`, `isValidDateTimeString`
@@ -201,6 +201,6 @@ Uses [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag
 | **Paradigm** | Mutable / Quirky | OO / Immutable | OO / Mutable | OO / Verbose | **Functional** |
 | **Timezones** | Poor | Excellent | Plugin | Native | **Native** |
 | **Tree-Shaking**| N/A | No | No | N/A | **Yes** |
-| **Bundle Size**| N/A | ~70KB | ~7KB (+plugins) | Native | **~7KB** (native) / ~115KB (polyfilled) |
+| **Bundle Size**| N/A | ~70KB | ~7KB (+plugins) | Native | **~11KB** (native) / ~66KB (polyfilled) |
 | **Target** | Everyone | Production | Production | Future | **Early Adopters** |
 | **Philosophy** | Legacy | Battle-tested | Convenience | Standard | **Modern FP + Learning** |
