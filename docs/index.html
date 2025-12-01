@@ -7,6 +7,7 @@
     <meta name="description" content="A modern, functional utility library for the Temporal API. Lightweight (~11KB), tree-shakable, and TypeScript-first. Experiment with Temporal today.">
     <meta name="keywords" content="temporal, temporal-api, javascript, typescript, date-time, functional, tree-shakable, temporal-polyfill">
     <meta name="author" content="KristjanESPERANTO">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%233182ce' stroke='%23fff' stroke-width='3'/><line x1='50' y1='50' x2='50' y2='25' stroke='%23fff' stroke-width='4' stroke-linecap='round'/><line x1='50' y1='50' x2='70' y2='50' stroke='%23fff' stroke-width='3' stroke-linecap='round'/><circle cx='50' cy='50' r='4' fill='%23fff'/></svg>">
     
     <style>
         :root {
@@ -70,6 +71,12 @@
             padding: 2rem;
         }
         
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+        }
+        
         header {
             text-align: center;
             padding: 4rem 0 3rem;
@@ -77,6 +84,14 @@
             border-bottom: 1px solid var(--border-color);
             margin: -2rem -2rem 2rem -2rem;
             position: relative;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                padding: 2rem 1rem 2rem;
+                margin: -1rem -1rem 1rem -1rem;
+            }
         }
         
         header::before {
@@ -88,6 +103,103 @@
             height: 4px;
             background: linear-gradient(90deg, #3182ce 0%, #805ad5 100%);
         }
+
+        .clock-background {
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%);
+            width: 180px;
+            height: 180px;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .clock-background {
+                width: 120px;
+                height: 120px;
+                right: 50%;
+                transform: translate(50%, -50%);
+            }
+        }
+
+        .clock-face {
+            width: 100%;
+            height: 100%;
+            border: 3px solid currentColor;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .clock-face::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: currentColor;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .clock-hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            background: currentColor;
+            border-radius: 2px;
+        }
+
+        .hour-hand {
+            width: 3px;
+            height: 35%;
+            transform: translateX(-50%) rotate(var(--hour-rotation));
+        }
+
+        .minute-hand {
+            width: 2px;
+            height: 45%;
+            transform: translateX(-50%) rotate(var(--minute-rotation));
+        }
+
+        .second-hand {
+            width: 2px;
+            height: 48%;
+            transform: translateX(-50%) rotate(var(--second-rotation));
+            background: #dc2626;
+            opacity: 1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .second-hand {
+                background: #f87171;
+            }
+        }
+
+        .digital-time {
+            position: absolute;
+            bottom: 22%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'SF Mono', 'Monaco', monospace;
+            color: currentColor;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .digital-date {
+            font-size: 0.75rem;
+            font-weight: 700;
+            opacity: 0.9;
+            margin-top: 0.15rem;
+        }
         
         h1 {
             font-size: 2.5rem;
@@ -97,10 +209,22 @@
             letter-spacing: -0.02em;
         }
         
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+        
         h1::before {
-            content: '⏱️';
+            content: '🕐';
             margin-right: 0.5rem;
             font-size: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1::before {
+                font-size: 1.5rem;
+            }
         }
         
         .tagline {
@@ -108,6 +232,12 @@
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
             font-weight: 400;
+        }
+        
+        @media (max-width: 768px) {
+            .tagline {
+                font-size: 1rem;
+            }
         }
         
         .status {
@@ -130,6 +260,12 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
         }
         
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+        }
+        
         @media (prefers-color-scheme: dark) {
             .main-content {
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
@@ -142,6 +278,12 @@
             padding: 2.5rem;
             border: 1px solid var(--border-color);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+        
+        @media (max-width: 768px) {
+            .playground {
+                padding: 1.5rem;
+            }
         }
         
         @media (prefers-color-scheme: dark) {
@@ -253,6 +395,18 @@
             border: 1px solid var(--code-border);
         }
         
+        @media (max-width: 768px) {
+            .install-box {
+                padding: 1rem 1rem 1rem 1rem;
+            }
+            
+            .install-box code {
+                font-size: 0.85rem;
+                display: block;
+                padding-right: 70px;
+            }
+        }
+        
         .install-box code {
             color: #90cdf4;
             font-size: 0.95rem;
@@ -305,12 +459,25 @@
             margin-bottom: 2rem;
         }
         
+        @media (max-width: 768px) {
+            .example-card {
+                padding: 1rem;
+            }
+        }
+        
         .example-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 1rem;
             gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .example-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
         
         .example-title {
@@ -342,6 +509,12 @@
             transition: background 0.2s;
             white-space: nowrap;
             flex-shrink: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .rerun-btn {
+                width: 100%;
+            }
         }
         
         .rerun-btn:hover {
@@ -393,6 +566,44 @@
             color: #6a9955;
             font-style: italic;
         }
+
+        .links-section {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .links-section {
+                flex-wrap: wrap;
+                gap: 0.75rem 1rem;
+                justify-content: center;
+            }
+            
+            .links-section > span {
+                display: none;
+            }
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9375rem;
+            transition: color 0.2s;
+        }
+
+        .link-item:hover {
+            color: var(--accent-primary);
+        }
+
+        .link-item .icon {
+            font-size: 1.25rem;
+        }
         
         footer {
             text-align: center;
@@ -426,14 +637,24 @@
 <body>
     <div class="container">
         <header>
-            <h1>Temporal Kit</h1>
-            <p class="tagline">Modern Functional Utilities for the Temporal API</p>
-            <span class="status">✅ Ready for Early Adopters</span>
+            <div class="clock-background" id="clockBg">
+                <div class="clock-face">
+                    <div class="clock-hand hour-hand"></div>
+                    <div class="clock-hand minute-hand"></div>
+                    <div class="clock-hand second-hand"></div>
+                    <div class="digital-time" id="digitalTime">
+                        <div id="timeDisplay">00:00:00</div>
+                        <div class="digital-date" id="dateDisplay">2025-01-01</div>
+                    </div>
+                </div>
+            </div>
+            <h1 style="position: relative; z-index: 1;">Temporal Kit</h1>
+            <p class="tagline" style="position: relative; z-index: 1;">Functional utilities for JavaScript's Temporal API</p>
         </header>
         
         <div class="main-content">
-            <h2>Experiment with Temporal today</h2>
-            <p>A lightweight, functional utility library built on JavaScript's new <strong>Temporal API</strong>. Built for early adopters who want clean, tree-shakable date/time utilities.</p>
+            <h2>Ready for the future of JavaScript dates</h2>
+            <p>A lightweight, tree-shakable library for JavaScript's <strong>Temporal API</strong>. Functional design, full TypeScript support, and zero dependencies.</p>
             
             <div class="install-box">
                 <button class="copy-btn" onclick="copyInstall()">Copy</button>
@@ -527,12 +748,6 @@
                     </div>
                 </div>
             </div>
-            
-            <p style="text-align: center; margin-top: 2.5rem;">
-                <a href="https://github.com/KristjanESPERANTO/temporal-kit" target="_blank" style="font-size: 0.9375rem;">
-                    View Documentation on GitHub →
-                </a>
-            </p>
         </div>
         
         <div class="playground">
@@ -547,14 +762,84 @@
     </div>
     
     <footer>
-        <p>Made with ❤️ by <a href="https://github.com/KristjanESPERANTO">KristjanESPERANTO</a></p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem;">
-            <a href="https://github.com/KristjanESPERANTO/temporal-kit">GitHub</a> • 
-            <a href="https://www.npmjs.com/package/temporal-kit">npm</a>
-        </p>
+        <div class="links-section">
+            <a href="https://www.npmjs.com/package/temporal-kit" target="_blank" class="link-item">
+                <span class="icon">📦</span>
+                <span>npm</span>
+            </a>
+            <span style="color: var(--border-color);">•</span>
+            <a href="https://github.com/KristjanESPERANTO/temporal-kit" target="_blank" class="link-item">
+                <span class="icon">📚</span>
+                <span>GitHub</span>
+            </a>
+            <span style="color: var(--border-color);">•</span>
+            <a href="https://github.com/KristjanESPERANTO/temporal-kit/blob/main/docs/API.md" target="_blank" class="link-item">
+                <span class="icon">📖</span>
+                <span>API Docs</span>
+            </a>
+            <span style="color: var(--border-color);">•</span>
+            <a href="https://github.com/KristjanESPERANTO/temporal-kit/tree/main/examples" target="_blank" class="link-item">
+                <span class="icon">💡</span>
+                <span>Examples</span>
+            </a>
+            <span style="color: var(--border-color);">•</span>
+            <a href="https://github.com/KristjanESPERANTO/temporal-kit/blob/main/LICENSE" target="_blank" class="link-item">
+                <span class="icon">⚖️</span>
+                <span>MIT License</span>
+            </a>
+        </div>
     </footer>
     
+    <script>
+        // Update clock (runs immediately, before module loading)
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours() % 12;
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            
+            const hourRotation = (hours * 30) + (minutes * 0.5);
+            const minuteRotation = minutes * 6;
+            const secondRotation = seconds * 6;
+            
+            const clockBg = document.getElementById('clockBg');
+            if (clockBg) {
+                clockBg.style.setProperty('--hour-rotation', `${hourRotation}deg`);
+                clockBg.style.setProperty('--minute-rotation', `${minuteRotation}deg`);
+                clockBg.style.setProperty('--second-rotation', `${secondRotation}deg`);
+            }
+
+            // Update digital time
+            const timeDisplay = document.getElementById('timeDisplay');
+            const dateDisplay = document.getElementById('dateDisplay');
+            if (timeDisplay) {
+                const h = String(now.getHours()).padStart(2, '0');
+                const m = String(now.getMinutes()).padStart(2, '0');
+                const s = String(now.getSeconds()).padStart(2, '0');
+                timeDisplay.textContent = `${h}:${m}:${s}`;
+            }
+            if (dateDisplay) {
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                dateDisplay.textContent = `${year}-${month}-${day}`;
+            }
+        }
+        
+        // Start clock when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                updateClock();
+                setInterval(updateClock, 1000);
+            });
+        } else {
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+    </script>
+
     <script type="module">
+
         // Check Temporal support
         const hasNativeTemporal = typeof Temporal !== 'undefined';
         const browserCheck = document.getElementById('browserCheck');
@@ -571,18 +856,25 @@
         
         // Import temporal-kit
         let temporalKit;
+        
+        // Detect environment and use appropriate import
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        
         try {
-            // 1. Try production path (GitHub Pages / deployed)
-            temporalKit = await import('./temporal-kit.js');
-        } catch (e) {
-            try {
-                // 2. Try local development path
+            if (isGitHubPages) {
+                // Production: GitHub Pages has temporal-kit.js in same folder
+                temporalKit = await import('./temporal-kit.js');
+            } else if (isLocalDev) {
+                // Local dev: use dist folder
                 temporalKit = await import('../dist/polyfilled.js');
-            } catch (e2) {
-                console.warn('Local import failed, falling back to CDN');
-                // 3. Fallback to CDN
+            } else {
+                // Fallback to CDN
                 temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.1.1/dist/polyfilled.js');
             }
+        } catch (e) {
+            console.warn('Primary import failed, falling back to CDN:', e);
+            temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.1.1/dist/polyfilled.js');
         }
 
         const { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo } = temporalKit;
@@ -814,7 +1106,7 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
         
         function renderAllExamples() {
             const container = document.getElementById('examplesContainer');
-            const exampleNames = ['relative', 'nextday', 'sort', 'closest', 'timezones', 'clamp', 'guards'];
+            const exampleNames = ['relative', 'nextday', 'sort', 'closest', 'timezones', 'guards'];
             
             exampleNames.forEach(name => {
                 const meta = exampleMeta[name];
