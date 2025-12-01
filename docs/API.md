@@ -14,6 +14,7 @@ Complete reference for all functions in temporal-kit.
 - [Collection Functions](#collection-functions)
 - [Validation Functions](#validation-functions)
 - [Rounding Functions](#rounding-functions)
+- [Timezone Functions](#timezone-functions)
 - [Utility Functions](#utility-functions)
 - [Types](#types)
 
@@ -1195,6 +1196,48 @@ import { round } from 'temporal-kit';
 
 const dt = Temporal.PlainDateTime.from('2025-01-01T15:30:45');
 round(dt, 'hour'); // 2025-01-01T16:00:00
+```
+
+---
+
+## Timezone Functions
+
+Utilities for working with timezones.
+
+### `isValidTimezone(timezone)`
+
+Checks if a string is a valid IANA timezone identifier.
+
+**Parameters:**
+- `timezone: string` - The timezone string to check
+
+**Returns:** `boolean`
+
+**Example:**
+```typescript
+import { isValidTimezone } from 'temporal-kit';
+
+isValidTimezone('Europe/Berlin'); // true
+isValidTimezone('Invalid/Timezone'); // false
+```
+
+---
+
+### `getTimezoneName(timezone)`
+
+Gets the canonical timezone ID from a string or TimeZone object.
+
+**Parameters:**
+- `timezone: string | TimeZone | ZonedDateTime` - The timezone string or object
+
+**Returns:** `string` - The canonical timezone ID
+
+**Example:**
+```typescript
+import { getTimezoneName } from 'temporal-kit';
+
+getTimezoneName('Europe/Berlin'); // 'Europe/Berlin'
+getTimezoneName('UTC'); // 'UTC'
 ```
 
 ---

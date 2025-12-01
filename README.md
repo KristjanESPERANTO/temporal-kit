@@ -153,7 +153,7 @@ src/
 4.  **Specific Comparisons:** ✅ `isSameDay`, `isSameWeek`, `isSameMonth`, `isSameYear` helpers
 5.  **Validation Helpers:** ✅ `isValidDateString`, `isValidTimeString`, `isValidDateTimeString`
 6.  **Functional Rounding:** ✅ `floor`, `ceil`, `round` wrappers for functional composition
-7.  **Timezone Utilities:** `isValidTimezone`, `getTimezoneName`
+7.  **Timezone Utilities:** ✅ `isValidTimezone`, `getTimezoneName`
 8.  **Fluent API:** Optional chainable wrapper as separate entry point (Experimental)
 
 ## 5. Developer Experience
