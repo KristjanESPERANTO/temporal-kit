@@ -30,6 +30,8 @@ export * from "./math/index.js";
 export * from "./parse/index.js";
 // Re-export range functions
 export * from "./range/index.js";
+// Re-export rounding functions
+export * from "./rounding/index.js";
 // Re-export types
 export type * from "./types/index.js";
 // Re-export utils

@@ -13,6 +13,7 @@ Complete reference for all functions in temporal-kit.
 - [Range Functions](#range-functions)
 - [Collection Functions](#collection-functions)
 - [Validation Functions](#validation-functions)
+- [Rounding Functions](#rounding-functions)
 - [Utility Functions](#utility-functions)
 - [Types](#types)
 
@@ -1127,6 +1128,73 @@ import { isValidDateTimeString } from 'temporal-kit';
 
 isValidDateTimeString('2025-12-31T15:30:00'); // true
 isValidDateTimeString('invalid'); // false
+```
+
+---
+
+## Rounding Functions
+
+Functional wrappers for rounding Temporal objects.
+
+### `floor(value, unit)`
+
+Rounds a value down to the specified unit.
+
+**Parameters:**
+- `value: Roundable` - The value to round (Instant, ZonedDateTime, PlainDateTime, PlainTime, Duration)
+- `unit: string` - The unit to round to (e.g. 'hour', 'minute')
+
+**Returns:** `Roundable` - The rounded value
+
+**Example:**
+```typescript
+import { floor } from 'temporal-kit';
+
+const dt = Temporal.PlainDateTime.from('2025-01-01T15:30:45');
+floor(dt, 'hour'); // 2025-01-01T15:00:00
+```
+
+---
+
+### `ceil(value, unit)`
+
+Rounds a value up to the specified unit.
+
+**Parameters:**
+- `value: Roundable` - The value to round
+- `unit: string` - The unit to round to
+
+**Returns:** `Roundable` - The rounded value
+
+**Example:**
+```typescript
+import { ceil } from 'temporal-kit';
+
+const dt = Temporal.PlainDateTime.from('2025-01-01T15:30:45');
+ceil(dt, 'hour'); // 2025-01-01T16:00:00
+```
+
+---
+
+### `round(value, unit, options?)`
+
+Rounds a value to the nearest unit (half-expand by default).
+
+**Parameters:**
+- `value: Roundable` - The value to round
+- `unit: string` - The unit to round to
+- `options?: object` - Additional options
+  - `roundingMode?: string` - 'ceil', 'floor', 'expand', 'trunc', 'halfCeil', 'halfFloor', 'halfExpand', 'halfTrunc', 'halfEven'
+  - `roundingIncrement?: number` - Increment to round to (e.g. 15 for 15 minutes)
+
+**Returns:** `Roundable` - The rounded value
+
+**Example:**
+```typescript
+import { round } from 'temporal-kit';
+
+const dt = Temporal.PlainDateTime.from('2025-01-01T15:30:45');
+round(dt, 'hour'); // 2025-01-01T16:00:00
 ```
 
 ---
