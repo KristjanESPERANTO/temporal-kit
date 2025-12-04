@@ -1360,7 +1360,7 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
             }
         };
         
-        function runExample(exampleName) {
+        window.runExample = (exampleName) => {
             const output = document.getElementById(`output-${exampleName}`);
             
             try {
@@ -1368,14 +1368,15 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
             } catch (error) {
                 output.textContent = `❌ Error: ${error.message}\n\n${error.stack}`;
             }
-        }
+        };
         
-        function _copyInstall() {
+        window.copyInstall = () => {
             navigator.clipboard.writeText('npm install temporal-kit');
             const btn = event.target;
+            const originalText = btn.textContent;
             btn.textContent = 'Copied!';
-            setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-        }
+            setTimeout(() => { btn.textContent = originalText; }, 2000);
+        };
 
         // Initialize examples
         renderAllExamples();
