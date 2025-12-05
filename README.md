@@ -112,7 +112,7 @@ const result = pipe(
 - Future-ready for JS pipeline operator (`|>`)
 
 > **Why no method chaining?**
-> Fluent APIs (like `moment().add().startOf()`) are convenient but break tree-shaking because the wrapper object must bundle *all* available methods. By sticking to pure functions, `temporal-kit` remains tiny (~11KB) and aligns with the future of JavaScript (Pipeline Operator).
+> Fluent APIs (like `moment().add().startOf()`) are convenient but break tree-shaking because the wrapper object must bundle *all* available methods. By sticking to pure functions, `temporal-kit` remains small and aligns with the future of JavaScript (Pipeline Operator).
 
 ### D. Polyfill Strategy (Explicit Opt-in)
 We adopt a robust strategy for compatibility:
