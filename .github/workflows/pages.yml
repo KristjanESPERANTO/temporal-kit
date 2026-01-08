@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: npm run build
+        run: node --run build
 
       - name: Assemble site
         run: |

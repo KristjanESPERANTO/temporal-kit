@@ -17,7 +17,7 @@ Thank you for your interest in contributing! We welcome contributions from the c
 
 3.  **Start development mode:**
     ```bash
-    npm run dev          # Watch mode for development
+    node --run dev          # Watch mode for development
     ```
 
 ## Quality Checks
@@ -25,15 +25,15 @@ Thank you for your interest in contributing! We welcome contributions from the c
 We maintain high standards for code quality. Before submitting a PR, please ensure all checks pass:
 
 ```bash
-npm run typecheck     # TypeScript type checking
-npm run lint          # Biome linting
-npm run test:run      # Run all tests once
-npm run test:coverage # Coverage report (100% threshold)
+node --run typecheck     # TypeScript type checking
+node --run lint          # Biome linting
+node --run test:run      # Run all tests once
+node --run test:coverage # Coverage report (100% threshold)
 ```
 
 You can also run the full CI pipeline locally:
 ```bash
-npm run ci
+node --run ci
 ```
 
 ## Testing
@@ -41,8 +41,8 @@ npm run ci
 We use [Vitest](https://vitest.dev/) for testing.
 
 ```bash
-npm run test         # Run tests in watch mode
-npm run test:ui      # Open Vitest UI
+node --run test         # Run tests in watch mode
+node --run test:ui      # Open Vitest UI
 ```
 
 ## Release Management (Maintainers Only)
@@ -50,9 +50,9 @@ npm run test:ui      # Open Vitest UI
 We use [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) to automate releases.
 
 ```bash
-npm run release        # Auto-bump patch version (0.0.1 → 0.0.2)
-npm run release:minor  # Bump minor version (0.0.2 → 0.1.0)
-npm run release:major  # Bump major version (0.0.2 → 1.0.0)
+node --run release        # Auto-bump patch version (0.0.1 → 0.0.2)
+node --run release:minor  # Bump minor version (0.0.2 → 0.1.0)
+node --run release:major  # Bump major version (0.0.2 → 1.0.0)
 ```
 
 This process automatically:

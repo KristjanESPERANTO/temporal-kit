@@ -6,7 +6,7 @@
 
 ### Recommended: Start Here
 ```bash
-npm run build
+node --run build
 node examples/01-basic-usage.js    # Feature overview
 node examples/02-real-world.js     # Practical patterns
 ```
@@ -45,6 +45,6 @@ node examples/03-typescript-usage.js
 ## Notes
 
 - Examples use ES modules (`.js` files with `import`)
-- Built output is in `dist/` (run `npm run build` first)
+- Built output is in `dist/` (run `node --run build` first)
 - TypeScript examples show type safety and narrowing
 - Polyfill examples work in any environment
