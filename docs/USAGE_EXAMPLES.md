@@ -34,6 +34,28 @@ import * as tk from 'temporal-kit';
 import { isPlainDate, add } from 'temporal-kit/polyfilled';
 ```
 
+### Browser Usage (without bundlers)
+
+For projects that don't use bundlers (e.g., MagicMirror modules, legacy setups):
+
+```html
+<!-- With polyfill included -->
+<script src="node_modules/temporal-kit/dist/temporal-kit.browser.polyfilled.global.js"></script>
+
+<!-- Or from CDN -->
+<script src="https://unpkg.com/temporal-kit/dist/temporal-kit.browser.polyfilled.global.js"></script>
+
+<script>
+  // All functions are available on the global TemporalKit object
+  const today = TemporalKit.today();
+  const tomorrow = TemporalKit.add(today, { days: 1 });
+  const formatted = TemporalKit.formatPlainDate(tomorrow, 'de-DE');
+  console.log(formatted); // "10. Januar 2026"
+</script>
+```
+
+> **Note:** The browser build (`temporal-kit.browser.polyfilled.global.js`) includes the Temporal polyfill and exposes all functions via the global `TemporalKit` variable. For modern browsers with native Temporal support, use `temporal-kit.browser.global.js` instead (smaller size, requires external polyfill if needed).
+
 ### Type Checking
 
 ```typescript

@@ -28,6 +28,24 @@ import { isPlainDate, add, startOf } from 'temporal-kit';
 import { isPlainDate } from 'temporal-kit/polyfilled';
 ```
 
+### Browser Usage (without bundlers)
+
+For environments that don't use bundlers (e.g., MagicMirror modules):
+
+```html
+<script src="node_modules/temporal-kit/dist/temporal-kit.browser.polyfilled.global.js"></script>
+<script>
+  const today = TemporalKit.today();
+  const formatted = TemporalKit.formatPlainDate(today, 'en-US');
+  console.log(formatted); // "January 9, 2026"
+</script>
+```
+
+Or via CDN:
+```html
+<script src="https://unpkg.com/temporal-kit/dist/temporal-kit.browser.polyfilled.global.js"></script>
+```
+
 > **💡 See it in action:** Check out the [`examples`](examples/README.md) for runnable code samples covering type guards, polyfill usage, TypeScript integration, and more.
 
 ## Common Recipes

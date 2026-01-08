@@ -34,4 +34,30 @@ export default defineConfig([
     noExternal: ["temporal-polyfill"],
     bundle: true,
   },
+  // IIFE build for browsers without bundlers (e.g., MagicMirror modules)
+  {
+    entry: { "temporal-kit.browser": "src/index.ts" },
+    format: ["iife"],
+    globalName: "TemporalKit",
+    sourcemap: true,
+    treeshake: "recommended",
+    outDir: "dist",
+    target: "esnext",
+    minify: true,
+    external: ["temporal-polyfill"],
+    bundle: true,
+  },
+  // IIFE build with polyfill included
+  {
+    entry: { "temporal-kit.browser.polyfilled": "src/polyfilled.ts" },
+    format: ["iife"],
+    globalName: "TemporalKit",
+    sourcemap: true,
+    treeshake: "recommended",
+    outDir: "dist",
+    target: "esnext",
+    minify: true,
+    noExternal: ["temporal-polyfill"],
+    bundle: true,
+  },
 ]);
