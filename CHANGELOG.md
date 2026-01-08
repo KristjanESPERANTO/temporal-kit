@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.1](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.0...v0.2.1) (2026-01-08)
+
+
+### Features
+
+* add IIFE builds for browser usage without bundlers ([115e68f](https://github.com/KristjanESPERANTO/temporal-kit/commit/115e68f9350f709d80416e73ad9fa0ddacd0b767))
+
+
+### Chores
+
+* enforce conventional commits with commitlint ([5aa3470](https://github.com/KristjanESPERANTO/temporal-kit/commit/5aa347074027f2fad2e041d795587be1938439f9))
+* enforce noAccumulatingSpread as error ([8e01d37](https://github.com/KristjanESPERANTO/temporal-kit/commit/8e01d37be92fe611031c98a215a3264dbb1a67da))
+* remove redundant lcov coverage reporter ([1e51cca](https://github.com/KristjanESPERANTO/temporal-kit/commit/1e51ccaf3eb1e98e6df7271c123a0ae8446d46ba))
+* update biome schema version to 2.3.11 ([6ebaad3](https://github.com/KristjanESPERANTO/temporal-kit/commit/6ebaad364d055f3cb802c8ec140a323557cff044))
+* update devDependencies ([77e1062](https://github.com/KristjanESPERANTO/temporal-kit/commit/77e1062025f60511a5955a0c1f2e2650885acb86))
+* update scripts to use 'node --run' instead of 'npm run' ([c4b85e5](https://github.com/KristjanESPERANTO/temporal-kit/commit/c4b85e5f0eabdcbdc1e3e6f8c9dec3f2d40b894c))
+
+
+### Documentation
+
+* fix event handlers and improve locale examples ([e144bf6](https://github.com/KristjanESPERANTO/temporal-kit/commit/e144bf6683305778d25117787fb748beead58e48))
+* fix race condition in examples by merging scripts into module ([6df6df0](https://github.com/KristjanESPERANTO/temporal-kit/commit/6df6df0ca7c2e2d02af7a31f9ecf3ee94f621b66))
+* fix size description in README ([a687bd7](https://github.com/KristjanESPERANTO/temporal-kit/commit/a687bd7966d12df0eaa30a8055330a50d6ecb576))
+
 ## [0.2.0](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.1.1...v0.2.0) (2025-12-01)
 
 

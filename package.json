@@ -1,6 +1,6 @@
 {
   "name": "temporal-kit",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A modern, functional utility library for the Temporal API - experiment with Temporal today.",
   "type": "module",
   "sideEffects": false,
