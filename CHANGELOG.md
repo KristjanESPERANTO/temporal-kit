@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.3](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.2...v0.2.3) (2026-02-14)
+
+
+### CI/CD
+
+* add automated release workflows with npm provenance ([3e5ce6e](https://github.com/KristjanESPERANTO/temporal-kit/commit/3e5ce6e8a0740921391da01ab6a617d9a6dfee20))
+
+
+### Chores
+
+* add CI/CD type to versioning configuration ([5eba60f](https://github.com/KristjanESPERANTO/temporal-kit/commit/5eba60f8d6028b2467535a3f63a62768f0f03915))
+* update devDependencies ([4de28e9](https://github.com/KristjanESPERANTO/temporal-kit/commit/4de28e9feb24b8894f1ed50fca354c8f5d68878b))
+
 ## [0.2.2](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.1...v0.2.2) (2026-02-02)
 
 
