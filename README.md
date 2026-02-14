@@ -203,11 +203,11 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 ## 6. Comparison
 
-| Feature | date-fns | Luxon | Native Temporal | **Temporal Kit** |
-| :--- | :--- | :--- | :--- | :--- |
-| **Base Object** | Legacy `Date` ⚠️ | Custom Class | `Temporal` | **`Temporal`** |
-| **Paradigm** | Functional | OO / Immutable | OO / Verbose | **Functional** |
-| **Timezones** | Separate Helpers | Built-in | Native | **Native** |
-| **Tree-Shaking**| ✅ Yes | ❌ No | N/A | **✅ Yes** |
-| **Polyfill Needed?**| No | No | No (Native) | **Optional** |
-| **Best For...** | Legacy Projects | Heavy Date Apps | Low-level Logic | **Modern Apps** |
+| Feature | [Moment.js](https://momentjs.com/) | [date-fns](https://date-fns.org/) | [Luxon](https://moment.github.io/luxon/) | [Native Temporal](https://tc39.es/proposal-temporal/docs/) | **Temporal Kit** |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Base Object** | Mutable Wrapper ⚠️ | Legacy `Date` ⚠️ | Custom Class | `Temporal` | **`Temporal`** |
+| **Paradigm** | OO / Mutable ⚠️ | Functional | OO / Immutable | OO / Verbose | **Functional** |
+| **Timezones** | Separate Helpers | Separate Helpers | Built-in | Native | **Native** |
+| **Tree-Shaking**| ❌ No | ✅ Yes | ❌ No | N/A | **✅ Yes** |
+| **Polyfill Needed?**| No | No | No | No (Native) | **Optional** |
+| **Best For...** | Legacy / Avoid 🛑 | Legacy Projects | Heavy Date Apps | Low-level Logic | **Modern Apps** |
