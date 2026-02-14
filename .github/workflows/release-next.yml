@@ -1,0 +1,80 @@
+name: Release Next
+
+on:
+  release:
+    types: [prereleased]
+  workflow_dispatch:
+    inputs:
+      dist_tag:
+        description: npm dist-tag to publish under
+        required: false
+        default: next
+      dry_run:
+        description: Run npm publish in dry-run mode
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish-next:
+    name: Publish pre-release to npm
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine publish mode
+        id: mode
+        run: |
+          DIST_TAG="${{ github.event.inputs.dist_tag }}"
+          DRY_RUN="${{ github.event.inputs.dry_run }}"
+
+          # Set defaults when triggered by prerelease event (inputs are empty)
+          if [ -z "$DIST_TAG" ]; then
+            DIST_TAG="next"
+          fi
+
+          if [ -z "$DRY_RUN" ]; then
+            DRY_RUN="false"
+          fi
+
+          echo "dist_tag=$DIST_TAG" >> "$GITHUB_OUTPUT"
+          echo "dry_run=$DRY_RUN" >> "$GITHUB_OUTPUT"
+
+      - name: Verify pre-release version
+        run: |
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          if [[ "$PKG_VERSION" != *-* ]]; then
+            echo "Refusing pre-release publish: package.json version '$PKG_VERSION' is not a pre-release version"
+            exit 1
+          fi
+
+      - name: Run full CI gate
+        run: node --run ci
+
+      - name: Publish package to npm (dry-run)
+        if: steps.mode.outputs.dry_run == 'true'
+        run: npm publish --dry-run --tag "${{ steps.mode.outputs.dist_tag }}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish package to npm (next)
+        if: steps.mode.outputs.dry_run != 'true'
+        run: npm publish --provenance --access public --tag "${{ steps.mode.outputs.dist_tag }}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -52,7 +52,7 @@
     "commit-msg": "npx commitlint --edit $1"
   },
   "lint-staged": {
-    "*.{js,ts,json,md}": [
+    "*.{js,ts,json}": [
       "biome check --write"
     ]
   },

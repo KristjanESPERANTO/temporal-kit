@@ -76,6 +76,13 @@ const monday = addBusinessDays(friday, 1); // Skips weekend
 - **[Usage Examples](./docs/USAGE_EXAMPLES.md)** - Practical examples for common use cases
 - **[Best Practices](./docs/BEST_PRACTICES.md)** - Comprehensive guide for using temporal-kit effectively
 
+## Supply-Chain Trust
+
+To improve release integrity and enterprise adoption, `temporal-kit` uses a CI-based publish model with npm provenance.
+
+See [SECURITY.md](./SECURITY.md) for security policy and trust controls.
+For maintainer release operations (versioning, stable/`latest` and pre-release/`next` flow), see [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ## 1. Why Temporal Kit?
 
 **Temporal** is arriving as the modern standard for date/time handling in JavaScript, with precise primitives (`Instant`, `ZonedDateTime`, `PlainDate/Time`). By design, Temporal focuses on correctness and intentionally leaves out many convenience helpers—things like `startOf`/`endOf`, humanized formatting, or common comparison utilities. This is deliberate: Temporal provides the foundation, but everyday ergonomics are better handled by libraries.
@@ -156,11 +163,11 @@ src/
 ### Implementation Details
 - **Zero Runtime Dependencies:** We build directly on native `Temporal` APIs. Polyfill is optional.
 - **Type-Safe:** Full TypeScript support with strict mode and cutting-edge compiler options.
-- **Dual Entry Points:** 
+- **Dual Entry Points:**
   - `temporal-kit` - Expects native Temporal
   - `temporal-kit/polyfilled` - Auto-loads polyfill
 - **Perfect Tree-Shaking:** `sideEffects: false` ensures optimal bundle sizes.
-- **Modern Tooling:** 
+- **Modern Tooling:**
   - **Biome** - Fast linting/formatting with performance rules
   - **Vitest** - Type-checked tests with 100% coverage threshold
   - **tsup** - ESNext bundling with optimized tree-shaking

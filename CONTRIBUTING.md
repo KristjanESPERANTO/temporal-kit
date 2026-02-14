@@ -61,6 +61,22 @@ This process automatically:
 - Creates git commit and tag
 - Updates the version in `docs/index.html`
 
+### Publish Channels
+
+- **Stable (`latest`)** is published via [.github/workflows/release.yml](./.github/workflows/release.yml) from GitHub Releases with tag `vX.Y.Z`.
+- **Pre-release (`next`)** is published via [.github/workflows/release-next.yml](./.github/workflows/release-next.yml) from GitHub pre-releases (`vX.Y.Z-rc.N`, `-beta.N`, etc.).
+- **Smoke mode:** `release-next.yml` supports manual `workflow_dispatch` with `dry_run: true`.
+
+### Maintainer Release Flow
+
+1. Run `node --run ci` locally and ensure branch CI is green.
+2. Bump and tag using `node --run release` / `release:minor` / `release:major`.
+3. Push commit and tags.
+4. Create the appropriate GitHub Release type and tag format as defined in **Publish Channels** above.
+5. Verify workflow success and npm package visibility.
+
+For security requirements (token handling, provenance, incident response), see [SECURITY.md](./SECURITY.md).
+
 ## Project Standards
 
 - **Type-checked tests:** Vitest validates test types against your code.
