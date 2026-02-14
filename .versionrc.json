@@ -2,6 +2,7 @@
   "types": [
     { "type": "feat", "section": "Features" },
     { "type": "fix", "section": "Bug Fixes" },
+    { "type": "ci", "section": "CI/CD", "hidden": false },
     { "type": "chore", "section": "Chores", "hidden": false },
     { "type": "docs", "section": "Documentation", "hidden": false },
     { "type": "style", "section": "Styles", "hidden": true },
