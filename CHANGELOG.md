@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.4](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.3...v0.2.4) (2026-02-24)
+
+
+### Bug Fixes
+
+* change button type to prevent form submission ([88faaf2](https://github.com/KristjanESPERANTO/temporal-kit/commit/88faaf2d4cbdc56d89fad42b779d64d2a7b0ed6f))
+* **ci:** omit dev dependencies from security audit ([34971e8](https://github.com/KristjanESPERANTO/temporal-kit/commit/34971e8064bb5511a517faade6bc091a1093af28))
+
+
+### CI/CD
+
+* **commitlint:** migrate config to TypeScript ([768d53f](https://github.com/KristjanESPERANTO/temporal-kit/commit/768d53f3f6939f320ca79f6ec6afc156e566ff35))
+
+
+### Chores
+
+* update devDependencies ([dd78115](https://github.com/KristjanESPERANTO/temporal-kit/commit/dd781152ae86c8af12c68f959b50e6ac08331c53))
+* update schema version in biome configuration ([647c803](https://github.com/KristjanESPERANTO/temporal-kit/commit/647c803bb7869533ef335bb4c52b0cae21250bac))
+
+
+### Documentation
+
+* add Moment.js and library links to comparison table ([8174a4f](https://github.com/KristjanESPERANTO/temporal-kit/commit/8174a4faf8dfcd3ce2d8a22e856ede8dde3b360a))
+
 ## [0.2.3](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.2...v0.2.3) (2026-02-14)
 
 
