@@ -8,7 +8,7 @@
     <meta name="keywords" content="temporal, temporal-api, javascript, typescript, date-time, functional, tree-shakable, temporal-polyfill">
     <meta name="author" content="KristjanESPERANTO">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%233182ce' stroke='%23fff' stroke-width='3'/><line x1='50' y1='50' x2='50' y2='25' stroke='%23fff' stroke-width='4' stroke-linecap='round'/><line x1='50' y1='50' x2='70' y2='50' stroke='%23fff' stroke-width='3' stroke-linecap='round'/><circle cx='50' cy='50' r='4' fill='%23fff'/></svg>">
-    
+
     <style>
         :root {
             --bg-primary: #ffffff;
@@ -28,7 +28,7 @@
             --warning-bg: #fef5e7;
             --warning-text: #744210;
         }
-        
+
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-primary: #1f2937;
@@ -49,13 +49,13 @@
                 --warning-text: #f0bf4c;
             }
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
             line-height: 1.6;
@@ -64,19 +64,19 @@
             min-height: 100vh;
             transition: background-color 0.3s, color 0.3s;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
-        
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
             }
         }
-        
+
         header {
             text-align: center;
             padding: 4rem 0 3rem;
@@ -86,14 +86,14 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         @media (max-width: 768px) {
             header {
                 padding: 2rem 1rem 2rem;
                 margin: -1rem -1rem 1rem -1rem;
             }
         }
-        
+
         header::before {
             content: '';
             position: absolute;
@@ -200,7 +200,7 @@
             opacity: 0.9;
             margin-top: 0.15rem;
         }
-        
+
         h1 {
             font-size: 2.5rem;
             margin-bottom: 0.75rem;
@@ -208,38 +208,38 @@
             color: var(--text-primary);
             letter-spacing: -0.02em;
         }
-        
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.75rem;
             }
         }
-        
+
         h1::before {
             content: '🕐';
             margin-right: 0.5rem;
             font-size: 2rem;
         }
-        
+
         @media (max-width: 768px) {
             h1::before {
                 font-size: 1.5rem;
             }
         }
-        
+
         .tagline {
             font-size: 1.125rem;
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
             font-weight: 400;
         }
-        
+
         @media (max-width: 768px) {
             .tagline {
                 font-size: 1rem;
             }
         }
-        
+
         .status {
             display: inline-block;
             background: var(--bg-tertiary);
@@ -250,7 +250,7 @@
             font-weight: 500;
             border: 1px solid var(--border-color);
         }
-        
+
         .main-content {
             background: var(--bg-primary);
             border-radius: 0.5rem;
@@ -259,19 +259,19 @@
             margin-bottom: 2rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
         }
-        
+
         @media (max-width: 768px) {
             .main-content {
                 padding: 1.5rem;
             }
         }
-        
+
         @media (prefers-color-scheme: dark) {
             .main-content {
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
             }
         }
-        
+
         .playground {
             background: var(--bg-primary);
             border-radius: 0.5rem;
@@ -279,19 +279,19 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
         }
-        
+
         @media (max-width: 768px) {
             .playground {
                 padding: 1.5rem;
             }
         }
-        
+
         @media (prefers-color-scheme: dark) {
             .playground {
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.2);
             }
         }
-        
+
         h2 {
             color: var(--text-primary);
             margin-bottom: 1rem;
@@ -299,7 +299,7 @@
             font-weight: 600;
             letter-spacing: -0.01em;
         }
-        
+
         .feature-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -318,7 +318,7 @@
                 grid-template-columns: repeat(3, 1fr);
             }
         }
-        
+
         .feature {
             padding: 1.5rem;
             background: var(--bg-secondary);
@@ -326,19 +326,19 @@
             border: 1px solid var(--border-color);
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        
+
         .feature:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(49, 130, 206, 0.1);
         }
-        
+
         .feature h3 {
             color: var(--accent-primary);
             margin-bottom: 0.5rem;
             font-size: 1rem;
             font-weight: 600;
         }
-        
+
         .feature p {
             color: var(--text-secondary);
         }
@@ -383,7 +383,7 @@
             border-radius: 0.25rem;
             font-size: 0.85em;
         }
-        
+
         .install-box {
             background: var(--code-bg);
             color: var(--code-text);
@@ -394,24 +394,24 @@
             position: relative;
             border: 1px solid var(--code-border);
         }
-        
+
         @media (max-width: 768px) {
             .install-box {
                 padding: 1rem 1rem 1rem 1rem;
             }
-            
+
             .install-box code {
                 font-size: 0.85rem;
                 display: block;
                 padding-right: 70px;
             }
         }
-        
+
         .install-box code {
             color: #90cdf4;
             font-size: 0.95rem;
         }
-        
+
         .copy-btn {
             position: absolute;
             right: 1rem;
@@ -427,30 +427,30 @@
             font-weight: 500;
             transition: background 0.2s;
         }
-        
+
         .copy-btn:hover {
             background: var(--accent-hover);
         }
-        
+
         .browser-check {
             padding: 1rem;
             border-radius: 0.5rem;
             margin-bottom: 1.5rem;
             font-size: 0.9375rem;
         }
-        
+
         .browser-check.supported {
             background: var(--success-bg);
             color: var(--success-text);
             border: 1px solid var(--success-text);
         }
-        
+
         .browser-check.unsupported {
             background: var(--warning-bg);
             color: var(--warning-text);
             border: 1px solid var(--warning-text);
         }
-        
+
         .example-card {
             background: var(--bg-primary);
             border: 1px solid var(--border-color);
@@ -458,13 +458,13 @@
             padding: 1.5rem;
             margin-bottom: 2rem;
         }
-        
+
         @media (max-width: 768px) {
             .example-card {
                 padding: 1rem;
             }
         }
-        
+
         .example-header {
             display: flex;
             justify-content: space-between;
@@ -472,31 +472,31 @@
             margin-bottom: 1rem;
             gap: 1rem;
         }
-        
+
         @media (max-width: 768px) {
             .example-header {
                 flex-direction: column;
                 align-items: stretch;
             }
         }
-        
+
         .example-title {
             flex: 1;
         }
-        
+
         .example-title h3 {
             color: var(--text-primary);
             font-size: 1.25rem;
             margin-bottom: 0.5rem;
             font-weight: 600;
         }
-        
+
         .example-title p {
             color: var(--text-secondary);
             font-size: 0.9375rem;
             line-height: 1.5;
         }
-        
+
         .rerun-btn {
             background: var(--accent-primary);
             color: white;
@@ -510,35 +510,35 @@
             white-space: nowrap;
             flex-shrink: 0;
         }
-        
+
         @media (max-width: 768px) {
             .rerun-btn {
                 width: 100%;
             }
         }
-        
+
         .rerun-btn:hover {
             background: var(--accent-hover);
         }
-        
+
         .code-output-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
         }
-        
+
         @media (max-width: 768px) {
             .code-output-grid {
                 grid-template-columns: 1fr;
             }
         }
-        
+
         .code-block, .output-block {
             min-width: 0;
             display: flex;
             flex-direction: column;
         }
-        
+
         .code-block h4, .output-block h4 {
             color: var(--text-secondary);
             font-size: 0.875rem;
@@ -547,7 +547,7 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
-        
+
         .code-content, .output-content {
             background: var(--code-bg);
             color: var(--code-text);
@@ -581,7 +581,7 @@
                 gap: 0.75rem 1rem;
                 justify-content: center;
             }
-            
+
             .links-section > span {
                 display: none;
             }
@@ -604,7 +604,7 @@
         .link-item .icon {
             font-size: 1.25rem;
         }
-        
+
         footer {
             text-align: center;
             color: var(--text-tertiary);
@@ -612,23 +612,23 @@
             margin-top: 3rem;
             border-top: 1px solid var(--border-color);
         }
-        
+
         a {
             color: var(--accent-primary);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.2s;
         }
-        
+
         a:hover {
             color: var(--accent-hover);
         }
-        
+
         footer a {
             color: var(--text-secondary);
             font-weight: 400;
         }
-        
+
         footer a:hover {
             color: var(--text-primary);
         }
@@ -651,16 +651,16 @@
             <h1 style="position: relative; z-index: 1;">Temporal Kit</h1>
             <p class="tagline" style="position: relative; z-index: 1;">Functional utilities for JavaScript's Temporal API</p>
         </header>
-        
+
         <div class="main-content">
             <h2>Ready for the future of JavaScript dates</h2>
             <p>A lightweight, tree-shakable library for JavaScript's <strong>Temporal API</strong>. Functional design, full TypeScript support, and zero dependencies.</p>
-            
+
             <div class="install-box">
-                <button class="copy-btn" onclick="copyInstall()">Copy</button>
+                <button type="button" class="copy-btn" onclick="copyInstall()">Copy</button>
                 <code>npm install temporal-kit</code>
             </div>
-            
+
             <div class="feature-grid">
                 <div class="feature">
                     <h3>Functional & Composable</h3>
@@ -691,7 +691,7 @@
             <div style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--border-color);">
                 <h3 style="margin-bottom: 0.5rem;">API Overview</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 2rem;">A quick look at the available utilities.</p>
-                
+
                 <div class="api-grid">
                     <div class="api-category">
                         <h4>🔍 Comparison & Range</h4>
@@ -749,18 +749,18 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="playground">
             <h2>Live Playground</h2>
-            
+
             <div id="browserCheck" class="browser-check"></div>
-            
+
             <p>Try Temporal Kit directly in your browser. Each example runs independently:</p>
-            
+
             <div id="examplesContainer"></div>
         </div>
     </div>
-    
+
     <footer>
         <div class="links-section">
             <a href="https://www.npmjs.com/package/temporal-kit" target="_blank" class="link-item">
@@ -789,7 +789,7 @@
             </a>
         </div>
     </footer>
-    
+
     <script>
         // Update clock (runs immediately, before module loading)
         function updateClock() {
@@ -797,11 +797,11 @@
             const hours = now.getHours() % 12;
             const minutes = now.getMinutes();
             const seconds = now.getSeconds();
-            
+
             const hourRotation = (hours * 30) + (minutes * 0.5);
             const minuteRotation = minutes * 6;
             const secondRotation = seconds * 6;
-            
+
             const clockBg = document.getElementById('clockBg');
             if (clockBg) {
                 clockBg.style.setProperty('--hour-rotation', `${hourRotation}deg`);
@@ -825,7 +825,7 @@
                 dateDisplay.textContent = `${year}-${month}-${day}`;
             }
         }
-        
+
         // Start clock when DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
@@ -843,7 +843,7 @@
         // Check Temporal support
         const hasNativeTemporal = typeof Temporal !== 'undefined';
         const browserCheck = document.getElementById('browserCheck');
-        
+
         if (hasNativeTemporal) {
             browserCheck.className = 'browser-check supported';
             browserCheck.innerHTML = '✅ Your browser supports native Temporal! Running without polyfill.';
@@ -853,14 +853,14 @@
             // Import polyfill
             await import('https://cdn.jsdelivr.net/npm/temporal-polyfill@0.3.0/global.js');
         }
-        
+
         // Import temporal-kit
         let temporalKit;
-        
+
         // Detect environment and use appropriate import
         const isGitHubPages = window.location.hostname.includes('github.io');
         const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-        
+
         try {
             if (isGitHubPages) {
                 // Production: GitHub Pages has temporal-kit.js in same folder
@@ -878,10 +878,10 @@
         }
 
         const { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend } = temporalKit;
-        
+
         // Store for global access
         window.temporalKit = { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend };
-    
+
         // Examples code and rendering - moved into module script to avoid race condition
         const exampleCode = {
             relative: `import { formatRelative } from 'temporal-kit';
@@ -1008,7 +1008,7 @@ console.log(\`Start of Year: \${startOfYear}\`);`,
 
 const timezones = [
   'Europe/Berlin',
-  'America/New_York', 
+  'America/New_York',
   'Asia/Tokyo',
   'UTC'
 ];
@@ -1060,8 +1060,8 @@ console.log(\`Range: \${start.toString()} to \${end.toString()}\`);
 // isBetween returns true if the date is within the range (inclusive)
 const check1 = isBetween(now, start, end);
 const check2 = isBetween(
-  now.add({ days: 10 }), 
-  start, 
+  now.add({ days: 10 }),
+  start,
   end
 );
 
@@ -1080,7 +1080,7 @@ const clamped2 = clamp(tooLate, start, end);
 console.log(\`\nClamping \${tooEarly.toString()} (too early) -> \${clamped1.toString()}\`);
 console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toString()}\`);`
         };
-        
+
         const exampleMeta = {
             relative: {
                 title: 'Relative Time',
@@ -1115,23 +1115,23 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                 description: 'Calculate delivery dates or deadlines by skipping weekends. Essential for business logic.'
             }
         };
-        
+
         function highlightCode(code) {
             return code.replace(/(\/\/.*)/g, '<span class="comment">$1</span>');
         }
-        
+
         function renderAllExamples() {
             const container = document.getElementById('examplesContainer');
             const exampleNames = ['relative', 'nextday', 'business', 'sort', 'closest', 'timezones', 'guards'];
-            
+
             exampleNames.forEach(name => {
                 const meta = exampleMeta[name];
                 const code = exampleCode[name];
-                
+
                 const card = document.createElement('div');
                 card.className = 'example-card';
                 card.id = `example-${name}`;
-                
+
                 card.innerHTML = `
                     <div class="example-header">
                         <div class="example-title">
@@ -1151,120 +1151,120 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
                         </div>
                     </div>
                 `;
-                
+
                 container.appendChild(card);
             });
-            
+
             // Run all examples initially
             exampleNames.forEach(name => { runExample(name); });
         }
-        
+
         const examples = {
             relative: () => {
                 const output = [];
-                
+
                 const { formatRelative } = window.temporalKit;
                 const today = Temporal.Now.plainDateISO();
-                
+
                 const yesterday = today.subtract({ days: 1 });
                 const lastWeek = today.subtract({ days: 7 });
                 const tomorrow = today.add({ days: 1 });
                 const nextWeek = today.add({ days: 7 });
-                
+
                 output.push('English:');
                 output.push(`  1 day ago       -> ${formatRelative(yesterday, today)}`);
                 output.push(`  7 days ago      -> ${formatRelative(lastWeek, today)}`);
                 output.push(`  1 day from now  -> ${formatRelative(tomorrow, today)}`);
                 output.push(`  7 days from now -> ${formatRelative(nextWeek, today)}`);
-                
+
                 output.push('\nGerman (de-DE):');
                 output.push(`  1 day ago       -> ${formatRelative(yesterday, today, { locale: 'de-DE' })}`);
                 output.push(`  7 days ago      -> ${formatRelative(lastWeek, today, { locale: 'de-DE' })}`);
                 output.push(`  1 day from now  -> ${formatRelative(tomorrow, today, { locale: 'de-DE' })}`);
                 output.push(`  7 days from now -> ${formatRelative(nextWeek, today, { locale: 'de-DE' })}`);
-                
+
                 return output.join('\n');
             },
 
             nextday: () => {
                 const output = [];
-                
+
                 const { nextDay } = window.temporalKit;
                 const today = Temporal.Now.plainDateISO();
-                
+
                 const nextFriday = nextDay(today, 5);
                 const nextMonday = nextDay(today, 1);
-                
+
                 output.push(`Today: ${today.toString()}`);
                 output.push(`Next Friday: ${nextFriday.toString()}`);
                 output.push(`Next Monday: ${nextMonday.toString()}`);
-                
+
                 const daysUntil = nextFriday.since(today).days;
                 output.push(`\n${daysUntil} days until Friday`);
-                
+
                 return output.join('\n');
             },
 
             sort: () => {
                 const output = [];
-                
+
                 const { sortAsc } = window.temporalKit;
-                
+
                 const meetings = [
                   Temporal.PlainDate.from('2025-12-15'),
                   Temporal.PlainDate.from('2025-12-05'),
                   Temporal.PlainDate.from('2025-12-20'),
                   Temporal.PlainDate.from('2025-12-01')
                 ];
-                
+
                 output.push('Unsorted:');
                 meetings.forEach(d => { output.push(`  ${d.toString()}`); });
-                
+
                 const sorted = sortAsc(meetings);
-                
+
                 output.push('\nSorted (ascending):');
                 sorted.forEach(d => { output.push(`  ${d.toString()}`); });
-                
+
                 return output.join('\n');
             },
 
             closest: () => {
                 const output = [];
-                
+
                 const { closestTo } = window.temporalKit;
-                
+
                 const target = Temporal.PlainDate.from('2025-12-10');
-                
+
                 const events = [
                   Temporal.PlainDate.from('2025-12-01'),
                   Temporal.PlainDate.from('2025-12-15'),
                   Temporal.PlainDate.from('2025-12-20')
                 ];
-                
+
                 output.push(`Target date: ${target.toString()}`);
                 output.push('\nAvailable dates:');
                 events.forEach(d => { output.push(`  ${d.toString()}`); });
-                
+
                 const nearest = closestTo(target, events);
-                
+
                 output.push(`\nClosest date: ${nearest.toString()}`);
-                
+
                 return output.join('\n');
             },
 
             guards: () => {
                 const output = [];
-                
+
                 const date = Temporal.PlainDate.from('2025-11-30');
                 const zoned = Temporal.Now.zonedDateTimeISO();
-                
+
                 output.push(`PlainDate: ${date.toString()}`);
                 output.push(`  isPlainDate? ${window.temporalKit.isPlainDate(date)}`);
                 output.push(`  isZonedDateTime? ${window.temporalKit.isZonedDateTime(date)}`);
-                
+
                 output.push(`\nZonedDateTime: ${zoned.toString()}`);
                 output.push(`  isZonedDateTime? ${window.temporalKit.isZonedDateTime(zoned)}`);
-                
+
                 return output.join('\n');
             },
 
@@ -1286,90 +1286,90 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
 
                 return output.join('\n');
             },
-            
+
             clamp: () => {
                 const output = [];
-                
+
                 const { clamp } = window.temporalKit;
                 const now = Temporal.Now.plainDateISO();
                 const minDate = now.subtract({ days: 5 });
                 const maxDate = now.add({ days: 5 });
-                
+
                 output.push(`Allowed range: ${minDate.toString()} to ${maxDate.toString()}`);
-                
+
                 const tooEarly = now.subtract({ days: 10 });
                 const tooLate = now.add({ days: 10 });
                 const justRight = now;
-                
+
                 output.push(`\nInput: ${tooEarly.toString()} -> Output: ${clamp(tooEarly, minDate, maxDate).toString()}`);
                 output.push(`Input: ${tooLate.toString()}  -> Output: ${clamp(tooLate, minDate, maxDate).toString()}`);
                 output.push(`Input: ${justRight.toString()} -> Output: ${clamp(justRight, minDate, maxDate).toString()}`);
-                
+
                 return output.join('\n');
             },
-            
+
             timezones: () => {
                 const output = [];
-                
+
                 const instant = Temporal.Now.instant();
 
                 const timezones = ['Europe/Berlin', 'America/New_York', 'Asia/Tokyo', 'UTC'];
-                
+
                 timezones.forEach(tz => {
                     const zoned = instant.toZonedDateTimeISO(tz);
                     output.push(`${tz.padEnd(18)} -> ${zoned}`);
                 });
-                
+
                 const local = Temporal.Now.zonedDateTimeISO();
                 output.push(`\nYour timezone: ${local.timeZoneId}`);
                 output.push(`Offset: ${local.offset}`);
-                
+
                 return output.join('\n');
             },
 
             ranges: () => {
                 const output = [];
-                
+
                 const { isBetween, clamp } = window.temporalKit;
                 const now = Temporal.Now.plainDateISO();
                 const start = now.subtract({ days: 5 });
                 const end = now.add({ days: 5 });
-                
+
                 output.push(`Range: ${start.toString()} to ${end.toString()}`);
-                
+
                 const check1 = isBetween(now, start, end);
                 const check2 = isBetween(
-                  now.add({ days: 10 }), 
-                  start, 
+                  now.add({ days: 10 }),
+                  start,
                   end
                 );
-                
+
                 output.push(`Is ${now.toString()} in range? ${check1}`);
                 output.push(`Is ${now.add({ days: 10 }).toString()} in range? ${check2}`);
-                
+
                 const tooEarly = now.subtract({ days: 10 });
                 const tooLate = now.add({ days: 10 });
-                
+
                 const clamped1 = clamp(tooEarly, start, end);
                 const clamped2 = clamp(tooLate, start, end);
-                
+
                 output.push(`\nClamping ${tooEarly.toString()} (too early) -> ${clamped1.toString()}`);
                 output.push(`Clamping ${tooLate.toString()} (too late)  -> ${clamped2.toString()}`);
-                
+
                 return output.join('\n');
             }
         };
-        
+
         window.runExample = (exampleName) => {
             const output = document.getElementById(`output-${exampleName}`);
-            
+
             try {
                 output.textContent = examples[exampleName]();
             } catch (error) {
                 output.textContent = `❌ Error: ${error.message}\n\n${error.stack}`;
             }
         };
-        
+
         window.copyInstall = () => {
             navigator.clipboard.writeText('npm install temporal-kit');
             const btn = event.target;
