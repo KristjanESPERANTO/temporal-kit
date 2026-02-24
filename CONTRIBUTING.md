@@ -71,8 +71,20 @@ This process automatically:
 
 1. Run `node --run ci` locally and ensure branch CI is green.
 2. Bump and tag using `node --run release` / `release:minor` / `release:major`.
-3. Push commit and tags.
-4. Create the appropriate GitHub Release type and tag format as defined in **Publish Channels** above.
+   This updates `CHANGELOG.md`, `package.json`, `docs/index.html`, and creates a local git tag.
+3. Push commit and tag to GitHub:
+   ```bash
+   git push --follow-tags
+   ```
+4. Create a GitHub Release from the tag – this is what triggers the npm publish workflow:
+   ```bash
+   gh release create vX.Y.Z --generate-notes
+   ```
+   For a pre-release (e.g. `v1.0.0-rc.1`), add `--prerelease`:
+   ```bash
+   gh release create vX.Y.Z-rc.1 --generate-notes --prerelease
+   ```
+   > **Note:** Pushing the tag alone is not enough. The publish workflow only triggers on a GitHub Release event (`on: release: types: [released]`), not on tag pushes.
 5. Verify workflow success and npm package visibility.
 
 For security requirements (token handling, provenance, incident response), see [SECURITY.md](./SECURITY.md).
