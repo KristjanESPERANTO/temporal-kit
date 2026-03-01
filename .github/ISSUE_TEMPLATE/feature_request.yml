@@ -1,0 +1,45 @@
+name: Feature Request
+description: Suggest a new feature or improvement for temporal-kit
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement! Please provide as much detail as possible.
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What problem does this feature solve? What is the use case?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API / behavior
+      description: Describe the feature you'd like. Include a code example if possible.
+      placeholder: |
+        ```ts
+        import { newFunction } from "temporal-kit";
+        // expected usage
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you considered any alternative approaches or workarounds?
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any other relevant information, links, or references.
+    validations:
+      required: false
