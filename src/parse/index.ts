@@ -325,13 +325,11 @@ function combineDateAndTime(
  * Try parsing datetime as space-separated date and time strings
  */
 function parseDateTimeFormats(input: string): Temporal.PlainDateTime | null {
-  const spaceMatch = /^([^\s]+)\s+(.+)$/.exec(input);
-  if (!spaceMatch?.[1] || !spaceMatch[2]) {
-    return null;
-  }
+  const spaceIdx = input.indexOf(" ");
+  if (spaceIdx === -1) return null;
 
-  const dateStr = spaceMatch[1];
-  const timeStr = spaceMatch[2];
+  const dateStr = input.slice(0, spaceIdx);
+  const timeStr = input.slice(spaceIdx + 1).trim();
 
   // Try ISO date + ISO time
   try {
