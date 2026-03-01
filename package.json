@@ -91,7 +91,7 @@
     "@vitest/coverage-v8": "^4.0.18",
     "@vitest/ui": "^4.0.18",
     "commit-and-tag-version": "^12.6.1",
-    "lint-staged": "^16.2.7",
+    "lint-staged": "^16.3.1",
     "simple-git-hooks": "^2.13.1",
     "temporal-polyfill": "^0.3.0",
     "tsup": "^8.5.1",
