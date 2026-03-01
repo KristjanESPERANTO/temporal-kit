@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.5](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.4...v0.2.5) (2026-03-01)
+
+
+### Bug Fixes
+
+* replace backtracking-prone regex with non-backtracking pattern ([ec9297b](https://github.com/KristjanESPERANTO/temporal-kit/commit/ec9297bd9ce32eabafaecb17c90ca34b6c249eae))
+* replace regex with indexOf for space-separated datetime parsing ([356ced9](https://github.com/KristjanESPERANTO/temporal-kit/commit/356ced9f0e3c08eab6480d8b47521cd7b35081ad))
+* use exact hostname match instead of substring check ([304b224](https://github.com/KristjanESPERANTO/temporal-kit/commit/304b2246b4fef60ba5837ea03c53d0ec4b1cd66b))
+
+
+### CI/CD
+
+* add GitHub Actions to dependabot monitoring ([308c510](https://github.com/KristjanESPERANTO/temporal-kit/commit/308c51035cb8e2aa5fdb753daa74499988c8d8f7))
+* add permissions to workflows ([2a00919](https://github.com/KristjanESPERANTO/temporal-kit/commit/2a009193c508bfd99c8dd1c525694e213903d5aa))
+
+
+### Chores
+
+* add issue templates (bug report, feature request) ([e2844cf](https://github.com/KristjanESPERANTO/temporal-kit/commit/e2844cf3f13fa02eeaca8d43ba9402f2e992f1e4))
+* add pull request template ([a57aad5](https://github.com/KristjanESPERANTO/temporal-kit/commit/a57aad538539dd4ccbcd9a2bf6bc2a005821824c))
+* update devDependencies ([63f3f2d](https://github.com/KristjanESPERANTO/temporal-kit/commit/63f3f2dcabbc5f0cdb6c1be2edd04b8cccf845f5))
+
+
+### Documentation
+
+* optimize release management instructions ([85f798c](https://github.com/KristjanESPERANTO/temporal-kit/commit/85f798c785ad251f602e3916fb3b8126c515bf63))
+
 ## [0.2.4](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.3...v0.2.4) (2026-02-24)
 
 
