@@ -325,7 +325,7 @@ function combineDateAndTime(
  * Try parsing datetime as space-separated date and time strings
  */
 function parseDateTimeFormats(input: string): Temporal.PlainDateTime | null {
-  const spaceMatch = /^(.+?)\s+(.+)$/.exec(input);
+  const spaceMatch = /^([^\s]+)\s+(.+)$/.exec(input);
   if (!spaceMatch?.[1] || !spaceMatch[2]) {
     return null;
   }
