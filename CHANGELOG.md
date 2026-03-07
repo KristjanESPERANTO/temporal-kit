@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.6](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.5...v0.2.6) (2026-03-07)
+
+
+### Features
+
+* **format:** add formatCalendar() for context-aware date labels ([68bd751](https://github.com/KristjanESPERANTO/temporal-kit/commit/68bd751d3ef9a39f208253609cc0d5cf5bb5e5be))
+
+
+### CI/CD
+
+* add typecheck to pre-commit hook ([e2bbca8](https://github.com/KristjanESPERANTO/temporal-kit/commit/e2bbca8663ccf95bf71e890568472a8f13864910))
+
+
+### Chores
+
+* update upload-pages-artifact action to version 4 ([5212ce9](https://github.com/KristjanESPERANTO/temporal-kit/commit/5212ce9286885cc09118119af4fd704cda3c02f4))
+
 ## [0.2.5](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.4...v0.2.5) (2026-03-01)
 
 
