@@ -201,3 +201,159 @@ function formatTimeDiff(date: DateLike, reference: DateLike, rtf: Intl.RelativeT
 
   return formatDaysDiff(Math.round(diffSeconds / 86400), rtf);
 }
+
+/**
+ * A calendar format resolver — either a static label string or a callback
+ * that receives the date and base reference and returns a formatted string.
+ *
+ * @example
+ * // Static label
+ * const resolver: CalendarResolver = "Today";
+ *
+ * // Dynamic callback
+ * const resolver: CalendarResolver = (date) =>
+ *   formatTime(date, { locale: "en-US", timeStyle: "short" });
+ */
+export type CalendarResolver = string | ((date: DateLike, base: DateLike) => string);
+
+/**
+ * Options for {@link formatCalendar}.
+ * Each key corresponds to a calendar "bucket" based on the day difference
+ * between `date` and the reference (`base`).
+ */
+export interface CalendarFormatOptions {
+  /** Locale used by built-in default renderers (Intl-based). */
+  locale?: string | string[];
+  /** `date` is on the same calendar day as `base` (diff = 0). */
+  sameDay?: CalendarResolver;
+  /** `date` is one calendar day before `base` (diff = -1). */
+  lastDay?: CalendarResolver;
+  /** `date` is one calendar day after `base` (diff = +1). */
+  nextDay?: CalendarResolver;
+  /** `date` is 2–6 calendar days before `base`. */
+  lastWeek?: CalendarResolver;
+  /** `date` is 2–6 calendar days after `base`. */
+  nextWeek?: CalendarResolver;
+  /** `date` is more than 6 calendar days away from `base`. */
+  sameElse?: CalendarResolver;
+}
+
+/**
+ * Classify and format a date using context-aware calendar labels.
+ *
+ * The date is placed into one of six buckets relative to `base` (defaults to
+ * *now*) and formatted with the corresponding resolver. If no resolver is
+ * provided for a bucket the built-in Intl-based default is used:
+ *
+ * | Bucket     | Default output (en-US)   |
+ * |------------|--------------------------|
+ * | `sameDay`  | "Today"                  |
+ * | `lastDay`  | "Yesterday"              |
+ * | `nextDay`  | "Tomorrow"               |
+ * | `lastWeek` | "Monday" (weekday name)  |
+ * | `nextWeek` | "Friday" (weekday name)  |
+ * | `sameElse` | "Nov 15, 2025"           |
+ *
+ * @param date    - The date to format.
+ * @param base    - Reference point for classification (default: *now*).
+ * @param options - Per-bucket resolvers and locale.
+ * @returns A human-readable string for the given date.
+ *
+ * @example
+ * // Default Intl labels
+ * formatCalendar(today);      // "Today"
+ * formatCalendar(tomorrow);   // "Tomorrow"
+ * formatCalendar(yesterday);  // "Yesterday"
+ * formatCalendar(nextFriday); // "Friday"
+ * formatCalendar(pastDate);   // "Nov 15, 2025"
+ *
+ * @example
+ * // Custom labels with translation callbacks (MagicMirror-style)
+ * formatCalendar(event.start, undefined, {
+ *   locale: "de-DE",
+ *   sameDay: () => translate("TODAY"),
+ *   nextDay: () => translate("TOMORROW"),
+ *   nextWeek: (d) => format(d, { locale: "de-DE", options: { weekday: "long" } }),
+ *   sameElse: (d) => format(d, { locale: "de-DE", dateStyle: "medium" }),
+ * });
+ *
+ * @example
+ * // With time for timed events
+ * formatCalendar(event.start, undefined, {
+ *   locale: "en-US",
+ *   sameDay:  (d) => `Today at ${formatTime(d, { locale: "en-US", timeStyle: "short" })}`,
+ *   nextDay:  (d) => `Tomorrow at ${formatTime(d, { locale: "en-US", timeStyle: "short" })}`,
+ *   nextWeek: (d) => format(d, { locale: "en-US", options: { weekday: "long", hour: "numeric", minute: "2-digit" } }),
+ *   sameElse: (d) => format(d, { locale: "en-US", dateStyle: "medium" }),
+ * });
+ */
+export function formatCalendar(
+  date: DateLike,
+  base?: DateLike,
+  options: CalendarFormatOptions = {},
+): string {
+  const { locale, sameDay, lastDay, nextDay, lastWeek, nextWeek, sameElse } = options;
+
+  const reference: DateLike = base ?? calendarDefaultBase(date);
+
+  // Use plain dates for day-level classification (avoids timezone edge cases)
+  const datePlain = toPlainDateFrom(date);
+  const basePlain = toPlainDateFrom(reference);
+
+  // Positive diff = date is in the future relative to base
+  const diff = datePlain.since(basePlain, { largestUnit: "day" }).days;
+
+  let resolver: CalendarResolver | undefined;
+  if (diff === 0) resolver = sameDay;
+  else if (diff === 1) resolver = nextDay;
+  else if (diff === -1) resolver = lastDay;
+  else if (diff >= 2 && diff <= 6) resolver = nextWeek;
+  else if (diff <= -2 && diff >= -6) resolver = lastWeek;
+  else resolver = sameElse;
+
+  if (resolver !== undefined) {
+    return typeof resolver === "function" ? resolver(date, reference) : resolver;
+  }
+
+  return calendarDefaultRender(date, diff, locale);
+}
+
+function calendarDefaultBase(date: DateLike): DateLike {
+  if (date instanceof Temporal.PlainDate) return Temporal.Now.plainDateISO();
+  if (date instanceof Temporal.PlainDateTime) return Temporal.Now.plainDateTimeISO();
+  return Temporal.Now.zonedDateTimeISO();
+}
+
+function toPlainDateFrom(date: DateLike): Temporal.PlainDate {
+  if (date instanceof Temporal.PlainDate) return date;
+  if (date instanceof Temporal.PlainDateTime) return date.toPlainDate();
+  return (date as Temporal.ZonedDateTime).toPlainDate();
+}
+
+function calendarDefaultRender(
+  date: DateLike,
+  diff: number,
+  locale: string | string[] | undefined,
+): string {
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
+
+  if (diff === 0) return calendarCapitalize(rtf.format(0, "day")); // "today"
+  if (diff === 1) return calendarCapitalize(rtf.format(1, "day")); // "tomorrow"
+  if (diff === -1) return calendarCapitalize(rtf.format(-1, "day")); // "yesterday"
+
+  // ±2–6 days: weekday name
+  if (Math.abs(diff) <= 6) {
+    const plain = toPlainDateFrom(date);
+    const zdt = plain.toZonedDateTime(Temporal.Now.timeZoneId());
+    return new Intl.DateTimeFormat(locale, { weekday: "long" }).format(
+      new Date(zdt.epochMilliseconds),
+    );
+  }
+
+  // Beyond ±6 days: absolute medium date
+  return format(date, { ...(locale !== undefined && { locale }), dateStyle: "medium" });
+}
+
+function calendarCapitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

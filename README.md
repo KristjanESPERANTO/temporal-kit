@@ -184,7 +184,7 @@ src/
 
 - **Comparison:** `isBefore`, `isAfter`, `isSame`, `isBetween`, `min`, `max`, `clamp`
 - **Arithmetic:** `add`, `subtract`, `startOf`, `endOf`
-- **Formatting:** `format`, `formatTime`, `formatDateTime`, `formatRelative` (Intl-based)
+- **Formatting:** `format`, `formatTime`, `formatDateTime`, `formatRelative`, `formatCalendar` (Intl-based)
 - **Conversion:** `now`, `fromISO`
 - **Ranges:** `rangesOverlap`, `eachDayOfInterval`, `stepInterval`
 - **Collections:** `sortAsc`, `sortDesc`, `closestTo`

@@ -1,6 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
-import { format, formatDateTime, formatRelative, formatTime } from "./index.js";
+import { format, formatCalendar, formatDateTime, formatRelative, formatTime } from "./index.js";
 
 describe("format", () => {
   const date = Temporal.PlainDate.from("2025-11-30");
@@ -415,6 +415,282 @@ describe("formatRelative", () => {
       const date = Temporal.PlainDate.from("2025-12-01");
       const result = formatRelative(dt, date);
       expect(result).toBe("12 hours ago");
+    });
+  });
+});
+
+describe("formatCalendar", () => {
+  // Fixed base: 2025-11-30 (Sunday)
+  const base = Temporal.PlainDate.from("2025-11-30");
+
+  describe("default rendering (en-US, no resolvers)", () => {
+    it("formats today", () => {
+      const result = formatCalendar(base, base, { locale: "en-US" });
+      expect(result).toBe("Today");
+    });
+
+    it("formats yesterday", () => {
+      const yesterday = base.subtract({ days: 1 });
+      const result = formatCalendar(yesterday, base, { locale: "en-US" });
+      expect(result).toBe("Yesterday");
+    });
+
+    it("formats tomorrow", () => {
+      const tomorrow = base.add({ days: 1 });
+      const result = formatCalendar(tomorrow, base, { locale: "en-US" });
+      expect(result).toBe("Tomorrow");
+    });
+
+    it("formats 2 days ago as weekday name", () => {
+      const twoDaysAgo = base.subtract({ days: 2 }); // Friday 2025-11-28
+      const result = formatCalendar(twoDaysAgo, base, { locale: "en-US" });
+      expect(result).toBe("Friday");
+    });
+
+    it("formats 6 days ago as weekday name", () => {
+      const sixDaysAgo = base.subtract({ days: 6 }); // Monday 2025-11-24
+      const result = formatCalendar(sixDaysAgo, base, { locale: "en-US" });
+      expect(result).toBe("Monday");
+    });
+
+    it("formats 2 days in the future as weekday name", () => {
+      const inTwoDays = base.add({ days: 2 }); // Tuesday 2025-12-02
+      const result = formatCalendar(inTwoDays, base, { locale: "en-US" });
+      expect(result).toBe("Tuesday");
+    });
+
+    it("formats 6 days in the future as weekday name", () => {
+      const inSixDays = base.add({ days: 6 }); // Saturday 2025-12-06
+      const result = formatCalendar(inSixDays, base, { locale: "en-US" });
+      expect(result).toBe("Saturday");
+    });
+
+    it("formats 7 days away as medium date", () => {
+      const inSevenDays = base.add({ days: 7 }); // 2025-12-07
+      const result = formatCalendar(inSevenDays, base, { locale: "en-US" });
+      expect(result).toMatch(/Dec.*7.*2025/);
+    });
+
+    it("formats 30 days ago as medium date", () => {
+      const monthAgo = base.subtract({ days: 30 }); // 2025-10-31
+      const result = formatCalendar(monthAgo, base, { locale: "en-US" });
+      expect(result).toMatch(/Oct.*31.*2025/);
+    });
+  });
+
+  describe("default rendering with locale", () => {
+    it("formats today in de-DE", () => {
+      const result = formatCalendar(base, base, { locale: "de-DE" });
+      expect(result).toBe("Heute");
+    });
+
+    it("formats yesterday in de-DE", () => {
+      const yesterday = base.subtract({ days: 1 });
+      const result = formatCalendar(yesterday, base, { locale: "de-DE" });
+      expect(result).toBe("Gestern");
+    });
+
+    it("formats tomorrow in de-DE", () => {
+      const tomorrow = base.add({ days: 1 });
+      const result = formatCalendar(tomorrow, base, { locale: "de-DE" });
+      expect(result).toBe("Morgen");
+    });
+
+    it("formats a weekday name in de-DE", () => {
+      const friday = base.subtract({ days: 2 }); // 2025-11-28
+      const result = formatCalendar(friday, base, { locale: "de-DE" });
+      expect(result).toBe("Freitag");
+    });
+
+    it("formats far past in fr-FR", () => {
+      const farPast = base.subtract({ days: 14 }); // 2025-11-16
+      const result = formatCalendar(farPast, base, { locale: "fr-FR" });
+      // expect medium date format for fr-FR
+      expect(result).toMatch(/16.*nov.*2025/i);
+    });
+  });
+
+  describe("custom string resolvers", () => {
+    it("uses sameDay string when date is today", () => {
+      const result = formatCalendar(base, base, { sameDay: "Heute" });
+      expect(result).toBe("Heute");
+    });
+
+    it("uses nextDay string when date is tomorrow", () => {
+      const tomorrow = base.add({ days: 1 });
+      const result = formatCalendar(tomorrow, base, { nextDay: "Morgen" });
+      expect(result).toBe("Morgen");
+    });
+
+    it("uses lastDay string when date is yesterday", () => {
+      const yesterday = base.subtract({ days: 1 });
+      const result = formatCalendar(yesterday, base, { lastDay: "Gestern" });
+      expect(result).toBe("Gestern");
+    });
+
+    it("uses nextWeek string for dates 2–6 days out", () => {
+      const thursday = base.add({ days: 4 }); // 4 days out hits nextWeek
+      const result = formatCalendar(thursday, base, { nextWeek: "This Week" });
+      expect(result).toBe("This Week");
+    });
+
+    it("uses lastWeek string for dates 2–6 days back", () => {
+      const thursday = base.subtract({ days: 4 });
+      const result = formatCalendar(thursday, base, { lastWeek: "Last Week" });
+      expect(result).toBe("Last Week");
+    });
+
+    it("uses sameElse string for dates beyond 6 days", () => {
+      const farFuture = base.add({ days: 30 });
+      const result = formatCalendar(farFuture, base, { sameElse: "Far Away" });
+      expect(result).toBe("Far Away");
+    });
+  });
+
+  describe("custom callback resolvers", () => {
+    it("passes date and base to sameDay callback", () => {
+      const result = formatCalendar(base, base, {
+        sameDay: (d, b) => {
+          expect(d).toBe(base);
+          expect(b).toBe(base);
+          return "TODAY";
+        },
+      });
+      expect(result).toBe("TODAY");
+    });
+
+    it("allows dynamic time formatting in sameDay callback", () => {
+      const eventDt = Temporal.PlainDateTime.from("2025-11-30T14:00:00");
+      const result = formatCalendar(eventDt, base, {
+        locale: "en-US",
+        sameDay: (d) => `Today at ${formatTime(d, { locale: "en-US", timeStyle: "short" })}`,
+      });
+      expect(result).toBe("Today at 2:00 PM");
+    });
+
+    it("allows dynamic weekday formatting in nextWeek callback", () => {
+      const tuesday = base.add({ days: 2 }); // 2025-12-02
+      const result = formatCalendar(tuesday, base, {
+        locale: "en-US",
+        nextWeek: (d) => format(d, { locale: "en-US", options: { weekday: "long" } }),
+      });
+      expect(result).toBe("Tuesday");
+    });
+  });
+
+  describe("bucket boundary precision", () => {
+    it("diff = 1 hits nextDay, NOT nextWeek", () => {
+      const tomorrow = base.add({ days: 1 });
+      const calls: string[] = [];
+      formatCalendar(tomorrow, base, {
+        nextDay: () => {
+          calls.push("nextDay");
+          return "";
+        },
+        nextWeek: () => {
+          calls.push("nextWeek");
+          return "";
+        },
+      });
+      expect(calls).toEqual(["nextDay"]);
+    });
+
+    it("diff = 6 hits nextWeek, NOT sameElse", () => {
+      const inSix = base.add({ days: 6 });
+      const calls: string[] = [];
+      formatCalendar(inSix, base, {
+        nextWeek: () => {
+          calls.push("nextWeek");
+          return "";
+        },
+        sameElse: () => {
+          calls.push("sameElse");
+          return "";
+        },
+      });
+      expect(calls).toEqual(["nextWeek"]);
+    });
+
+    it("diff = 7 hits sameElse", () => {
+      const inSeven = base.add({ days: 7 });
+      const calls: string[] = [];
+      formatCalendar(inSeven, base, {
+        nextWeek: () => {
+          calls.push("nextWeek");
+          return "";
+        },
+        sameElse: () => {
+          calls.push("sameElse");
+          return "";
+        },
+      });
+      expect(calls).toEqual(["sameElse"]);
+    });
+
+    it("diff = -6 hits lastWeek, NOT sameElse", () => {
+      const sixBack = base.subtract({ days: 6 });
+      const calls: string[] = [];
+      formatCalendar(sixBack, base, {
+        lastWeek: () => {
+          calls.push("lastWeek");
+          return "";
+        },
+        sameElse: () => {
+          calls.push("sameElse");
+          return "";
+        },
+      });
+      expect(calls).toEqual(["lastWeek"]);
+    });
+  });
+
+  describe("with PlainDateTime", () => {
+    it("classifies by calendar day, not time", () => {
+      // 23:59 today should still be "Today"
+      const lateTonight = Temporal.PlainDateTime.from("2025-11-30T23:59:00");
+      const result = formatCalendar(lateTonight, base, {
+        sameDay: "Today",
+        nextDay: "Tomorrow",
+      });
+      expect(result).toBe("Today");
+    });
+
+    it("classifies midnight tomorrow as nextDay", () => {
+      const midnight = Temporal.PlainDateTime.from("2025-12-01T00:00:00");
+      const result = formatCalendar(midnight, base, {
+        sameDay: "Today",
+        nextDay: "Tomorrow",
+      });
+      expect(result).toBe("Tomorrow");
+    });
+  });
+
+  describe("with ZonedDateTime", () => {
+    it("classifies using local calendar day", () => {
+      const eventToday = Temporal.ZonedDateTime.from("2025-11-30T10:00:00+01:00[Europe/Berlin]");
+      const baseZDT = Temporal.ZonedDateTime.from("2025-11-30T08:00:00+01:00[Europe/Berlin]");
+      const result = formatCalendar(eventToday, baseZDT, { sameDay: "Today" });
+      expect(result).toBe("Today");
+    });
+  });
+
+  describe("defaults to now when base is omitted", () => {
+    it("does not throw when base is undefined (PlainDate)", () => {
+      const tomorrow = Temporal.Now.plainDateISO().add({ days: 1 });
+      const result = formatCalendar(tomorrow, undefined, { nextDay: "Tomorrow" });
+      expect(result).toBe("Tomorrow");
+    });
+
+    it("does not throw when base is undefined (PlainDateTime)", () => {
+      const tomorrow = Temporal.Now.plainDateTimeISO().add({ days: 1 });
+      const result = formatCalendar(tomorrow, undefined, { nextDay: "Tomorrow" });
+      expect(result).toBe("Tomorrow");
+    });
+
+    it("does not throw when base is undefined (ZonedDateTime)", () => {
+      const tomorrow = Temporal.Now.zonedDateTimeISO().add({ days: 1 });
+      const result = formatCalendar(tomorrow, undefined, { nextDay: "Tomorrow" });
+      expect(result).toBe("Tomorrow");
     });
   });
 });
