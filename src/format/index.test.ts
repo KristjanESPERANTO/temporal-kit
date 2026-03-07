@@ -563,7 +563,8 @@ describe("formatCalendar", () => {
       const eventDt = Temporal.PlainDateTime.from("2025-11-30T14:00:00");
       const result = formatCalendar(eventDt, base, {
         locale: "en-US",
-        sameDay: (d) => `Today at ${formatTime(d, { locale: "en-US", timeStyle: "short" })}`,
+        sameDay: (d) =>
+          `Today at ${formatTime(d as Temporal.PlainDateTime, { locale: "en-US", timeStyle: "short" })}`,
       });
       expect(result).toBe("Today at 2:00 PM");
     });
