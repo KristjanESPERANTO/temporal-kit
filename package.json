@@ -48,7 +48,7 @@
     "prepare": "simple-git-hooks"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged",
+    "pre-commit": "node --run typecheck && npx lint-staged",
     "commit-msg": "npx commitlint --edit $1"
   },
   "lint-staged": {
