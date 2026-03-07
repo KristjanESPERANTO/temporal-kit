@@ -1,6 +1,6 @@
 {
   "version": "0.2",
   "language": "en",
-  "words": ["Kristjan", "Luxon", "nextday", "rrule"],
+  "words": ["Freitag", "gestern", "Heute", "hier", "Kristjan", "Luxon", "nextday", "rrule"],
   "ignorePaths": ["node_modules", "dist"]
 }
