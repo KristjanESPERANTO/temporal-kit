@@ -100,3 +100,39 @@ export function eachDayOfInterval<T extends DateLike>(interval: Interval<T>): T[
 export function eachWeekOfInterval<T extends DateLike>(interval: Interval<T>): T[] {
   return Array.from(stepInterval(interval, { weeks: 1 }));
 }
+
+/**
+ * Returns an array of month starts within the specified interval.
+ *
+ * @param interval - The interval
+ * @returns Array of dates separated by 1 month
+ *
+ * @example
+ * ```ts
+ * const start = Temporal.PlainDate.from('2025-01-01');
+ * const end = Temporal.PlainDate.from('2025-03-31');
+ * eachMonthOfInterval({ start, end });
+ * // [2025-01-01, 2025-02-01, 2025-03-01]
+ * ```
+ */
+export function eachMonthOfInterval<T extends DateLike>(interval: Interval<T>): T[] {
+  return Array.from(stepInterval(interval, { months: 1 }));
+}
+
+/**
+ * Returns an array of year starts within the specified interval.
+ *
+ * @param interval - The interval
+ * @returns Array of dates separated by 1 year
+ *
+ * @example
+ * ```ts
+ * const start = Temporal.PlainDate.from('2023-01-01');
+ * const end = Temporal.PlainDate.from('2025-12-31');
+ * eachYearOfInterval({ start, end });
+ * // [2023-01-01, 2024-01-01, 2025-01-01]
+ * ```
+ */
+export function eachYearOfInterval<T extends DateLike>(interval: Interval<T>): T[] {
+  return Array.from(stepInterval(interval, { years: 1 }));
+}

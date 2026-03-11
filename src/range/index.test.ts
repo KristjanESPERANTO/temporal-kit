@@ -1,7 +1,14 @@
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
 import { isZonedDateTime } from "../guards/index.js";
-import { eachDayOfInterval, eachWeekOfInterval, rangesOverlap, stepInterval } from "./index.js";
+import {
+  eachDayOfInterval,
+  eachMonthOfInterval,
+  eachWeekOfInterval,
+  eachYearOfInterval,
+  rangesOverlap,
+  stepInterval,
+} from "./index.js";
 
 describe("range", () => {
   describe("rangesOverlap", () => {
@@ -128,6 +135,42 @@ describe("range", () => {
       expect(days).toHaveLength(3);
       expect(days[0].toString()).toContain("2025-01-01");
       expect(days[2].toString()).toContain("2025-01-03");
+    });
+  });
+
+  describe("eachMonthOfInterval", () => {
+    it("should return each month start in the interval", () => {
+      const start = Temporal.PlainDate.from("2025-01-15");
+      const end = Temporal.PlainDate.from("2025-03-15");
+      const result = eachMonthOfInterval({ start, end });
+      expect(result).toHaveLength(3);
+      expect(result[0].toString()).toBe("2025-01-15");
+      expect(result[1].toString()).toBe("2025-02-15");
+      expect(result[2].toString()).toBe("2025-03-15");
+    });
+
+    it("should return a single entry when start equals end", () => {
+      const date = Temporal.PlainDate.from("2025-06-01");
+      const result = eachMonthOfInterval({ start: date, end: date });
+      expect(result).toHaveLength(1);
+    });
+  });
+
+  describe("eachYearOfInterval", () => {
+    it("should return each year start in the interval", () => {
+      const start = Temporal.PlainDate.from("2023-06-01");
+      const end = Temporal.PlainDate.from("2025-06-01");
+      const result = eachYearOfInterval({ start, end });
+      expect(result).toHaveLength(3);
+      expect(result[0].toString()).toBe("2023-06-01");
+      expect(result[1].toString()).toBe("2024-06-01");
+      expect(result[2].toString()).toBe("2025-06-01");
+    });
+
+    it("should return a single entry when start equals end", () => {
+      const date = Temporal.PlainDate.from("2025-01-01");
+      const result = eachYearOfInterval({ start: date, end: date });
+      expect(result).toHaveLength(1);
     });
   });
 

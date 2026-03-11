@@ -1,6 +1,14 @@
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
-import { fromISO, now, toPlainDate, toPlainDateTime, toZonedDateTime } from "./index.js";
+import {
+  fromISO,
+  now,
+  nowZoned,
+  today,
+  toPlainDate,
+  toPlainDateTime,
+  toZonedDateTime,
+} from "./index.js";
 
 describe("Convert Functions", () => {
   describe("now", () => {
@@ -9,6 +17,48 @@ describe("Convert Functions", () => {
       expect(result).toBeInstanceOf(Temporal.ZonedDateTime);
       expect(result.year).toBeGreaterThan(2024);
       expect(result.timeZoneId).toBeTruthy();
+    });
+  });
+
+  describe("today", () => {
+    it("should return current PlainDate in system timezone", () => {
+      const result = today();
+      expect(result).toBeInstanceOf(Temporal.PlainDate);
+      expect(result.year).toBeGreaterThan(2024);
+    });
+
+    it("should return current PlainDate in a specific timezone", () => {
+      const result = today("America/New_York");
+      expect(result).toBeInstanceOf(Temporal.PlainDate);
+      expect(result.year).toBeGreaterThan(2024);
+    });
+
+    it("should return a PlainDate (not a ZonedDateTime)", () => {
+      expect(today()).not.toBeInstanceOf(Temporal.ZonedDateTime);
+    });
+  });
+
+  describe("nowZoned", () => {
+    it("should return current ZonedDateTime in the specified timezone", () => {
+      const result = nowZoned("America/New_York");
+      expect(result).toBeInstanceOf(Temporal.ZonedDateTime);
+      expect(result.timeZoneId).toBe("America/New_York");
+    });
+
+    it("should return current ZonedDateTime in UTC", () => {
+      const result = nowZoned("UTC");
+      expect(result).toBeInstanceOf(Temporal.ZonedDateTime);
+      expect(result.timeZoneId).toBe("UTC");
+    });
+
+    it("should represent the same instant as now() (within a second)", () => {
+      const systemNow = now();
+      const utcNow = nowZoned("UTC");
+      const diff = Math.abs(
+        Number(systemNow.toInstant().epochMilliseconds) -
+          Number(utcNow.toInstant().epochMilliseconds),
+      );
+      expect(diff).toBeLessThan(2000);
     });
   });
 

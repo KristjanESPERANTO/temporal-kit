@@ -13,6 +13,42 @@ export function now(): Temporal.ZonedDateTime {
 }
 
 /**
+ * Get the current date as a PlainDate, optionally in a specific timezone.
+ *
+ * @param timeZone - Optional IANA timezone identifier. Defaults to the system timezone.
+ * @returns The current PlainDate
+ *
+ * @example
+ * ```ts
+ * import { today } from 'temporal-kit';
+ *
+ * today();                    // PlainDate for today in system timezone
+ * today('America/New_York');  // PlainDate for today in New York
+ * ```
+ */
+export function today(timeZone?: string): Temporal.PlainDate {
+  return Temporal.Now.plainDateISO(timeZone);
+}
+
+/**
+ * Get the current date and time as a ZonedDateTime in a specific timezone.
+ *
+ * @param timeZone - IANA timezone identifier
+ * @returns The current ZonedDateTime in the given timezone
+ *
+ * @example
+ * ```ts
+ * import { nowZoned } from 'temporal-kit';
+ *
+ * nowZoned('America/New_York');  // ZonedDateTime in New York
+ * nowZoned('Asia/Tokyo');        // ZonedDateTime in Tokyo
+ * ```
+ */
+export function nowZoned(timeZone: string): Temporal.ZonedDateTime {
+  return Temporal.Now.zonedDateTimeISO(timeZone);
+}
+
+/**
  * Parse an ISO 8601 string into the appropriate Temporal type
  * @param isoString - ISO 8601 formatted string
  * @returns PlainDate, PlainDateTime, ZonedDateTime, or Instant depending on the format

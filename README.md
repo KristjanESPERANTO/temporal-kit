@@ -185,10 +185,10 @@ src/
 - **Comparison:** `isBefore`, `isAfter`, `isSame`, `isBetween`, `min`, `max`, `clamp`
 - **Arithmetic:** `add`, `subtract`, `startOf`, `endOf`
 - **Formatting:** `format`, `formatTime`, `formatDateTime`, `formatRelative`, `formatCalendar` (Intl-based)
-- **Conversion:** `now`, `fromISO`
-- **Ranges:** `rangesOverlap`, `eachDayOfInterval`, `stepInterval`
+- **Conversion:** `now`, `today`, `nowZoned`, `fromISO`
+- **Ranges:** `rangesOverlap`, `eachDayOfInterval`, `eachWeekOfInterval`, `eachMonthOfInterval`, `eachYearOfInterval`, `stepInterval`
 - **Collections:** `sortAsc`, `sortDesc`, `closestTo`
-- **Validation:** `isValidDateString`, `isValidTimezone`, `getTimezoneName`
+- **Validation:** `isValidDateString`, `isValidTimeString`, `isValidDateTimeString`, `isValidInstantString`, `isValidZonedString`, `isValidTimezone`, `getTimezoneName`
 - **Functional Utils:** `pipe`, `compose`
 
 ## 5. Contributing

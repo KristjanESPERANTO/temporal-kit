@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { isValidDateString, isValidDateTimeString, isValidTimeString } from "./index.js";
+import {
+  isValidDateString,
+  isValidDateTimeString,
+  isValidInstantString,
+  isValidTimeString,
+  isValidZonedString,
+} from "./index.js";
 
 describe("validation", () => {
   describe("isValidDateString", () => {
@@ -39,6 +45,34 @@ describe("validation", () => {
       expect(isValidDateTimeString("2025-13-01T15:30:00")).toBe(false);
       expect(isValidDateTimeString("2025-01-01T25:00:00")).toBe(false);
       expect(isValidDateTimeString("invalid")).toBe(false);
+    });
+  });
+
+  describe("isValidInstantString", () => {
+    it("returns true for valid instant strings", () => {
+      expect(isValidInstantString("2025-12-31T15:30:00Z")).toBe(true);
+      expect(isValidInstantString("2025-12-31T15:30:00+02:00")).toBe(true);
+      expect(isValidInstantString("2025-12-31T00:00:00.000Z")).toBe(true);
+    });
+
+    it("returns false for strings without UTC offset", () => {
+      expect(isValidInstantString("2025-12-31")).toBe(false);
+      expect(isValidInstantString("2025-12-31T15:30:00")).toBe(false);
+      expect(isValidInstantString("invalid")).toBe(false);
+    });
+  });
+
+  describe("isValidZonedString", () => {
+    it("returns true for valid zoned date-time strings", () => {
+      expect(isValidZonedString("2025-12-31T15:30:00+01:00[Europe/Berlin]")).toBe(true);
+      expect(isValidZonedString("2025-01-01T00:00:00+00:00[UTC]")).toBe(true);
+    });
+
+    it("returns false for strings without IANA timezone identifier", () => {
+      expect(isValidZonedString("2025-12-31T15:30:00Z")).toBe(false);
+      expect(isValidZonedString("2025-12-31T15:30:00+01:00")).toBe(false);
+      expect(isValidZonedString("2025-12-31")).toBe(false);
+      expect(isValidZonedString("invalid")).toBe(false);
     });
   });
 });

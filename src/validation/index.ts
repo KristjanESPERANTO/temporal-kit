@@ -73,3 +73,51 @@ export function isValidDateTimeString(dateTimeString: string): boolean {
     return false;
   }
 }
+
+/**
+ * Checks if a string is a valid ISO 8601 instant string (UTC timestamp).
+ *
+ * @param instantString - The string to validate
+ * @returns true if the string is a valid instant
+ *
+ * @example
+ * ```ts
+ * import { isValidInstantString } from 'temporal-kit';
+ *
+ * isValidInstantString('2025-12-31T15:30:00Z'); // true
+ * isValidInstantString('2025-12-31T15:30:00+02:00'); // true
+ * isValidInstantString('2025-12-31'); // false
+ * ```
+ */
+export function isValidInstantString(instantString: string): boolean {
+  try {
+    Temporal.Instant.from(instantString);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Checks if a string is a valid RFC 9557 zoned date-time string.
+ *
+ * @param zonedString - The string to validate
+ * @returns true if the string is a valid zoned date-time
+ *
+ * @example
+ * ```ts
+ * import { isValidZonedString } from 'temporal-kit';
+ *
+ * isValidZonedString('2025-12-31T15:30:00+01:00[Europe/Berlin]'); // true
+ * isValidZonedString('2025-12-31T15:30:00Z'); // false (no IANA identifier)
+ * isValidZonedString('invalid'); // false
+ * ```
+ */
+export function isValidZonedString(zonedString: string): boolean {
+  try {
+    Temporal.ZonedDateTime.from(zonedString);
+    return true;
+  } catch {
+    return false;
+  }
+}
