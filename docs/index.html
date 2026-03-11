@@ -694,38 +694,67 @@
 
                 <div class="api-grid">
                     <div class="api-category">
-                        <h4>🔍 Comparison & Range</h4>
+                        <h4>🔄 Conversion</h4>
                         <ul>
-                            <li><code>isBefore</code> <code>isAfter</code> compare dates</li>
-                            <li><code>isSame</code> <code>isBetween</code> equality & range</li>
-                            <li><code>clamp</code> <code>isWeekend</code> checks</li>
+                            <li><code>now</code> ZonedDateTime (system TZ)</li>
+                            <li><code>today</code> PlainDate (optional TZ)</li>
+                            <li><code>nowZoned</code> ZonedDateTime (explicit TZ)</li>
+                            <li><code>fromISO</code> parse ISO string</li>
+                            <li><code>toPlainDate</code> <code>toPlainDateTime</code> <code>toZonedDateTime</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="api-category">
+                        <h4>🔍 Comparison</h4>
+                        <ul>
+                            <li><code>isBefore</code> <code>isAfter</code> <code>isSame</code></li>
+                            <li><code>isBetween</code> <code>clamp</code> range checks</li>
+                            <li><code>min</code> <code>max</code> extremes</li>
+                            <li><code>isSameDay</code> <code>isSameWeek</code> <code>isSameMonth</code></li>
+                            <li><code>compare</code> raw comparison (-1/0/1)</li>
                         </ul>
                     </div>
 
                     <div class="api-category">
                         <h4>🧮 Arithmetic</h4>
                         <ul>
-                            <li><code>add</code> <code>subtract</code> add/sub time</li>
-                            <li><code>startOf</code> <code>endOf</code> start/end unit</li>
-                            <li><code>nextDay</code> <code>addBusinessDays</code> helpers</li>
+                            <li><code>add</code> <code>subtract</code> durations</li>
+                            <li><code>startOf</code> <code>endOf</code> period boundaries</li>
+                            <li><code>floor</code> <code>ceil</code> <code>round</code> rounding</li>
+                            <li><code>nextDay</code> <code>addBusinessDays</code></li>
                         </ul>
                     </div>
 
                     <div class="api-category">
-                        <h4>🛡️ Guards & Types</h4>
+                        <h4>📆 Ranges</h4>
                         <ul>
-                            <li><code>isPlainDate</code> <code>isInstant</code> <code>isDuration</code></li>
-                            <li><code>isZonedDateTime</code> <code>isPlainYearMonth</code></li>
-                            <li><code>isPlainMonthDay</code> <code>isDateLike</code></li>
+                            <li><code>rangesOverlap</code> interval check</li>
+                            <li><code>stepInterval</code> generic iterator</li>
+                            <li><code>eachDayOfInterval</code> daily steps</li>
+                            <li><code>eachWeekOfInterval</code> weekly steps</li>
+                            <li><code>eachMonthOfInterval</code> monthly steps</li>
+                            <li><code>eachYearOfInterval</code> yearly steps</li>
                         </ul>
                     </div>
 
                     <div class="api-category">
-                        <h4>🌐 Formatting & Convert</h4>
+                        <h4>🌐 Formatting</h4>
                         <ul>
-                            <li><code>format</code> localized string</li>
-                            <li><code>formatRelative</code> relative time</li>
-                            <li><code>toZonedDateTime</code> convert zone</li>
+                            <li><code>format</code> localized date string</li>
+                            <li><code>formatTime</code> <code>formatDateTime</code></li>
+                            <li><code>formatRelative</code> "2 days ago"</li>
+                            <li><code>formatCalendar</code> context-aware label</li>
+                        </ul>
+                    </div>
+
+                    <div class="api-category">
+                        <h4>✅ Validation</h4>
+                        <ul>
+                            <li><code>isValidDateString</code> <code>isValidTimeString</code></li>
+                            <li><code>isValidDateTimeString</code></li>
+                            <li><code>isValidInstantString</code></li>
+                            <li><code>isValidZonedString</code></li>
+                            <li><code>isValidTimezone</code> <code>getTimezoneName</code></li>
                         </ul>
                     </div>
 
@@ -734,16 +763,16 @@
                         <ul>
                             <li><code>sortAsc</code> <code>sortDesc</code> sort dates</li>
                             <li><code>closestTo</code> find nearest</li>
-                            <li><code>eachDayOfInterval</code> make range</li>
                         </ul>
                     </div>
 
                     <div class="api-category">
-                        <h4>🔧 Functional</h4>
+                        <h4>🛡️ Guards & Functional</h4>
                         <ul>
-                            <li><code>pipe</code> chain functions</li>
-                            <li><code>compose</code> combine functions</li>
-                            <li><code>now</code> <code>fromISO</code> helpers</li>
+                            <li><code>isPlainDate</code> <code>isInstant</code> <code>isDuration</code></li>
+                            <li><code>isZonedDateTime</code> <code>isDateLike</code></li>
+                            <li><code>isWeekend</code></li>
+                            <li><code>pipe</code> <code>compose</code></li>
                         </ul>
                     </div>
                 </div>
@@ -870,20 +899,41 @@
                 temporalKit = await import('../dist/polyfilled.js');
             } else {
                 // Fallback to CDN
-                temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.2.6/dist/polyfilled.js');
-            }
-        } catch (e) {
-            console.warn('Primary import failed, falling back to CDN:', e);
-            temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.2.6/dist/polyfilled.js');
+temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.2.7/dist/polyfilled.js');
+        }
+    } catch (e) {
+        console.warn('Primary import failed, falling back to CDN:', e);
+        temporalKit = await import('https://cdn.jsdelivr.net/npm/temporal-kit@0.2.7/dist/polyfilled.js');
         }
 
-        const { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend } = temporalKit;
+        const { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend, today, nowZoned, eachMonthOfInterval, eachYearOfInterval } = temporalKit;
 
         // Store for global access
-        window.temporalKit = { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend };
+        window.temporalKit = { isPlainDate, isZonedDateTime, isInstant, add, startOf, pipe, isBetween, clamp, nextDay, formatRelative, sortAsc, closestTo, addBusinessDays, isWeekend, today, nowZoned, eachMonthOfInterval, eachYearOfInterval };
 
         // Examples code and rendering - moved into module script to avoid race condition
         const exampleCode = {
+            current: `import { today, nowZoned } from 'temporal-kit';
+
+// today() → PlainDate (much easier than Temporal.Now.plainDateISO())
+const localToday = today();
+const nyToday    = today('America/New_York');
+const tokyoToday = today('Asia/Tokyo');
+
+console.log('today() system TZ:     ', localToday.toString());
+console.log('today() New York:      ', nyToday.toString());
+console.log('today() Tokyo:         ', tokyoToday.toString());
+
+// nowZoned() → ZonedDateTime with an explicit timezone
+const berlin  = nowZoned('Europe/Berlin');
+const newYork = nowZoned('America/New_York');
+const utc     = nowZoned('UTC');
+
+console.log('');
+console.log('nowZoned() Berlin:  ', berlin.toString());
+console.log('nowZoned() New York:', newYork.toString());
+console.log('nowZoned() UTC:     ', utc.toString());`,
+
             relative: `import { formatRelative } from 'temporal-kit';
 
 const today = Temporal.Now.plainDateISO();
@@ -1082,6 +1132,10 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
         };
 
         const exampleMeta = {
+            current: {
+                title: 'today() & nowZoned()',
+                description: 'Ergonomic shortcuts for the current date/time. Much easier to discover than Temporal.Now.plainDateISO() — with optional timezone support.'
+            },
             relative: {
                 title: 'Relative Time',
                 description: 'Convert dates to human-readable relative time like "yesterday" or "in 2 weeks". Perfect for activity feeds and notifications.'
@@ -1122,7 +1176,7 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
 
         function renderAllExamples() {
             const container = document.getElementById('examplesContainer');
-            const exampleNames = ['relative', 'nextday', 'business', 'sort', 'closest', 'timezones', 'guards'];
+            const exampleNames = ['current', 'relative', 'nextday', 'business', 'sort', 'closest', 'timezones', 'guards'];
 
             exampleNames.forEach(name => {
                 const meta = exampleMeta[name];
@@ -1160,6 +1214,29 @@ console.log(\`Clamping \${tooLate.toString()} (too late)  -> \${clamped2.toStrin
         }
 
         const examples = {
+            current: () => {
+                const output = [];
+                const { today, nowZoned } = window.temporalKit;
+
+                const localToday = today();
+                const nyToday    = today('America/New_York');
+                const tokyoToday = today('Asia/Tokyo');
+
+                output.push(`today() system TZ:      ${localToday.toString()}`);
+                output.push(`today() New York:       ${nyToday.toString()}`);
+                output.push(`today() Tokyo:          ${tokyoToday.toString()}`);
+
+                const berlin  = nowZoned('Europe/Berlin');
+                const newYork = nowZoned('America/New_York');
+                const utc     = nowZoned('UTC');
+
+                output.push(`\nnowZoned() Berlin:   ${berlin.toString()}`);
+                output.push(`nowZoned() New York: ${newYork.toString()}`);
+                output.push(`nowZoned() UTC:      ${utc.toString()}`);
+
+                return output.join('\n');
+            },
+
             relative: () => {
                 const output = [];
 
