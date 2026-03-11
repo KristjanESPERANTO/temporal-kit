@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.7](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.6...v0.2.7) (2026-03-11)
+
+
+### Features
+
+* add ergonomic helpers inspired by temporal-fun ([4506b51](https://github.com/KristjanESPERANTO/temporal-kit/commit/4506b51635fa2b8273aef0d4377f23fb71b08c70))
+
+
+### Chores
+
+* add additional words to the spell checker configuration ([a6c8652](https://github.com/KristjanESPERANTO/temporal-kit/commit/a6c8652e6e910bbf9389c12a09fe34c49135c569))
+* update devDependencies ([bb9549c](https://github.com/KristjanESPERANTO/temporal-kit/commit/bb9549cdfcb38f01b1604360467bd7229d8a897f))
+
+
+### Documentation
+
+* update index.html API grid and playground for v0.2.7 ([eb26e4e](https://github.com/KristjanESPERANTO/temporal-kit/commit/eb26e4e7e686e65476a5faf46f797321394cc266))
+
 ## [0.2.6](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.5...v0.2.6) (2026-03-07)
 
 
