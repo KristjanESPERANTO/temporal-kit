@@ -1,7 +1,6 @@
 # Temporal Kit
 
-> **Modern, functional utilities for the Temporal API.**
-> *Experiment with the future of JavaScript dates today.*
+> **The missing ergonomics layer for the Temporal API.**
 
 [![Status](https://img.shields.io/badge/Status-Ready%20for%20Early%20Adopters-success)](https://github.com/KristjanESPERANTO/temporal-kit)
 [![npm version](https://img.shields.io/npm/v/temporal-kit)](https://www.npmjs.com/package/temporal-kit)
@@ -53,11 +52,12 @@ Or via CDN:
 ## Common Recipes
 
 ```typescript
-import { formatRelative, startOf, endOf, add, nextDay, isBetween } from 'temporal-kit';
+import { formatRelative, startOf, endOf, add, nextDay, isBetween, addBusinessDays } from 'temporal-kit';
 // On Node.js 24/25: import { Temporal } from 'temporal-polyfill';
 // On Node.js 26+ or modern browsers: Temporal is available globally
 
 const now = Temporal.Now.zonedDateTimeISO();
+const today = Temporal.Now.plainDateISO();
 
 // 1. Relative Time
 formatRelative(now.subtract({ minutes: 5 })); // "5 minutes ago"
@@ -69,8 +69,7 @@ const nextFriday = nextDay(now, 5); // 5 = Friday
 isBetween(now, startOf(now, 'year'), endOf(now, 'year')); // true
 
 // 4. Business Days
-import { addBusinessDays, isWeekend } from 'temporal-kit';
-const monday = addBusinessDays(friday, 1); // Skips weekend
+const monday = addBusinessDays(today, 1); // Skips weekend
 ```
 
 ## Documentation
@@ -79,53 +78,41 @@ const monday = addBusinessDays(friday, 1); // Skips weekend
 - **[Usage Examples](./docs/USAGE_EXAMPLES.md)** - Practical examples for common use cases
 - **[Best Practices](./docs/BEST_PRACTICES.md)** - Comprehensive guide for using temporal-kit effectively
 
-## Supply-Chain Trust
+## Why Temporal Kit?
 
-To improve release integrity and enterprise adoption, `temporal-kit` uses a CI-based publish model with npm provenance.
+Temporal ships natively in Node.js 26+ and modern browsers. Its types (`Instant`, `ZonedDateTime`, `PlainDate`) are precise and correct by design—but intentionally low-level. The ergonomics teams actually need—`startOf`, `isBetween`, humanized formatting—you're back to writing yourself.
 
-See [SECURITY.md](./SECURITY.md) for security policy and trust controls.
-For maintainer release operations (versioning, stable/`latest` and pre-release/`next` flow), see [CONTRIBUTING.md](./CONTRIBUTING.md).
+**Why not just write 20 lines yourself?**
 
-## 1. Why Temporal Kit?
+You could. But the subtle bugs accumulate quickly:
 
-**Temporal** is arriving as the modern standard for date/time handling in JavaScript, with precise primitives (`Instant`, `ZonedDateTime`, `PlainDate/Time`). By design, Temporal focuses on correctness and intentionally leaves out many convenience helpers—things like `startOf`/`endOf`, humanized formatting, or common comparison utilities. This is deliberate: Temporal provides the foundation, but everyday ergonomics are better handled by libraries.
+- `startOf('month')` breaks during DST transitions unless you account for the offset shift
+- `isBefore` needs to handle `PlainDate`, `ZonedDateTime`, and `Instant` uniformly—or you write three adapters
+- Leap-year and calendar-system edge cases in arithmetic surface in production, not in tests you wrote in 5 minutes
+- Every project reinvents the same utilities, each slightly differently
 
-**Temporal Kit** fills this gap with a focused, Temporal-first toolkit that provides:
+**Temporal Kit** solves this with ~30 well-tested, tree-shakable helpers:
 
-1.  **Common Ergonomic Helpers:** The everyday utilities teams need (`startOf`, `endOf`, `add`, `subtract`, `isBefore`, `isAfter`)
-2.  **Intl-First Formatting:** Locale-aware formatting without massive locale files
-3.  **Functional-First Design:** Pure functions, tree-shakable, composable—no hidden state
-4.  **Universal Compatibility:** Runs anywhere JavaScript runs (Browsers, Node.js, Edge) with native Temporal or polyfill
-5.  **Explicit over Magic:** No global config, no implicit conversions, no surprises
+- Every function is tested against DST transitions, leap years, and calendar boundaries
+- Uniform API across all Temporal types—no per-type adapter code
+- `pipe` and `compose` for readable date pipelines without a wrapper class
+- Zero runtime dependencies; polyfill is strictly opt-in
 
-**The Goal:** Stop reinventing the same small, error-prone utilities across projects. Instead, share a well-tested, modern implementation that covers 95% of everyday needs while staying lightweight and stable.
+## Design Principles
 
-## 2. Core Philosophy
+**Narrow scope, high quality.** Temporal Kit focuses on the 95% use case—common helpers most projects need, tested against edge cases you'd otherwise hit in production. For specialized needs like recurring patterns or iCalendar RRULE, see [rrule-temporal](https://github.com/ggaabe/rrule-temporal).
 
-### A. Narrow Scope, High Quality
-Rather than replicating every feature from older libraries, Temporal Kit focuses on:
-- **The 95% Use Case:** Common helpers that most projects need
-- **Well-Tested Primitives:** Battle-tested implementations to avoid subtle bugs
-- **Lightweight Core:** Keep it fast and stable by staying focused
+**Temporal-native.** Works directly with `Temporal` objects (`ZonedDateTime`, `PlainDate`, `Instant`). No legacy `Date` quirks, 1-indexed months, no timezone surprises. Formatting uses `Intl.DateTimeFormat`—correct localization without massive locale files.
 
-The remaining 5%—specialized needs like complex recurring patterns, custom calendar systems, or advanced timezone logic—are better served by dedicated libraries that can focus deeply on those specific domains. For example, [rrule-temporal](https://github.com/ggaabe/rrule-temporal) handles recurring date calculations with iCalendar RRULE support.
-
-### B. "Temporal First" & ISO Compliance
-- We work directly with `Temporal` objects (`ZonedDateTime`, `PlainDate`, etc.)
-- **Clean Break:** No legacy `Date` quirks. Months are 1-indexed. No timezone surprises.
-- **Intl-First:** Formatting uses `Intl.DateTimeFormat` by default—correct localization without massive locale files.
-
-### C. Functional-First API
-
-A pure functional API optimized for composition, tree-shaking, and modern JavaScript patterns.
+**Functional-first.** Pure functions, tree-shakable, composable—no wrapper class, no hidden state.
 
 ```typescript
 import { add, startOf, pipe } from 'temporal-kit'
 
-// Direct composition
+// Direct
 const result = add(startOf(date, 'day'), { hours: 1 })
 
-// With pipe utility
+// With pipe
 const result = pipe(
   date,
   d => startOf(d, 'day'),
@@ -133,57 +120,11 @@ const result = pipe(
 )
 ```
 
-**Benefits:**
-- Perfect tree-shaking - only bundle what you use
-- Composable and testable
-- Modern functional patterns
-- Future-ready for JS pipeline operator (`|>`)
+> Fluent APIs (`moment().add().startOf()`) are convenient but force bundling *all* methods. Pure functions give perfect tree-shaking and align with the upcoming JS pipeline operator (`|>`).
 
-> **Why no method chaining?**
-> Fluent APIs (like `moment().add().startOf()`) are convenient but break tree-shaking because the wrapper object must bundle *all* available methods. By sticking to pure functions, `temporal-kit` remains small and aligns with the future of JavaScript (Pipeline Operator).
+**Polyfill as explicit opt-in.** `temporal-kit` expects native Temporal and throws a clear error if missing. `temporal-kit/polyfilled` auto-loads the polyfill—no surprises, no global side effects by default.
 
-### D. Polyfill Strategy (Explicit Opt-in)
-We adopt a robust strategy for compatibility:
-- **`temporal-kit`**: Lean. Expects `Temporal` to exist. Throws helpful error if missing.
-- **`temporal-kit/polyfilled`**: Imports `temporal-polyfill` automatically for legacy environments (requires `temporal-polyfill` peer dependency).
-
-## 3. Architecture
-
-### Directory Structure
-```
-src/
-├── types/          # Core type definitions (DateLike, TimeLike unions)
-├── guards/         # Type guards (isPlainDate, isZonedDateTime, etc.)
-├── compare/        # Comparison functions (isBefore, isAfter, min, max)
-├── convert/        # Creation & conversion (now, fromISO, explicit conversions)
-├── format/         # Intl-based formatting (format, formatTime, formatDateTime, formatRelative)
-├── math/           # Arithmetic (add, subtract, startOf, endOf)
-├── utils/          # Utilities (pipe, compose)
-├── index.ts        # Main entry (expects native Temporal)
-└── polyfilled.ts   # Auto-loads polyfill for legacy environments
-```
-
-### Implementation Details
-- **Zero Runtime Dependencies:** We build directly on native `Temporal` APIs. Polyfill is optional.
-- **Type-Safe:** Full TypeScript support with strict mode and cutting-edge compiler options.
-- **Dual Entry Points:**
-  - `temporal-kit` - Expects native Temporal
-  - `temporal-kit/polyfilled` - Auto-loads polyfill
-- **Perfect Tree-Shaking:** `sideEffects: false` ensures optimal bundle sizes.
-- **Modern Tooling:**
-  - **Biome** - Fast linting/formatting with performance rules
-  - **Vitest** - Type-checked tests with 100% coverage threshold
-  - **tsup** - ESNext bundling with optimized tree-shaking
-  - **TypeScript** - Latest compiler features enabled
-- **Testing Strategy:** 100% code coverage including:
-  - Type guards and runtime checks
-  - Comparison and conversion functions
-  - Calendar arithmetic and boundary operations
-  - Intl-based formatting with locale support
-  - Functional composition utilities
-  - Error handling and edge cases
-
-## 4. Features & Capabilities
+## Features & Capabilities
 
 - **Comparison:** `isBefore`, `isAfter`, `isSame`, `isBetween`, `min`, `max`, `clamp`
 - **Arithmetic:** `add`, `subtract`, `startOf`, `endOf`
@@ -194,23 +135,27 @@ src/
 - **Validation:** `isValidDateString`, `isValidTimeString`, `isValidDateTimeString`, `isValidInstantString`, `isValidZonedString`, `isValidTimezone`, `getTimezoneName`
 - **Functional Utils:** `pipe`, `compose`
 
-## 5. Contributing
+## Supply-Chain Trust
 
-We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details on:
-- Development setup
-- Quality checks (Linting, Typechecking, Testing)
-- Release process
-- Project standards
+To improve release integrity and enterprise adoption, `temporal-kit` uses a CI-based publish model with npm provenance.
 
-- **ESNext target** - No legacy transpilation, minimal output
+See [SECURITY.md](./SECURITY.md) for security policy and trust controls.
+For maintainer release operations (versioning, stable/`latest` and pre-release/`next` flow), see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## 6. Comparison
+## Contributing
 
-| Feature | [Moment.js](https://momentjs.com/) | [date-fns](https://date-fns.org/) | [Luxon](https://moment.github.io/luxon/) | [Native Temporal](https://tc39.es/proposal-temporal/docs/) | **Temporal Kit** |
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md).
+
+## Comparison
+
+| Feature | [Moment.js](https://momentjs.com/) | [date-fns v4](https://date-fns.org/) | [Luxon](https://moment.github.io/luxon/) | [Native Temporal](https://tc39.es/proposal-temporal/docs/) | **Temporal Kit** |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Base Object** | Mutable Wrapper ⚠️ | Legacy `Date` ⚠️ | Custom Class | `Temporal` | **`Temporal`** |
-| **Paradigm** | OO / Mutable ⚠️ | Functional | OO / Immutable | OO / Verbose | **Functional** |
-| **Timezones** | Separate Helpers | Separate Helpers | Built-in | Native | **Native** |
-| **Tree-Shaking**| ❌ No | ✅ Yes | ❌ No | N/A | **✅ Yes** |
-| **Polyfill Needed?**| No | No | No | No (Native) | **Optional** |
-| **Best For...** | Legacy / Avoid 🛑 | Legacy Projects | Heavy Date Apps | Low-level Logic | **Modern Apps** |
+| **Base Object** | Mutable Wrapper | Legacy `Date` | Custom Class | `Temporal` | **`Temporal`** |
+| **Paradigm** | OO / Mutable | Functional | OO / Immutable | Low-level OO | **Functional** |
+| **Timezones** | Separate lib | Separate lib | Built-in | Native | **Native** |
+| **Calendar Systems** | No | No | No | Yes | **Yes** |
+| **Tree-Shaking** | No | Yes | No | N/A | **Yes** |
+| **Polyfill Needed?** | No | No | No | No (Native) | **Optional** |
+| **Temporal-native** | No | No | No | Yes | **Yes** |
+
+

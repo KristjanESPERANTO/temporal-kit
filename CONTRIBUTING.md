@@ -91,7 +91,32 @@ For security requirements (token handling, provenance, incident response), see [
 
 ## Project Standards
 
-- **Type-checked tests:** Vitest validates test types against your code.
 - **Modern exports:** Proper `exports` field with type/import/default conditions.
 - **Source maps:** Full debugging support in development.
-- **Coverage thresholds:** Strict 100% coverage requirement.
+- **100% coverage:** All PRs must maintain the strict coverage threshold.
+- **Conventional commits:** Used to auto-generate `CHANGELOG.md` on release.
+
+## Repository Structure
+
+```
+src/
+├── types/          # Core type definitions (DateLike, TimeLike unions)
+├── guards/         # Type guards (isPlainDate, isZonedDateTime, etc.)
+├── compare/        # Comparison functions (isBefore, isAfter, min, max)
+├── convert/        # Creation & conversion (now, fromISO, explicit conversions)
+├── format/         # Intl-based formatting (format, formatTime, formatDateTime, formatRelative)
+├── math/           # Arithmetic (add, subtract, startOf, endOf)
+├── utils/          # Utilities (pipe, compose)
+├── index.ts        # Main entry (expects native Temporal)
+└── polyfilled.ts   # Auto-loads polyfill for legacy environments
+```
+
+**Entry points:**
+- `temporal-kit` — Expects native Temporal, throws a clear error if missing.
+- `temporal-kit/polyfilled` — Auto-loads `temporal-polyfill` for Node.js 24/25 and older browsers.
+
+**Tooling:**
+- **Biome** — Linting and formatting
+- **Vitest** — Type-checked tests with 100% coverage threshold
+- **tsup** — ESNext bundling, `sideEffects: false` for perfect tree-shaking
+- **TypeScript** — Strict mode, latest compiler features
