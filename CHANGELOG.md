@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.8](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.7...v0.2.8) (2026-05-09)
+
+
+### Features
+
+* **test:** add property-based invariants for math/compare/range using fast-check ([8ce18dd](https://github.com/KristjanESPERANTO/temporal-kit/commit/8ce18dde5422a88eca1696d2b2afcd1f12f52a18))
+
+
+### Bug Fixes
+
+* **polyfilled:** allow globalThis.Temporal to be overridden ([708e192](https://github.com/KristjanESPERANTO/temporal-kit/commit/708e1920a1bc06293b094f469bc9e4674529ac0d))
+
+
+### CI/CD
+
+* update Node.js version matrix to include 26 ([8067f6b](https://github.com/KristjanESPERANTO/temporal-kit/commit/8067f6bb2d8388ddf9208c68a123b74876fe5d97))
+
+
+### Chores
+
+* update biome schema version to 2.4.14 ([82981a5](https://github.com/KristjanESPERANTO/temporal-kit/commit/82981a568fc40f8a0232dafd2c19f577d1acbe96))
+* update devDependencies ([17dfe50](https://github.com/KristjanESPERANTO/temporal-kit/commit/17dfe50bc0f5eefd1050e83917947309381d80f8))
+
+
+### Documentation
+
+* add interoperability section for legacy Date integration ([5f96840](https://github.com/KristjanESPERANTO/temporal-kit/commit/5f968400d387626b92ade979a688e4549cf8c875))
+* remove TypeScript version number from README ([a909bff](https://github.com/KristjanESPERANTO/temporal-kit/commit/a909bffd068ea4d49b3c2f400cb6a1ea46a8a6a1))
+* review and refine README and CONTRIBUTING ([67f4170](https://github.com/KristjanESPERANTO/temporal-kit/commit/67f4170222c6452eb70ece1095e391e27490c004))
+* update native Temporal environment support info ([0ac05f6](https://github.com/KristjanESPERANTO/temporal-kit/commit/0ac05f69ccf62b5d59440f29d2067b3b2b347734))
+
 ## [0.2.7](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.6...v0.2.7) (2026-03-11)
 
 
