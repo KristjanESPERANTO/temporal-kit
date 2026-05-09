@@ -30,7 +30,7 @@ import { isPlainDate, add, format } from 'temporal-kit';
 // Or import everything
 import * as tk from 'temporal-kit';
 
-// For environments without native Temporal support
+// For Node.js 24 or older environments without native Temporal support:
 import { isPlainDate, add } from 'temporal-kit/polyfilled';
 ```
 
@@ -220,12 +220,12 @@ function processFormData(formData: FormData) {
   const birthDate = parseDate(formData.birthDate);
   const appointmentTime = parseTime(formData.appointmentTime);
   const eventDate = parseDate(formData.eventDate);
-  
+
   // Now you have properly typed Temporal objects
   console.log('Birth date:', birthDate.toLocaleString());
   console.log('Appointment:', appointmentTime.toLocaleString());
   console.log('Event:', eventDate.toLocaleString());
-  
+
   return { birthDate, appointmentTime, eventDate };
 }
 
@@ -429,9 +429,9 @@ formatTime(time, { timeStyle: 'short' });  // "3:30 PM"
 
 // Format date and time
 formatDateTime(dt);                        // "Nov 30, 2025, 3:30:00 PM"
-formatDateTime(dt, { 
-  dateStyle: 'long', 
-  timeStyle: 'short' 
+formatDateTime(dt, {
+  dateStyle: 'long',
+  timeStyle: 'short'
 }); // "November 30, 2025 at 3:30 PM"
 ```
 
@@ -545,7 +545,7 @@ console.log(local.toString()); // e.g., "2025-11-30T15:30:00+01:00[Europe/Berlin
 function storeAndDisplay(userTimezone: string) {
   // Store as instant (UTC)
   const stored = Temporal.Now.instant().toString();
-  
+
   // Display in user's timezone
   const instant = Temporal.Instant.from(stored);
   const local = instant.toZonedDateTimeISO(userTimezone);
@@ -644,9 +644,9 @@ function getEventEnd(event: Event): Temporal.ZonedDateTime {
 function eventsOverlap(event1: Event, event2: Event): boolean {
   const end1 = getEventEnd(event1);
   const end2 = getEventEnd(event2);
-  
+
   return !(
-    isBefore(end1, event2.start) || 
+    isBefore(end1, event2.start) ||
     isAfter(event1.start, end2)
   );
 }
@@ -677,7 +677,7 @@ import { toPlainDate, isBefore } from 'temporal-kit';
 function isOldEnough(birthDate: Temporal.PlainDate, minimumAge: number): boolean {
   const today = Temporal.Now.plainDateISO();
   const minBirthDate = today.subtract({ years: minimumAge });
-  
+
   return isBefore(birthDate, minBirthDate) || birthDate.equals(minBirthDate);
 }
 
@@ -700,19 +700,19 @@ interface Task {
 function getTaskStatus(task: Task): string {
   const today = Temporal.Now.plainDateISO();
   const daysUntil = task.deadline.since(today).days;
-  
+
   if (isBefore(task.deadline, today)) {
     return `⚠️ Overdue (${formatRelative(task.deadline, today)})`;
   }
-  
+
   if (daysUntil === 0) {
     return '🔥 Due today!';
   }
-  
+
   if (daysUntil <= 3) {
     return `⚡ Due ${formatRelative(task.deadline, today)}`;
   }
-  
+
   return `📅 Due ${formatRelative(task.deadline, today)}`;
 }
 
@@ -740,17 +740,17 @@ function addBusinessDays(
 ): Temporal.PlainDate {
   let result = date;
   let remaining = days;
-  
+
   while (remaining > 0) {
     result = add(result, { days: 1 });
     const dayOfWeek = result.dayOfWeek;
-    
+
     // Skip weekends (6 = Saturday, 7 = Sunday)
     if (dayOfWeek !== 6 && dayOfWeek !== 7) {
       remaining--;
     }
   }
-  
+
   return result;
 }
 
@@ -781,31 +781,31 @@ interface Subscription {
 }
 
 function getNextBillingDate(sub: Subscription): Temporal.PlainDate {
-  const duration = sub.billingCycle === 'monthly' 
-    ? { months: 1 } 
+  const duration = sub.billingCycle === 'monthly'
+    ? { months: 1 }
     : { years: 1 };
-  
+
   let current = sub.startDate;
   if (sub.trialDays) {
     current = add(current, { days: sub.trialDays });
   }
-  
+
   const today = Temporal.Now.plainDateISO();
-  
+
   // Find next billing date after today
   while (isBefore(current, today)) {
     current = add(current, duration);
   }
-  
+
   return current;
 }
 
 function isInTrial(sub: Subscription): boolean {
   if (!sub.trialDays) return false;
-  
+
   const today = Temporal.Now.plainDateISO();
   const trialEnd = add(sub.startDate, { days: sub.trialDays });
-  
+
   return isBefore(today, trialEnd);
 }
 
@@ -840,7 +840,7 @@ function scheduleMeeting(
 ): Meeting {
   const dt = Temporal.PlainDateTime.from(localDatetime);
   const zdt = toZonedDateTime(dt, timezone);
-  
+
   return { title, datetime: zdt };
 }
 
@@ -850,7 +850,7 @@ function displayMeetingInUserTimezone(
 ): string {
   const instant = meeting.datetime.toInstant();
   const userTime = instant.toZonedDateTimeISO(userTimezone);
-  
+
   return formatDateTime(userTime, {
     dateStyle: 'full',
     timeStyle: 'short'
@@ -880,8 +880,8 @@ console.log('Tokyo:', displayMeetingInUserTimezone(meeting, 'Asia/Tokyo'));
 import { format } from 'temporal-kit';
 
 // For many dates with same format, create formatter once
-const formatter = new Intl.DateTimeFormat('en-US', { 
-  dateStyle: 'long' 
+const formatter = new Intl.DateTimeFormat('en-US', {
+  dateStyle: 'long'
 });
 
 const dates = [
@@ -907,7 +907,7 @@ function safeDateAdd(date: unknown, days: number) {
   if (!isPlainDate(date)) {
     throw new TypeError('Expected PlainDate');
   }
-  
+
   // TypeScript now knows date is PlainDate
   return add(date, { days });
 }
@@ -924,12 +924,12 @@ const dateUtils = {
     d => startOf(d, 'month'),
     d => add(d, { months: 1 })
   ),
-  
+
   lastMonthStart: compose(
     d => startOf(d, 'month'),
     d => add(d, { months: -1 })
   ),
-  
+
   nextWeekStart: compose(
     d => startOf(d, 'week'),
     d => add(d, { weeks: 1 })

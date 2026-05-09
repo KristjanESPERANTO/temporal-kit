@@ -23,8 +23,10 @@ npm install temporal-kit
 ### Basic Usage
 
 ```typescript
+// Node.js 26+ or modern browsers — native Temporal, no polyfill needed:
 import { isPlainDate, add, startOf } from 'temporal-kit';
-// Or with polyfill for legacy environments:
+
+// Node.js 24 or older browsers — polyfill included:
 import { isPlainDate } from 'temporal-kit/polyfilled';
 ```
 
@@ -52,7 +54,8 @@ Or via CDN:
 
 ```typescript
 import { formatRelative, startOf, endOf, add, nextDay, isBetween } from 'temporal-kit';
-import { Temporal } from 'temporal-polyfill';
+// On Node.js 24/25: import { Temporal } from 'temporal-polyfill';
+// On Node.js 26+ or modern browsers: Temporal is available globally
 
 const now = Temporal.Now.zonedDateTimeISO();
 
