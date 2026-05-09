@@ -8,6 +8,7 @@ export default defineConfig([
     dts: {
       resolve: true,
     },
+    tsconfig: "tsconfig.build.json",
     sourcemap: true,
     clean: true,
     treeshake: "recommended",
@@ -25,6 +26,7 @@ export default defineConfig([
     dts: {
       resolve: true,
     },
+    tsconfig: "tsconfig.build.json",
     sourcemap: true,
     treeshake: "recommended",
     splitting: false,
@@ -39,6 +41,7 @@ export default defineConfig([
     entry: { "temporal-kit.browser": "src/index.ts" },
     format: ["iife"],
     globalName: "TemporalKit",
+    tsconfig: "tsconfig.build.json",
     sourcemap: true,
     treeshake: "recommended",
     outDir: "dist",
@@ -52,6 +55,7 @@ export default defineConfig([
     entry: { "temporal-kit.browser.polyfilled": "src/polyfilled.ts" },
     format: ["iife"],
     globalName: "TemporalKit",
+    tsconfig: "tsconfig.build.json",
     sourcemap: true,
     treeshake: "recommended",
     outDir: "dist",

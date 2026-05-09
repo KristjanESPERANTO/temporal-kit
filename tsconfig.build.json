@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // tsup sets baseUrl internally during DTS resolution, which TypeScript 6.x
+    // flags as deprecated (TS5101). This flag acknowledges the deprecation so
+    // the build doesn't error. Scoped to tsup builds only — tsconfig.json stays clean.
+    //
+    // TODO: Check if this is still needed after each tsup update (currently 8.5.1).
+    // Remove once tsup no longer sets baseUrl internally during DTS builds.
+    // Tracking: https://github.com/egoist/tsup/issues
+    "ignoreDeprecations": "6.0"
+  }
+}
