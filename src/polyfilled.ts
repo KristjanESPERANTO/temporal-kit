@@ -12,8 +12,8 @@ import { Temporal } from "temporal-polyfill";
 if (typeof (globalThis as { Temporal?: unknown }).Temporal === "undefined") {
   Object.defineProperty(globalThis, "Temporal", {
     value: Temporal,
-    writable: false,
-    configurable: false,
+    writable: true,
+    configurable: true,
   });
 }
 
