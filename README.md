@@ -174,7 +174,7 @@ src/
   - **Biome** - Fast linting/formatting with performance rules
   - **Vitest** - Type-checked tests with 100% coverage threshold
   - **tsup** - ESNext bundling with optimized tree-shaking
-  - **TypeScript 5.x** - Latest compiler features enabled
+  - **TypeScript** - Latest compiler features enabled
 - **Testing Strategy:** 100% code coverage including:
   - Type guards and runtime checks
   - Comparison and conversion functions
