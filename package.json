@@ -84,19 +84,19 @@
   },
   "homepage": "https://kristjanesperanto.github.io/temporal-kit/",
   "devDependencies": {
-    "@biomejs/biome": "^2.4.6",
-    "@commitlint/cli": "^20.4.3",
-    "@commitlint/config-conventional": "^20.4.3",
-    "@commitlint/types": "^20.4.3",
-    "@vitest/coverage-v8": "^4.0.18",
-    "@vitest/ui": "^4.0.18",
-    "commit-and-tag-version": "^12.6.1",
-    "lint-staged": "^16.3.3",
+    "@biomejs/biome": "^2.4.14",
+    "@commitlint/cli": "^21.0.0",
+    "@commitlint/config-conventional": "^21.0.0",
+    "@commitlint/types": "^21.0.0",
+    "@vitest/coverage-v8": "^4.1.5",
+    "@vitest/ui": "^4.1.5",
+    "commit-and-tag-version": "^12.7.3",
+    "lint-staged": "^17.0.3",
     "simple-git-hooks": "^2.13.1",
     "temporal-polyfill": "^0.3.2",
     "tsup": "^8.5.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.5"
   },
   "peerDependencies": {
     "temporal-polyfill": "^0.3.0"
