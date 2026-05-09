@@ -17,8 +17,7 @@ if (typeof (globalThis as { Temporal?: unknown }).Temporal === "undefined") {
   });
 }
 
-// Re-export Temporal for convenience
-export { Temporal };
-
 // Re-export everything from the main entry
 export * from "./index.js";
+// Re-export Temporal for convenience
+export { Temporal };
