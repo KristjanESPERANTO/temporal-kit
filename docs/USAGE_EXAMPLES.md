@@ -12,6 +12,7 @@ Practical examples for common use cases with temporal-kit.
 - [Timezone Operations](#timezone-operations)
 - [Functional Composition](#functional-composition)
 - [Real-World Scenarios](#real-world-scenarios)
+- [Interoperability with Legacy `Date`](#interoperability-with-legacy-date)
 
 ---
 
@@ -868,6 +869,54 @@ const meeting = scheduleMeeting(
 console.log('New York:', displayMeetingInUserTimezone(meeting, 'America/New_York'));
 console.log('London:', displayMeetingInUserTimezone(meeting, 'Europe/London'));
 console.log('Tokyo:', displayMeetingInUserTimezone(meeting, 'Asia/Tokyo'));
+```
+
+---
+
+## Interoperability with Legacy `Date`
+
+Temporal intentionally separates itself from the legacy `Date` object. When integrating with APIs or libraries that still use `Date`, these patterns bridge the gap.
+
+### `Date` → `Temporal.Instant`
+
+```typescript
+const jsDate = new Date('2025-11-30T12:00:00Z');
+
+// Convert to Temporal.Instant (millisecond-precise)
+const instant = Temporal.Instant.fromEpochMilliseconds(jsDate.getTime());
+
+// Then to ZonedDateTime for local operations
+const zdt = instant.toZonedDateTimeISO('Europe/Berlin');
+```
+
+### `Temporal.Instant` → `Date`
+
+```typescript
+const instant = Temporal.Now.instant();
+
+// Back to legacy Date
+const jsDate = new Date(instant.epochMilliseconds);
+```
+
+### `Temporal.PlainDate` → `Date`
+
+Because `PlainDate` carries no timezone, you must supply one for the conversion:
+
+```typescript
+const plainDate = Temporal.PlainDate.from('2025-11-30');
+
+// Pick a timezone — here we use the system timezone
+const zdt = plainDate.toZonedDateTime(Temporal.Now.timeZoneId());
+const jsDate = new Date(zdt.epochMilliseconds);
+```
+
+### Via ISO Strings
+
+ISO 8601 strings are the safest interop surface — both `Date` and Temporal parse them:
+
+```typescript
+const jsDate = new Date('2025-11-30T12:00:00.000Z');
+const instant = Temporal.Instant.from(jsDate.toISOString());
 ```
 
 ---
