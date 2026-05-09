@@ -1,3 +1,4 @@
+import fc from "fast-check";
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
 import { isZonedDateTime } from "../guards/index.js";
@@ -9,6 +10,14 @@ import {
   rangesOverlap,
   stepInterval,
 } from "./index.js";
+
+const plainDateArbitrary = fc
+  .record({
+    year: fc.integer({ min: 2000, max: 2035 }),
+    month: fc.integer({ min: 1, max: 12 }),
+    day: fc.integer({ min: 1, max: 28 }),
+  })
+  .map(({ year, month, day }) => Temporal.PlainDate.from({ year, month, day }));
 
 describe("range", () => {
   describe("rangesOverlap", () => {
@@ -184,6 +193,61 @@ describe("range", () => {
       expect(weeks[0].toString()).toBe("2025-01-01");
       expect(weeks[1].toString()).toBe("2025-01-08");
       expect(weeks[2].toString()).toBe("2025-01-15");
+    });
+  });
+
+  describe("property-based", () => {
+    it("rangesOverlap should be symmetric", () => {
+      fc.assert(
+        fc.property(
+          plainDateArbitrary,
+          fc.integer({ min: 0, max: 90 }),
+          plainDateArbitrary,
+          fc.integer({ min: 0, max: 90 }),
+          (startA, lenA, startB, lenB) => {
+            const rangeA = { start: startA, end: startA.add({ days: lenA }) };
+            const rangeB = { start: startB, end: startB.add({ days: lenB }) };
+
+            expect(rangesOverlap(rangeA, rangeB)).toBe(rangesOverlap(rangeB, rangeA));
+          },
+        ),
+      );
+    });
+
+    it("eachDayOfInterval should return diff+1 items for ordered intervals", () => {
+      fc.assert(
+        fc.property(plainDateArbitrary, fc.integer({ min: 0, max: 120 }), (start, spanDays) => {
+          const end = start.add({ days: spanDays });
+          const days = eachDayOfInterval({ start, end });
+
+          expect(days).toHaveLength(spanDays + 1);
+          expect(days[0].equals(start)).toBe(true);
+          expect(days.at(-1)?.equals(end)).toBe(true);
+        }),
+      );
+    });
+
+    it("stepInterval should produce monotonic dates and include start", () => {
+      fc.assert(
+        fc.property(
+          plainDateArbitrary,
+          fc.integer({ min: 0, max: 120 }),
+          fc.integer({ min: 1, max: 14 }),
+          (start, spanDays, stepDays) => {
+            const end = start.add({ days: spanDays });
+            const values = Array.from(stepInterval({ start, end }, { days: stepDays }));
+
+            expect(values.length).toBeGreaterThanOrEqual(1);
+            expect(values[0].equals(start)).toBe(true);
+            expect(values.at(-1)?.since(end, { largestUnit: "day" }).days).toBeLessThanOrEqual(0);
+
+            for (let i = 1; i < values.length; i += 1) {
+              const diff = values[i].since(values[i - 1], { largestUnit: "day" }).days;
+              expect(diff).toBe(stepDays);
+            }
+          },
+        ),
+      );
     });
   });
 });

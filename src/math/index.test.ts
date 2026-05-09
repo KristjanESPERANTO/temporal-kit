@@ -1,6 +1,15 @@
+import fc from "fast-check";
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
 import { add, endOf, nextDay, previousDay, startOf, subtract } from "./index.js";
+
+const plainDateArbitrary = fc
+  .record({
+    year: fc.integer({ min: 2000, max: 2035 }),
+    month: fc.integer({ min: 1, max: 12 }),
+    day: fc.integer({ min: 1, max: 28 }),
+  })
+  .map(({ year, month, day }) => Temporal.PlainDate.from({ year, month, day }));
 
 describe("Math Functions", () => {
   describe("add", () => {
@@ -287,6 +296,42 @@ describe("Math Functions", () => {
       const date = Temporal.PlainDate.from("2025-11-30");
       expect(() => previousDay(date, 0)).toThrow();
       expect(() => previousDay(date, 8)).toThrow();
+    });
+  });
+
+  describe("property-based", () => {
+    it("add and subtract days should round-trip for PlainDate", () => {
+      fc.assert(
+        fc.property(plainDateArbitrary, fc.integer({ min: -365, max: 365 }), (date, days) => {
+          const shifted = add(date, { days });
+          const restored = subtract(shifted, { days });
+          expect(restored.equals(date)).toBe(true);
+        }),
+      );
+    });
+
+    it("nextDay should always return the requested weekday and be within 1..7 days", () => {
+      fc.assert(
+        fc.property(plainDateArbitrary, fc.integer({ min: 1, max: 7 }), (date, targetWeekday) => {
+          const result = nextDay(date, targetWeekday);
+          expect(result.dayOfWeek).toBe(targetWeekday);
+          const distance = result.since(date, { largestUnit: "day" }).days;
+          expect(distance).toBeGreaterThanOrEqual(1);
+          expect(distance).toBeLessThanOrEqual(7);
+        }),
+      );
+    });
+
+    it("previousDay should always return the requested weekday and be within -7..-1 days", () => {
+      fc.assert(
+        fc.property(plainDateArbitrary, fc.integer({ min: 1, max: 7 }), (date, targetWeekday) => {
+          const result = previousDay(date, targetWeekday);
+          expect(result.dayOfWeek).toBe(targetWeekday);
+          const distance = result.since(date, { largestUnit: "day" }).days;
+          expect(distance).toBeLessThanOrEqual(-1);
+          expect(distance).toBeGreaterThanOrEqual(-7);
+        }),
+      );
     });
   });
 });

@@ -1,3 +1,4 @@
+import fc from "fast-check";
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
 import {
@@ -13,6 +14,14 @@ import {
   max,
   min,
 } from "./index.js";
+
+const plainDateArbitrary = fc
+  .record({
+    year: fc.integer({ min: 2000, max: 2035 }),
+    month: fc.integer({ min: 1, max: 12 }),
+    day: fc.integer({ min: 1, max: 28 }),
+  })
+  .map(({ year, month, day }) => Temporal.PlainDate.from({ year, month, day }));
 
 describe("Comparison Functions", () => {
   describe("isBefore", () => {
@@ -386,6 +395,53 @@ describe("Comparison Functions", () => {
       const minDate = Temporal.PlainDate.from("2025-01-01");
       const maxDate = Temporal.PlainDate.from("2025-01-31");
       expect(clamp(date, minDate, maxDate).equals(maxDate)).toBe(true);
+    });
+  });
+
+  describe("property-based", () => {
+    it("isBefore and isAfter should be anti-symmetric", () => {
+      fc.assert(
+        fc.property(plainDateArbitrary, plainDateArbitrary, (a, b) => {
+          expect(isBefore(a, b)).toBe(isAfter(b, a));
+          expect(isAfter(a, b)).toBe(isBefore(b, a));
+        }),
+      );
+    });
+
+    it("exactly one of before/same/after should hold", () => {
+      fc.assert(
+        fc.property(plainDateArbitrary, plainDateArbitrary, (a, b) => {
+          const states = [isBefore(a, b), isSame(a, b), isAfter(a, b)].filter(Boolean);
+          expect(states).toHaveLength(1);
+        }),
+      );
+    });
+
+    it("min/max should bound all items in non-empty arrays", () => {
+      fc.assert(
+        fc.property(fc.array(plainDateArbitrary, { minLength: 1, maxLength: 50 }), (dates) => {
+          const earliest = min(dates);
+          const latest = max(dates);
+
+          for (const date of dates) {
+            expect(isBefore(date, earliest)).toBe(false);
+            expect(isAfter(date, latest)).toBe(false);
+          }
+        }),
+      );
+    });
+
+    it("clamp should always return a value inside [min, max]", () => {
+      fc.assert(
+        fc.property(plainDateArbitrary, plainDateArbitrary, plainDateArbitrary, (date, a, b) => {
+          const minDate = isBefore(a, b) || isSame(a, b) ? a : b;
+          const maxDate = isAfter(a, b) || isSame(a, b) ? a : b;
+          const clamped = clamp(date, minDate, maxDate);
+
+          expect(isBefore(clamped, minDate)).toBe(false);
+          expect(isAfter(clamped, maxDate)).toBe(false);
+        }),
+      );
     });
   });
 });
