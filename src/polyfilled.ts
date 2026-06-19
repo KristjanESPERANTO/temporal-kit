@@ -5,19 +5,12 @@
  * that don't have native Temporal support.
  */
 
-// Load the polyfill first
-import { Temporal } from "temporal-polyfill";
+// Load/install the polyfill globally (uses native Temporal when available)
+import "temporal-polyfill/global";
 
-// Make it globally available
-if (typeof (globalThis as { Temporal?: unknown }).Temporal === "undefined") {
-  Object.defineProperty(globalThis, "Temporal", {
-    value: Temporal,
-    writable: true,
-    configurable: true,
-  });
-}
+const TemporalApi = globalThis.Temporal;
 
 // Re-export everything from the main entry
 export * from "./index.js";
 // Re-export Temporal for convenience
-export { Temporal };
+export { TemporalApi as Temporal };

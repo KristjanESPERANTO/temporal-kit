@@ -880,7 +880,7 @@
             browserCheck.className = 'browser-check unsupported';
             browserCheck.innerHTML = '⚠️ Your browser doesn\'t support Temporal yet. Loading polyfill...';
             // Import polyfill
-            await import('https://cdn.jsdelivr.net/npm/temporal-polyfill@0.3.0/global.js');
+            await import('https://cdn.jsdelivr.net/npm/temporal-polyfill@1.0.1/global.min.js');
         }
 
         // Import temporal-kit

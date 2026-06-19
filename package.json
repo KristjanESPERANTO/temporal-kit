@@ -100,7 +100,7 @@
     "vitest": "^4.1.9"
   },
   "peerDependencies": {
-    "temporal-polyfill": "^0.3.0"
+    "temporal-polyfill": "^1.0.1"
   },
   "peerDependenciesMeta": {
     "temporal-polyfill": {
