@@ -39,6 +39,13 @@ jobs:
       - name: Run full CI gate
         run: node --run ci
 
+      - name: Verify npm authentication and package access
+        run: |
+          npm whoami --registry=https://registry.npmjs.org
+          npm access get status temporal-kit --registry=https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Publish package with provenance
         run: npm publish --provenance --access public
         env:
