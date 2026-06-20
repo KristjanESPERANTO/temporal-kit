@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.2.9](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.8...v0.2.9) (2026-06-20)
+
+
+### Chores
+
+* add npm authentication and package access verification to release workflows ([3b350d9](https://github.com/KristjanESPERANTO/temporal-kit/commit/3b350d98f25309528d0c8b3a6a3fbbc84248e633))
+* align temporal-polyfill v1 setup ([dc6871e](https://github.com/KristjanESPERANTO/temporal-kit/commit/dc6871ee8edc80254c77555b76066af4a04f95bf))
+* update biome schema to v2.5.0 and fix linter rules configuration ([4507aec](https://github.com/KristjanESPERANTO/temporal-kit/commit/4507aec1784c300204a966fcc02d74619d80ec8b))
+* update devDependencies ([6dbe220](https://github.com/KristjanESPERANTO/temporal-kit/commit/6dbe22066a414d6a43c5c5e8f74485097cdbcf0f))
+* update GitHub Actions to use configure-pages@v6 and deploy-pages@v5 ([bf11aa7](https://github.com/KristjanESPERANTO/temporal-kit/commit/bf11aa7acb4ea6eb57e5fdfb7bb8579cead1d748))
+* update upload-pages-artifact action to v5 ([405cc49](https://github.com/KristjanESPERANTO/temporal-kit/commit/405cc493fcaaef83e584d520a5b9eef3cb5e724d))
+
+
+### Code Refactoring
+
+* switch to OIDC (Trusted Publishing) for npm auth ([65a6f96](https://github.com/KristjanESPERANTO/temporal-kit/commit/65a6f968e4eb4a0013811912c971c40f948d4f3e))
+
 ## [0.2.8](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.7...v0.2.8) (2026-05-09)
 
 
