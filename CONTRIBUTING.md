@@ -87,7 +87,7 @@ This process automatically:
    > **Note:** Pushing the tag alone is not enough. The publish workflow only triggers on a GitHub Release event (`on: release: types: [released]`), not on tag pushes.
 5. Verify workflow success and npm package visibility.
 
-For security requirements (token handling, provenance, incident response), see [SECURITY.md](./SECURITY.md).
+For security requirements (Trusted Publishing/OIDC, provenance, incident response), see [SECURITY.md](./SECURITY.md).
 
 ## Project Standards
 

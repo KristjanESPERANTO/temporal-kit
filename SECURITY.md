@@ -25,9 +25,9 @@ This project uses a CI-driven publish model to improve package provenance and re
 
 Before publishing, verify these security controls:
 
-1. `NPM_TOKEN` exists as a repository secret and npm account has 2FA enabled.
+1. npm Trusted Publishing is configured for this repository/workflow on npm.
 2. Publish is executed via GitHub Actions workflows (never local `npm publish`).
 3. Provenance is present on npm after publish.
-4. If any anomaly appears, revoke npm tokens and rotate credentials immediately.
+4. If any anomaly appears, remove/restrict Trusted Publisher entries and investigate immediately.
 
 For the operational release process (stable/`latest` vs pre-release/`next`), see [CONTRIBUTING.md](./CONTRIBUTING.md).

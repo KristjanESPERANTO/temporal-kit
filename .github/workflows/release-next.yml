@@ -67,21 +67,10 @@ jobs:
       - name: Run full CI gate
         run: node --run ci
 
-      - name: Verify npm authentication and package access
-        run: |
-          npm whoami --registry=https://registry.npmjs.org
-          npm access get status temporal-kit --registry=https://registry.npmjs.org
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Publish package to npm (dry-run)
         if: steps.mode.outputs.dry_run == 'true'
         run: npm publish --dry-run --tag "${{ steps.mode.outputs.dist_tag }}"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish package to npm (next)
         if: steps.mode.outputs.dry_run != 'true'
         run: npm publish --provenance --access public --tag "${{ steps.mode.outputs.dist_tag }}"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
