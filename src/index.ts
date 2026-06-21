@@ -5,15 +5,6 @@
  * If you need polyfill support, use 'temporal-kit/polyfilled' instead.
  */
 
-// Check if Temporal is available
-if (typeof (globalThis as { Temporal?: unknown }).Temporal === "undefined") {
-  throw new Error(
-    "Temporal is not available. " +
-      "Either use a modern environment with native Temporal support, " +
-      "or import from 'temporal-kit/polyfilled' to automatically load the polyfill.",
-  );
-}
-
 // Re-export business functions
 export * from "./business/index.js";
 // Re-export collection functions
