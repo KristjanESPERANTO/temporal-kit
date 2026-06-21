@@ -4,7 +4,7 @@
 
 [![Status](https://img.shields.io/badge/Status-Ready%20for%20Early%20Adopters-success)](https://github.com/KristjanESPERANTO/temporal-kit)
 [![npm version](https://img.shields.io/npm/v/temporal-kit)](https://www.npmjs.com/package/temporal-kit)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/temporal-kit)](https://bundlephobia.com/package/temporal-kit)
+[![Min+gzip](https://img.shields.io/bundlejs/size/temporal-kit?label=minzip)](https://bundlejs.com/?q=temporal-kit)
 [![License](https://img.shields.io/npm/l/temporal-kit)](https://github.com/KristjanESPERANTO/temporal-kit/blob/main/LICENSE.md)
 
 **Temporal Kit** is a lightweight, tree-shakable library that fills the gap between the raw `Temporal` API and the ergonomic needs of daily development. It provides the missing helper functions—like `startOf`, `isBetween`, or `formatRelative`—in a pure, functional, and type-safe way.
