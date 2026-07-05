@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.3.0](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.9...v0.3.0) (2026-07-05)
+
+
+### Bug Fixes
+
+* make main entry truly polyfill-free via globalThis Temporal shim ([1ea6bad](https://github.com/KristjanESPERANTO/temporal-kit/commit/1ea6bad0e0d5a5e55a277cfb42d1db61d98a82c0))
+* throw on cross-type Temporal comparison instead of returning misleading result ([4b5727e](https://github.com/KristjanESPERANTO/temporal-kit/commit/4b5727e10bf9999877e415c50c159e7b8a8b3c8f))
+
+
+### Chores
+
+* align release docs and next workflow with OIDC trusted publishing ([51f04c2](https://github.com/KristjanESPERANTO/temporal-kit/commit/51f04c21dba340ef460e72a6f3ec54d967e22031))
+* update devDependencies ([436252a](https://github.com/KristjanESPERANTO/temporal-kit/commit/436252a131110469f78bbb73d8b5b7672add7ce8))
+
+
+### Documentation
+
+* **readme:** replace rate-limited size badge ([f8e0568](https://github.com/KristjanESPERANTO/temporal-kit/commit/f8e05689ba570325727ed52354a6a28e93ec434d))
+* refine explanation of Temporal Kit's purpose and advantages ([d28fc66](https://github.com/KristjanESPERANTO/temporal-kit/commit/d28fc6660bd3f60eb6dc0aac27ec6f0497efcf53))
+
+
+### Code Refactoring
+
+* remove top-level Temporal import throw ([e855256](https://github.com/KristjanESPERANTO/temporal-kit/commit/e85525636378f4e11a60597e3fdadd674c594ee8))
+
 ## [0.2.9](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.8...v0.2.9) (2026-06-20)
 
 
