@@ -100,14 +100,6 @@
     "typescript": "^6.0.3",
     "vitest": "^4.1.9"
   },
-  "peerDependencies": {
-    "temporal-polyfill": "^1.0.1"
-  },
-  "peerDependenciesMeta": {
-    "temporal-polyfill": {
-      "optional": true
-    }
-  },
   "engines": {
     "node": ">=24"
   }
