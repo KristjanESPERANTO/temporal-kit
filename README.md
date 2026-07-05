@@ -80,49 +80,41 @@ const monday = addBusinessDays(today, 1); // Skips weekend
 
 ## Why Temporal Kit?
 
-Temporal ships natively in Node.js 26+ and modern browsers. Its types (`Instant`, `ZonedDateTime`, `PlainDate`) are precise and correct by design—but intentionally low-level. The ergonomics teams actually need—`startOf`, `isBetween`, humanized formatting—you're back to writing yourself.
+Temporal is low-level by design. You get precise types but miss the daily helpers—`startOf`, `isBetween`, `formatRelative`, business day math. You'd rebuild these in every project.
 
-**Why not just write 20 lines yourself?**
+**Why not write them yourself?**
 
-You could. But the subtle bugs accumulate quickly:
+Two reasons:
 
-- `startOf('month')` breaks during DST transitions unless you account for the offset shift
-- `isBefore` needs to handle `PlainDate`, `ZonedDateTime`, and `Instant` uniformly—or you write three adapters
-- Leap-year and calendar-system edge cases in arithmetic surface in production, not in tests you wrote in 5 minutes
-- Every project reinvents the same utilities, each slightly differently
+1. **Readability:** Functional helpers let you compose dates in pipelines:
+   ```typescript
+   pipe(date, d => startOf(d, 'month'), d => add(d, { days: 1 }))
+   ```
+   Nesting gets messy fast: `add(startOf(date, 'month'), { days: 1 })`
 
-**Temporal Kit** solves this with ~30 well-tested, tree-shakable helpers:
+2. **Edge cases:** DST, leap years, timezone handling—these are subtle. `startOf('month')` breaks across DST transitions. Every project gets this wrong in production.
 
-- Every function is tested against DST transitions, leap years, and calendar boundaries
-- Uniform API across all Temporal types—no per-type adapter code
-- `pipe` and `compose` for readable date pipelines without a wrapper class
-- Zero runtime dependencies; polyfill is strictly opt-in
+**Temporal Kit** gives you ~30 well-tested, tree-shakable helpers that handle these edge cases and work well in pipelines. Zero runtime dependencies.
 
 ## Design Principles
 
-**Narrow scope, high quality.** Temporal Kit focuses on the 95% use case—common helpers most projects need, tested against edge cases you'd otherwise hit in production. For specialized needs like recurring patterns or iCalendar RRULE, see [rrule-temporal](https://github.com/ggaabe/rrule-temporal).
+**Narrow scope, high quality.** ~30 helpers for the common case. Tested against DST, leap years, timezone edge cases. For specialized needs (RRULE, recurrence), see [rrule-temporal](https://github.com/ggaabe/rrule-temporal).
 
-**Temporal-native.** Works directly with `Temporal` objects (`ZonedDateTime`, `PlainDate`, `Instant`). No legacy `Date` quirks, 1-indexed months, no timezone surprises. Formatting uses `Intl.DateTimeFormat`—correct localization without massive locale files.
+**Temporal-native.** Works with `Temporal` types directly. No `Date` quirks, no 1-indexed months, correct timezones by default.
 
-**Functional-first.** Pure functions, tree-shakable, composable—no wrapper class, no hidden state.
+**Functional.** Pure functions, tree-shakable, designed for `pipe` and `compose`. No wrapper classes or hidden state. Example:
 
 ```typescript
 import { add, startOf, pipe } from 'temporal-kit'
 
-// Direct
-const result = add(startOf(date, 'day'), { hours: 1 })
-
-// With pipe
-const result = pipe(
-  date,
-  d => startOf(d, 'day'),
-  d => add(d, { hours: 1 })
+const endOfNextMonth = pipe(
+  today,
+  d => add(d, { months: 1 }),
+  d => endOf(d, 'month')
 )
 ```
 
-> Fluent APIs (`moment().add().startOf()`) are convenient but force bundling *all* methods. Pure functions give perfect tree-shaking and align with the upcoming JS pipeline operator (`|>`).
-
-**Polyfill as explicit opt-in.** `temporal-kit` expects native Temporal and throws a clear error if missing. `temporal-kit/polyfilled` auto-loads the polyfill—no surprises, no global side effects by default.
+**Polyfill as opt-in.** Main entry expects native Temporal (Node 26+, modern browsers). `temporal-kit/polyfilled` includes the polyfill. No global surprises.
 
 ## Features & Capabilities
 
