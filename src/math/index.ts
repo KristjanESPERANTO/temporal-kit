@@ -1,4 +1,4 @@
-import { Temporal } from "temporal-polyfill";
+import { Temporal } from "../temporal.js";
 import type { DateLike, DateUnit, DurationInput } from "../types/index.js";
 
 /**

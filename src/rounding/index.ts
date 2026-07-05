@@ -3,7 +3,7 @@
  * @module rounding
  */
 
-import type { Temporal } from "temporal-polyfill";
+import type { Temporal } from "temporal-spec";
 
 /**
  * Union of Temporal types that support rounding.

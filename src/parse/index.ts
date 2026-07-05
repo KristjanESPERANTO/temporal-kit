@@ -2,7 +2,7 @@
  * Parse module - Smart string-to-Temporal parsing with format detection
  */
 
-import { Temporal } from "temporal-polyfill";
+import { Temporal } from "../temporal.js";
 
 /**
  * Parse a string into the most appropriate Temporal type based on format detection.

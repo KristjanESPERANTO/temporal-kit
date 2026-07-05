@@ -1,4 +1,4 @@
-import { Temporal } from "temporal-polyfill";
+import { Temporal } from "../temporal.js";
 
 /**
  * Checks if a string is a valid IANA timezone identifier.

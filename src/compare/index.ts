@@ -3,7 +3,7 @@
  * @module compare
  */
 
-import { Temporal } from "temporal-polyfill";
+import { Temporal } from "../temporal.js";
 import type { DateLike } from "../types/index.js";
 
 /**

@@ -16,7 +16,6 @@ export default defineConfig([
     outDir: "dist",
     target: "esnext",
     minify: false,
-    external: ["temporal-polyfill"],
     bundle: true,
   },
   // Polyfilled entry
@@ -47,7 +46,6 @@ export default defineConfig([
     outDir: "dist",
     target: "esnext",
     minify: true,
-    external: ["temporal-polyfill"],
     bundle: true,
   },
   // IIFE build with polyfill included

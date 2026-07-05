@@ -3,7 +3,7 @@
  * @module collection
  */
 
-import type { Temporal } from "temporal-polyfill";
+import type { Temporal } from "temporal-spec";
 import { compare } from "../compare/index.js";
 import { isZonedDateTime } from "../guards/index.js";
 import type { DateLike } from "../types/index.js";

@@ -5,9 +5,8 @@
  * convenience unions for functions that can handle multiple types.
  */
 
-// Use temporal-polyfill for type definitions
-// The polyfill package provides complete TypeScript types
-import type { Temporal } from "temporal-polyfill";
+// Use temporal-spec for type definitions (types-only package, inlined at build)
+import type { Temporal } from "temporal-spec";
 
 // Re-export Temporal types for convenience
 export type PlainDate = Temporal.PlainDate;

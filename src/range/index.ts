@@ -3,7 +3,7 @@
  * @module range
  */
 
-import type { Temporal } from "temporal-polyfill";
+import type { Temporal } from "temporal-spec";
 import { isAfter, isBefore } from "../compare/index.js";
 import { isPlainDate, isPlainDateTime } from "../guards/index.js";
 import type { DateLike } from "../types/index.js";

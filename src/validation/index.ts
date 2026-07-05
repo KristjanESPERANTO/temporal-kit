@@ -3,7 +3,7 @@
  * @module validation
  */
 
-import { Temporal } from "temporal-polyfill";
+import { Temporal } from "../temporal.js";
 
 /**
  * Checks if a string is a valid ISO 8601 date string (YYYY-MM-DD).
