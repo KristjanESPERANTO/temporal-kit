@@ -185,6 +185,31 @@ describe("Comparison Functions", () => {
     });
   });
 
+  describe("cross-type guard", () => {
+    const plainDate = Temporal.PlainDate.from("2025-06-15");
+    const plainDateTime = Temporal.PlainDateTime.from("2025-06-15T10:00:00");
+    const zoned = Temporal.ZonedDateTime.from("2025-06-15T10:00:00+02:00[Europe/Berlin]");
+
+    it("should throw when comparing PlainDate with PlainDateTime", () => {
+      expect(() => isBefore(plainDate, plainDateTime)).toThrow(TypeError);
+      expect(() => isBefore(plainDate, plainDateTime)).toThrow(
+        /cannot compare different Temporal types/,
+      );
+    });
+
+    it("should throw when comparing PlainDate with ZonedDateTime", () => {
+      expect(() => isAfter(plainDate, zoned)).toThrow(/date vs\. zoned/);
+    });
+
+    it("should throw when comparing PlainDateTime with ZonedDateTime", () => {
+      expect(() => isSame(plainDateTime, zoned)).toThrow(/datetime vs\. zoned/);
+    });
+
+    it("should throw from isBetween when types are mixed", () => {
+      expect(() => isBetween(plainDate, plainDateTime, zoned)).toThrow(TypeError);
+    });
+  });
+
   describe("min", () => {
     it("should return the earliest date (PlainDate)", () => {
       const dates = [

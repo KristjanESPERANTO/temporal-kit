@@ -78,6 +78,10 @@ export function isSame(a: DateLike, b: DateLike): boolean {
 /**
  * Compares two date/time values.
  *
+ * Both values must be of the same Temporal kind (both PlainDate, both
+ * PlainDateTime, or both ZonedDateTime). Comparing across kinds has no
+ * well-defined meaning and throws a TypeError.
+ *
  * Returns:
  * - -1 if a is before b
  * - 0 if a equals b
@@ -86,20 +90,46 @@ export function isSame(a: DateLike, b: DateLike): boolean {
  * @param a - First date/time to compare
  * @param b - Second date/time to compare
  * @returns The comparison result (-1, 0, or 1)
+ * @throws {TypeError} If a and b are different Temporal types
  */
 export function compare(a: DateLike, b: DateLike): number {
-  // Check if both have time components (PlainDateTime or ZonedDateTime)
-  if ("hour" in a && "hour" in b) {
-    // Check if both have timezone (ZonedDateTime)
-    if ("timeZoneId" in a && "timeZoneId" in b) {
-      // For ZonedDateTime, convert to Instant for reliable comparison across timezones
-      const instantA = (a as Temporal.ZonedDateTime).toInstant();
-      const instantB = (b as Temporal.ZonedDateTime).toInstant();
-      return Temporal.Instant.compare(instantA, instantB);
-    }
-    return Temporal.PlainDateTime.compare(a, b);
+  // Guard against comparing incompatible Temporal types (e.g. PlainDate vs.
+  // ZonedDateTime). Such comparisons have no well-defined meaning, so we throw
+  // rather than silently returning a misleading result — mirroring the strict
+  // behavior of the native Temporal.*.compare methods.
+  const kindA = kindOf(a);
+  const kindB = kindOf(b);
+  if (kindA !== kindB) {
+    throw new TypeError(
+      `temporal-kit: cannot compare different Temporal types (${kindA} vs. ${kindB}). ` +
+        "Convert both values to the same type first (e.g. via toZonedDateTime or toPlainDate).",
+    );
   }
-  return Temporal.PlainDate.compare(a, b);
+
+  if (kindA === "zoned") {
+    // For ZonedDateTime, convert to Instant for reliable comparison across timezones
+    const instantA = (a as Temporal.ZonedDateTime).toInstant();
+    const instantB = (b as Temporal.ZonedDateTime).toInstant();
+    return Temporal.Instant.compare(instantA, instantB);
+  }
+  if (kindA === "datetime") {
+    return Temporal.PlainDateTime.compare(a as Temporal.PlainDateTime, b as Temporal.PlainDateTime);
+  }
+  return Temporal.PlainDate.compare(a as Temporal.PlainDate, b as Temporal.PlainDate);
+}
+
+/**
+ * Classifies a DateLike value into a comparison "kind".
+ * Two values are only comparable if they share the same kind.
+ */
+function kindOf(value: DateLike): "date" | "datetime" | "zoned" {
+  if ("timeZoneId" in value) {
+    return "zoned";
+  }
+  if ("hour" in value) {
+    return "datetime";
+  }
+  return "date";
 }
 
 /**
