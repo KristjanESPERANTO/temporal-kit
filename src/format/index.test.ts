@@ -62,16 +62,16 @@ describe("format", () => {
   });
 
   describe("ZonedDateTime", () => {
-    const zdt = Temporal.ZonedDateTime.from("2025-11-30T15:30:45+01:00[Europe/Berlin]");
+    const zdt = Temporal.ZonedDateTime.from("2025-06-01T23:30:00-04:00[America/New_York]");
 
     it("formats ZonedDateTime", () => {
       const result = format(zdt);
-      expect(result).toMatch(/Nov.*30.*2025/);
+      expect(result).toMatch(/Jun.*1.*2025/);
     });
 
     it("preserves timezone information", () => {
-      const result = format(zdt, { locale: "de-DE" });
-      expect(result).toBe("30.11.2025");
+      const result = format(zdt, { locale: "en-US" });
+      expect(result).toBe("Jun 1, 2025");
     });
   });
 });
@@ -126,12 +126,11 @@ describe("formatTime", () => {
   });
 
   describe("ZonedDateTime", () => {
-    const zdt = Temporal.ZonedDateTime.from("2025-11-30T15:30:45+01:00[Europe/Berlin]");
+    const zdt = Temporal.ZonedDateTime.from("2025-06-01T23:30:00-04:00[America/New_York]");
 
     it("formats ZonedDateTime time", () => {
-      const result = formatTime(zdt);
-      // Result depends on system timezone, just verify it's a valid time format
-      expect(result).toMatch(/\d{1,2}:\d{2}:\d{2}/);
+      const result = formatTime(zdt, { locale: "en-US", timeStyle: "short" });
+      expect(result).toBe("11:30 PM");
     });
   });
 });
@@ -190,20 +189,24 @@ describe("formatDateTime", () => {
   });
 
   describe("ZonedDateTime", () => {
-    const zdt = Temporal.ZonedDateTime.from("2025-11-30T15:30:45+01:00[Europe/Berlin]");
+    const zdt = Temporal.ZonedDateTime.from("2025-06-01T23:30:00-04:00[America/New_York]");
 
     it("formats ZonedDateTime", () => {
-      const result = formatDateTime(zdt);
-      // Result depends on system timezone, verify format but not exact time
-      expect(result).toMatch(/Nov.*30.*2025/);
-      expect(result).toMatch(/\d{1,2}:\d{2}:\d{2}/);
+      const result = formatDateTime(zdt, {
+        locale: "en-US",
+        dateStyle: "short",
+        timeStyle: "short",
+      });
+      expect(result).toBe("6/1/25, 11:30 PM");
     });
 
     it("formats with locale preserving timezone", () => {
-      const result = formatDateTime(zdt, { locale: "de-DE" });
-      // Result depends on system timezone, verify format but not exact time
-      expect(result).toMatch(/30\.11\.2025/);
-      expect(result).toMatch(/\d{2}:\d{2}:\d{2}/);
+      const result = formatDateTime(zdt, {
+        locale: "de-DE",
+        dateStyle: "short",
+        timeStyle: "short",
+      });
+      expect(result).toBe("01.06.25, 23:30");
     });
   });
 });

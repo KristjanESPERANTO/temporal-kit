@@ -31,6 +31,7 @@ export function format(date: DateLike, opts: FormatOptions = {}): string {
 
   // Convert to a format Intl can handle
   let formattable: Date;
+  let timeZone: string | undefined;
 
   if (date instanceof Temporal.PlainDate) {
     // PlainDate -> convert to midnight in system timezone
@@ -42,15 +43,13 @@ export function format(date: DateLike, opts: FormatOptions = {}): string {
     const zdt = date.toZonedDateTime(Temporal.Now.timeZoneId());
     formattable = new Date(zdt.epochMilliseconds);
   } else {
-    // ZonedDateTime -> direct conversion
+    // ZonedDateTime -> preserve its timezone when formatting
+    timeZone = date.timeZoneId;
     formattable = new Date(date.epochMilliseconds);
   }
 
   // Build format options
-  const formatOptions: Intl.DateTimeFormatOptions = options || {
-    dateStyle,
-    timeStyle,
-  };
+  const formatOptions = withTimeZone(options || { dateStyle, timeStyle }, timeZone);
 
   return new Intl.DateTimeFormat(locale, formatOptions).format(formattable);
 }
@@ -71,6 +70,7 @@ export function formatTime(time: TimeLike, opts: FormatOptions = {}): string {
 
   // Convert to a format Intl can handle
   let formattable: Date;
+  let timeZone: string | undefined;
 
   if (time instanceof Temporal.PlainTime) {
     // PlainTime -> combine with arbitrary date in system timezone
@@ -81,14 +81,13 @@ export function formatTime(time: TimeLike, opts: FormatOptions = {}): string {
     const zdt = time.toZonedDateTime(Temporal.Now.timeZoneId());
     formattable = new Date(zdt.epochMilliseconds);
   } else {
-    // ZonedDateTime
+    // ZonedDateTime -> preserve its timezone when formatting
+    timeZone = time.timeZoneId;
     formattable = new Date(time.epochMilliseconds);
   }
 
   // Build format options
-  const formatOptions: Intl.DateTimeFormatOptions = options || {
-    timeStyle,
-  };
+  const formatOptions = withTimeZone(options || { timeStyle }, timeZone);
 
   return new Intl.DateTimeFormat(locale, formatOptions).format(formattable);
 }
@@ -108,6 +107,7 @@ export function formatDateTime(date: DateLike, opts: FormatOptions = {}): string
 
   // Convert to a format Intl can handle
   let formattable: Date;
+  let timeZone: string | undefined;
 
   if (date instanceof Temporal.PlainDate) {
     // PlainDate with time doesn't make much sense, but convert to midnight
@@ -118,16 +118,25 @@ export function formatDateTime(date: DateLike, opts: FormatOptions = {}): string
     const zdt = date.toZonedDateTime(Temporal.Now.timeZoneId());
     formattable = new Date(zdt.epochMilliseconds);
   } else {
+    // ZonedDateTime -> preserve its timezone when formatting
+    timeZone = date.timeZoneId;
     formattable = new Date(date.epochMilliseconds);
   }
 
   // Build format options
-  const formatOptions: Intl.DateTimeFormatOptions = options || {
-    dateStyle,
-    timeStyle,
-  };
+  const formatOptions = withTimeZone(options || { dateStyle, timeStyle }, timeZone);
 
   return new Intl.DateTimeFormat(locale, formatOptions).format(formattable);
+}
+
+function withTimeZone(
+  options: Intl.DateTimeFormatOptions,
+  timeZone: string | undefined,
+): Intl.DateTimeFormatOptions {
+  if (timeZone && options.timeZone === undefined) {
+    return { ...options, timeZone };
+  }
+  return options;
 }
 
 /**
