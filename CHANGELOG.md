@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.3.1](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.3.0...v0.3.1) (2026-08-02)
+
+### Bug Fixes
+
+* **convert:** parse ISO offsets as instants ([e3820a4](https://github.com/KristjanESPERANTO/temporal-kit/commit/e3820a4cfd6dc783852cef88d326c838b442037c))
+* **format:** preserve ZonedDateTime timezone ([080a7a6](https://github.com/KristjanESPERANTO/temporal-kit/commit/080a7a63a56d1cb81201e4b5f5cd1bdef633f5f6))
+
+### Chores
+
+* add allowScripts configuration ([8cab625](https://github.com/KristjanESPERANTO/temporal-kit/commit/8cab6257bd4352bf0b27c261a8b9894d6e98f33d))
+* update biome schema version ([2ba4faa](https://github.com/KristjanESPERANTO/temporal-kit/commit/2ba4faa4539d0b99017a27a00ff8315dcc0dc216))
+* update devDependencies ([7e33c87](https://github.com/KristjanESPERANTO/temporal-kit/commit/7e33c87355e637e07df8bb86df3053a5677ff030))
+* upgrade actions/setup-node to v7 ([7665ab7](https://github.com/KristjanESPERANTO/temporal-kit/commit/7665ab724920cca9c942249b51173f4e63490264))
+
+### Code Refactoring
+
+* **format:** extract Temporal conversion helper ([e4e9773](https://github.com/KristjanESPERANTO/temporal-kit/commit/e4e9773c1c31baf11d382b134f908f83f39f8b92))
 ## [0.3.0](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.2.9...v0.3.0) (2026-07-05)
 
 
