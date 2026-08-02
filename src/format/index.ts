@@ -28,25 +28,7 @@ export interface FormatOptions {
  */
 export function format(date: DateLike, opts: FormatOptions = {}): string {
   const { locale, dateStyle = "medium", timeStyle, options } = opts;
-
-  // Convert to a format Intl can handle
-  let formattable: Date;
-  let timeZone: string | undefined;
-
-  if (date instanceof Temporal.PlainDate) {
-    // PlainDate -> convert to midnight in system timezone
-    const dt = date.toPlainDateTime(Temporal.PlainTime.from("00:00:00"));
-    const zdt = dt.toZonedDateTime(Temporal.Now.timeZoneId());
-    formattable = new Date(zdt.epochMilliseconds);
-  } else if (date instanceof Temporal.PlainDateTime) {
-    // PlainDateTime -> convert to ZonedDateTime in system timezone
-    const zdt = date.toZonedDateTime(Temporal.Now.timeZoneId());
-    formattable = new Date(zdt.epochMilliseconds);
-  } else {
-    // ZonedDateTime -> preserve its timezone when formatting
-    timeZone = date.timeZoneId;
-    formattable = new Date(date.epochMilliseconds);
-  }
+  const { date: formattable, timeZone } = toFormattable(date);
 
   // Build format options
   const formatOptions = withTimeZone(options || { dateStyle, timeStyle }, timeZone);
@@ -67,24 +49,7 @@ export function format(date: DateLike, opts: FormatOptions = {}): string {
  */
 export function formatTime(time: TimeLike, opts: FormatOptions = {}): string {
   const { locale, timeStyle = "medium", options } = opts;
-
-  // Convert to a format Intl can handle
-  let formattable: Date;
-  let timeZone: string | undefined;
-
-  if (time instanceof Temporal.PlainTime) {
-    // PlainTime -> combine with arbitrary date in system timezone
-    const dt = Temporal.PlainDate.from("2000-01-01").toPlainDateTime(time);
-    const zdt = dt.toZonedDateTime(Temporal.Now.timeZoneId());
-    formattable = new Date(zdt.epochMilliseconds);
-  } else if (time instanceof Temporal.PlainDateTime) {
-    const zdt = time.toZonedDateTime(Temporal.Now.timeZoneId());
-    formattable = new Date(zdt.epochMilliseconds);
-  } else {
-    // ZonedDateTime -> preserve its timezone when formatting
-    timeZone = time.timeZoneId;
-    formattable = new Date(time.epochMilliseconds);
-  }
+  const { date: formattable, timeZone } = toFormattable(time);
 
   // Build format options
   const formatOptions = withTimeZone(options || { timeStyle }, timeZone);
@@ -104,29 +69,38 @@ export function formatTime(time: TimeLike, opts: FormatOptions = {}): string {
  */
 export function formatDateTime(date: DateLike, opts: FormatOptions = {}): string {
   const { locale, dateStyle = "medium", timeStyle = "medium", options } = opts;
-
-  // Convert to a format Intl can handle
-  let formattable: Date;
-  let timeZone: string | undefined;
-
-  if (date instanceof Temporal.PlainDate) {
-    // PlainDate with time doesn't make much sense, but convert to midnight
-    const dt = date.toPlainDateTime(Temporal.PlainTime.from("00:00:00"));
-    const zdt = dt.toZonedDateTime(Temporal.Now.timeZoneId());
-    formattable = new Date(zdt.epochMilliseconds);
-  } else if (date instanceof Temporal.PlainDateTime) {
-    const zdt = date.toZonedDateTime(Temporal.Now.timeZoneId());
-    formattable = new Date(zdt.epochMilliseconds);
-  } else {
-    // ZonedDateTime -> preserve its timezone when formatting
-    timeZone = date.timeZoneId;
-    formattable = new Date(date.epochMilliseconds);
-  }
+  const { date: formattable, timeZone } = toFormattable(date);
 
   // Build format options
   const formatOptions = withTimeZone(options || { dateStyle, timeStyle }, timeZone);
 
   return new Intl.DateTimeFormat(locale, formatOptions).format(formattable);
+}
+
+type Formattable = {
+  date: Date;
+  timeZone?: string;
+};
+
+function toFormattable(value: DateLike | TimeLike): Formattable {
+  if (value instanceof Temporal.PlainDate) {
+    const dateTime = value.toPlainDateTime(Temporal.PlainTime.from("00:00:00"));
+    const zonedDateTime = dateTime.toZonedDateTime(Temporal.Now.timeZoneId());
+    return { date: new Date(zonedDateTime.epochMilliseconds) };
+  }
+
+  if (value instanceof Temporal.PlainTime) {
+    const dateTime = Temporal.PlainDate.from("2000-01-01").toPlainDateTime(value);
+    const zonedDateTime = dateTime.toZonedDateTime(Temporal.Now.timeZoneId());
+    return { date: new Date(zonedDateTime.epochMilliseconds) };
+  }
+
+  if (value instanceof Temporal.PlainDateTime) {
+    const zonedDateTime = value.toZonedDateTime(Temporal.Now.timeZoneId());
+    return { date: new Date(zonedDateTime.epochMilliseconds) };
+  }
+
+  return { date: new Date(value.epochMilliseconds), timeZone: value.timeZoneId };
 }
 
 function withTimeZone(
