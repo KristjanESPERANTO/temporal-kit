@@ -61,19 +61,19 @@ export function nowZoned(timeZone: string): Temporal.ZonedDateTime {
 export function fromISO(
   isoString: string,
 ): Temporal.PlainDate | Temporal.PlainDateTime | Temporal.ZonedDateTime | Temporal.Instant {
-  // Try to detect format by presence of timezone/offset indicators
-  if (isoString.includes("[") || /[+-]\d{2}:\d{2}$/.test(isoString)) {
-    // Has timezone identifier or offset
+  // A bracketed IANA identifier represents a ZonedDateTime.
+  if (isoString.includes("[")) {
     return Temporal.ZonedDateTime.from(isoString);
   }
 
-  if (isoString.endsWith("Z") || /[+-]\d{2}:\d{2}/.test(isoString)) {
-    // Has Z or offset but no timezone - treat as Instant
+  // Let Temporal determine which ISO offset forms are valid for an Instant.
+  try {
     return Temporal.Instant.from(isoString);
+  } catch {
+    // Continue with the local date/time formats.
   }
 
   if (isoString.includes("T")) {
-    // Has time component but no timezone
     return Temporal.PlainDateTime.from(isoString);
   }
 

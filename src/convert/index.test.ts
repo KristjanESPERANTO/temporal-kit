@@ -88,6 +88,19 @@ describe("Convert Functions", () => {
       expect(result).toBeInstanceOf(Temporal.Instant);
     });
 
+    it.each([
+      ["2025-11-30T14:30:00+01:00", "2025-11-30T13:30:00Z"],
+      ["2025-11-30T14:30:00-05:00", "2025-11-30T19:30:00Z"],
+      ["2025-11-30T14:30:00+0100", "2025-11-30T13:30:00Z"],
+      ["2025-11-30T14:30:00+01", "2025-11-30T13:30:00Z"],
+      ["2025-11-30T14:30:00+01:00:30", "2025-11-30T13:29:30Z"],
+      ["2025-11-30T14:30:00-00:00", "2025-11-30T14:30:00Z"],
+    ])("should detect %s as an Instant", (input, expected) => {
+      const result = fromISO(input);
+      expect(result).toBeInstanceOf(Temporal.Instant);
+      expect(result.toString()).toBe(expected);
+    });
+
     it("should handle instant format with milliseconds", () => {
       const result = fromISO("2025-11-30T15:30:00.123Z");
       expect(result).toBeInstanceOf(Temporal.Instant);
