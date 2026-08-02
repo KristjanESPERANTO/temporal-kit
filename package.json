@@ -102,5 +102,9 @@
   },
   "engines": {
     "node": ">=24"
+  },
+  "allowScripts": {
+    "simple-git-hooks@2.13.1": true,
+    "esbuild@0.27.7": true
   }
 }
