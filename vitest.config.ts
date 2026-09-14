@@ -5,10 +5,6 @@ export default defineConfig({
     globals: true,
     environment: "node",
     setupFiles: ["./vitest.setup.ts"],
-    typecheck: {
-      enabled: true,
-      tsconfig: "./tsconfig.json",
-    },
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
