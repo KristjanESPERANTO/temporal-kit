@@ -79,11 +79,18 @@ export function sortDesc<T extends DateLike>(dates: T[]): T[] {
 export function closestTo<T extends DateLike>(dateToCompare: T, dates: T[]): T | undefined {
   if (dates.length === 0) return undefined;
 
-  return dates.reduce((closest, current) => {
+  let closest: T | undefined;
+  let closestDiff = 0n;
+
+  for (const current of dates) {
     const diffCurrent = getAbsDifference(dateToCompare, current);
-    const diffClosest = getAbsDifference(dateToCompare, closest);
-    return diffCurrent < diffClosest ? current : closest;
-  });
+    if (closest === undefined || diffCurrent < closestDiff) {
+      closest = current;
+      closestDiff = diffCurrent;
+    }
+  }
+
+  return closest;
 }
 
 /**

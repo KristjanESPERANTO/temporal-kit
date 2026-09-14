@@ -76,6 +76,13 @@ describe("collection", () => {
       expect(closestTo(target, [])).toBeUndefined();
     });
 
+    it("keeps the first date when distances are equal", () => {
+      const target = Temporal.PlainDate.from("2025-06-15");
+      const dates = [Temporal.PlainDate.from("2025-06-14"), Temporal.PlainDate.from("2025-06-16")];
+
+      expect(closestTo(target, dates)?.toString()).toBe("2025-06-14");
+    });
+
     it("finds closest among many PlainDates", () => {
       const target = Temporal.PlainDate.from("2025-03-15");
       const dates = [
