@@ -1,7 +1,17 @@
 import fc from "fast-check";
 import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
-import { add, endOf, nextDay, previousDay, startOf, subtract } from "./index.js";
+import {
+  add,
+  endOf,
+  nextDay,
+  previousDay,
+  startOf,
+  subtract,
+  withDayOfWeek,
+  withDayOfYear,
+  withWeekOfYear,
+} from "./index.js";
 
 const plainDateArbitrary = fc
   .record({
@@ -12,6 +22,55 @@ const plainDateArbitrary = fc
   .map(({ year, month, day }) => Temporal.PlainDate.from({ year, month, day }));
 
 describe("Math Functions", () => {
+  describe("field replacement", () => {
+    it("replaces calendar days and preserves leap years", () => {
+      const date = Temporal.PlainDate.from("2024-02-27");
+      expect(withDayOfYear(date, 60).toString()).toBe("2024-02-29");
+      expect(withDayOfYear(date, 500).toString()).toBe("2024-12-31");
+      expect(withDayOfYear(date, 0).toString()).toBe("2024-01-01");
+      expect(withDayOfYear(date, 60.9).toString()).toBe("2024-02-29");
+      expect(withDayOfYear(date, 60, { overflow: "reject" }).dayOfYear).toBe(60);
+      expect(date.toString()).toBe("2024-02-27");
+    });
+
+    it("replaces weekdays within the same week and preserves time", () => {
+      const date = Temporal.PlainDateTime.from("2024-02-27T12:34:56.123456789");
+      expect(withDayOfWeek(date, 4).toString()).toBe("2024-02-29T12:34:56.123456789");
+      expect(withDayOfWeek(date, 8).dayOfWeek).toBe(7);
+      expect(withDayOfWeek(date, -1).dayOfWeek).toBe(1);
+    });
+
+    it("uses the ISO week-year rather than calendar year", () => {
+      const date = Temporal.PlainDate.from("2021-01-01");
+      expect(withWeekOfYear(date, 1).toString()).toBe("2020-01-03");
+      expect(withWeekOfYear(date, 99).toString()).toBe("2021-01-01");
+      expect(withWeekOfYear(Temporal.PlainDate.from("2021-07-01"), 53).weekOfYear).toBe(52);
+      expect(() => withWeekOfYear(date.withCalendar("hebrew"), 1)).toThrow(RangeError);
+    });
+
+    it("preserves zoned local time across DST transitions", () => {
+      const date = Temporal.ZonedDateTime.from("2024-03-25T12:00[Europe/Berlin]");
+      const result = withDayOfWeek(date, 7);
+      expect(result.toString()).toBe("2024-03-31T12:00:00+02:00[Europe/Berlin]");
+      expect(withDayOfYear(date, 91).equals(result)).toBe(true);
+      expect(withWeekOfYear(date, 14).toString()).toBe("2024-04-01T12:00:00+02:00[Europe/Berlin]");
+    });
+
+    it("rejects invalid numbers, overflow options and out-of-range fields", () => {
+      const date = Temporal.PlainDate.from("2024-02-27");
+      for (const helper of [withDayOfYear, withDayOfWeek, withWeekOfYear]) {
+        for (const value of [NaN, Infinity, -Infinity]) {
+          expect(() => helper(date, value)).toThrow(RangeError);
+        }
+        for (const value of [0, 500]) {
+          expect(() => helper(date, value, { overflow: "reject" })).toThrow(RangeError);
+        }
+        // @ts-expect-error Invalid options are also checked for JavaScript callers.
+        expect(() => helper(date, 1, { overflow: "invalid" })).toThrow(RangeError);
+      }
+    });
+  });
+
   describe("add", () => {
     it("should add days to PlainDate", () => {
       const date = Temporal.PlainDate.from("2025-11-30");

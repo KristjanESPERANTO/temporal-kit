@@ -850,6 +850,29 @@ formatRelative(today.subtract({ days: 1 }), today, { locale: "de-DE" }); // "ges
 
 Functions for date/time arithmetic and boundary operations.
 
+### Field Replacement
+
+`withDayOfYear(date, day, options?)`, `withDayOfWeek(date, day, options?)`, and
+`withWeekOfYear(date, week, options?)` replace derived calendar fields without
+changing the input type (`PlainDate`, `PlainDateTime`, or `ZonedDateTime`).
+They preserve the calendar and local time where that time exists; zoned arithmetic
+uses Temporal's native resolution for skipped or repeated local times.
+
+Numeric inputs must be finite and are truncated toward zero. The default
+`{ overflow: "constrain" }` clamps to the field's valid range; use
+`{ overflow: "reject" }` to throw a `RangeError` instead.
+
+- `withDayOfYear` uses the current calendar year's length, including leap days.
+- `withDayOfWeek` selects a day in the current calendar week (ISO: Monday = 1).
+- `withWeekOfYear` is ISO-only and retains the weekday within the ISO week-year,
+  which can differ from the calendar year. Other calendars throw a `RangeError`.
+
+```typescript
+withDayOfYear(Temporal.PlainDate.from("2024-02-27"), 60); // 2024-02-29
+withDayOfWeek(Temporal.PlainDate.from("2024-02-27"), 4); // 2024-02-29
+withWeekOfYear(Temporal.PlainDate.from("2021-01-01"), 1); // 2020-01-03
+```
+
 ### `add(date, duration)`
 
 Add a duration to a date/time value.

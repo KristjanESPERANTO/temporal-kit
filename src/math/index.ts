@@ -1,5 +1,60 @@
+import type { Temporal as TemporalTypes } from "temporal-spec";
 import { Temporal } from "../temporal.js";
 import type { DateLike, DateUnit, DurationInput } from "../types/index.js";
+
+function constrainField(
+  value: number,
+  maximum: number,
+  options?: TemporalTypes.OverflowOptions,
+): number {
+  const overflow = options?.overflow ?? "constrain";
+  if (overflow !== "constrain" && overflow !== "reject") {
+    throw new RangeError("Invalid overflow option");
+  }
+  if (!Number.isFinite(value)) {
+    throw new RangeError("Field must be finite");
+  }
+  const integer = Math.trunc(value);
+  if (overflow === "reject" && (integer < 1 || integer > maximum)) {
+    throw new RangeError(`Field must be between 1 and ${maximum}`);
+  }
+  return Math.min(maximum, Math.max(1, integer));
+}
+
+/** Replace the day within the current calendar year, preserving local time and calendar. */
+export function withDayOfYear<T extends DateLike>(
+  date: T,
+  dayOfYear: number,
+  options?: TemporalTypes.OverflowOptions,
+): T {
+  const day = constrainField(dayOfYear, date.daysInYear, options);
+  return date.add({ days: day - date.dayOfYear }) as T;
+}
+
+/** Replace the weekday within the current calendar week, preserving local time. */
+export function withDayOfWeek<T extends DateLike>(
+  date: T,
+  dayOfWeek: number,
+  options?: TemporalTypes.OverflowOptions,
+): T {
+  const day = constrainField(dayOfWeek, date.daysInWeek, options);
+  return date.add({ days: day - date.dayOfWeek }) as T;
+}
+
+/** Replace the ISO week within the current ISO week-year, preserving weekday and local time. */
+export function withWeekOfYear<T extends DateLike>(
+  date: T,
+  weekOfYear: number,
+  options?: TemporalTypes.OverflowOptions,
+): T {
+  if (date.calendarId !== "iso8601") {
+    throw new RangeError("withWeekOfYear requires the ISO 8601 calendar");
+  }
+  const maximum = Temporal.PlainDate.from({ year: date.yearOfWeek as number, month: 12, day: 28 })
+    .weekOfYear as number;
+  const week = constrainField(weekOfYear, maximum, options);
+  return date.add({ weeks: week - (date.weekOfYear as number) }) as T;
+}
 
 function atStartOfDay<T extends Temporal.PlainDateTime | Temporal.ZonedDateTime>(date: T): T {
   const fields = {
