@@ -5,7 +5,6 @@
 
 import type { Temporal } from "temporal-spec";
 import { isAfter, isBefore } from "../compare/index.js";
-import { isPlainDate, isPlainDateTime } from "../guards/index.js";
 import type { DateLike } from "../types/index.js";
 
 /**
@@ -53,23 +52,11 @@ export function* stepInterval<T extends DateLike>(
   duration: Temporal.DurationLike,
 ): Generator<T> {
   const { start, end } = interval;
-  let current = start;
+  let current: T = start;
 
-  // Determine if we should stop (current > end)
   while (!isAfter(current, end)) {
     yield current;
-
-    // Add duration. We need to cast because .add is generic on the instance
-    // but TypeScript doesn't know 'current' has .add method from DateLike union strictly without narrowing
-    // However, all DateLike types (PlainDate, PlainDateTime, ZonedDateTime) have .add
-    if (isPlainDate(current)) {
-      current = current.add(duration) as T;
-    } else if (isPlainDateTime(current)) {
-      current = current.add(duration) as T;
-    } else {
-      // Type narrowing: if not PlainDate or PlainDateTime, must be ZonedDateTime
-      current = (current as Temporal.ZonedDateTime).add(duration) as T;
-    }
+    current = current.add(duration) as T;
   }
 }
 
