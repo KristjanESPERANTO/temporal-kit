@@ -2,6 +2,7 @@
  * Parse module - Smart string-to-Temporal parsing with format detection
  */
 
+import { fromISO } from "../convert/index.js";
 import { Temporal } from "../temporal.js";
 
 /**
@@ -37,55 +38,15 @@ export function parse(
   | Temporal.Instant
   | Temporal.PlainTime {
   const trimmed = input.trim();
+  const result =
+    parseDateTimeFormats(trimmed) ??
+    attempt(() => fromISO(trimmed)) ??
+    attempt(() => (/^\d{2}:\d{2}/.test(trimmed) ? Temporal.PlainTime.from(trimmed) : null)) ??
+    attempt(() => parseDateFormats(trimmed)) ??
+    parseTimeFormats(trimmed);
 
-  // Try combined date-time formats first (before trying ISO date which might partially match)
-  if (trimmed.includes(" ")) {
-    const dateTimeResult = parseDateTimeFormats(trimmed);
-    if (dateTimeResult) {
-      return dateTimeResult;
-    }
-  }
-
-  // Try ISO 8601 (fastest path for standard formats)
-  try {
-    // Check for Instant (Z suffix or offset without timezone name)
-    if (trimmed.endsWith("Z") || (/[+-]\d{2}:\d{2}$/.test(trimmed) && !trimmed.includes("["))) {
-      return Temporal.Instant.from(trimmed);
-    }
-
-    // Check for ZonedDateTime (contains timezone in brackets)
-    if (trimmed.includes("[") && trimmed.includes("]")) {
-      return Temporal.ZonedDateTime.from(trimmed);
-    }
-
-    // Check for PlainDateTime (has T separator)
-    if (trimmed.includes("T")) {
-      return Temporal.PlainDateTime.from(trimmed);
-    }
-
-    // Check for PlainTime (HH:MM or HH:MM:SS format)
-    if (/^\d{2}:\d{2}(:\d{2})?(\.\d+)?$/.test(trimmed)) {
-      return Temporal.PlainTime.from(trimmed);
-    }
-
-    // Try PlainDate (only if no space - otherwise it would have been caught above)
-    if (!trimmed.includes(" ")) {
-      return Temporal.PlainDate.from(trimmed);
-    }
-  } catch {
-    // ISO parsing failed, try common formats
-  }
-
-  // Try common date formats
-  const dateResult = parseDateFormats(trimmed);
-  if (dateResult) {
-    return dateResult;
-  }
-
-  // Try common time formats
-  const timeResult = parseTimeFormats(trimmed);
-  if (timeResult) {
-    return timeResult;
+  if (result) {
+    return result;
   }
 
   throw new RangeError(
@@ -110,16 +71,7 @@ export function parse(
  */
 export function parseDate(input: string): Temporal.PlainDate {
   const trimmed = input.trim();
-
-  // Try ISO format first
-  try {
-    return Temporal.PlainDate.from(trimmed);
-  } catch {
-    // Continue to other formats
-  }
-
-  // Try common formats
-  const result = parseDateFormats(trimmed);
+  const result = attempt(() => Temporal.PlainDate.from(trimmed)) ?? parseDateFormats(trimmed);
   if (result) {
     return result;
   }
@@ -145,16 +97,7 @@ export function parseDate(input: string): Temporal.PlainDate {
  */
 export function parseTime(input: string): Temporal.PlainTime {
   const trimmed = input.trim();
-
-  // Try ISO format first
-  try {
-    return Temporal.PlainTime.from(trimmed);
-  } catch {
-    // Continue to other formats
-  }
-
-  // Try common formats
-  const result = parseTimeFormats(trimmed);
+  const result = attempt(() => Temporal.PlainTime.from(trimmed)) ?? parseTimeFormats(trimmed);
   if (result) {
     return result;
   }
@@ -180,18 +123,10 @@ export function parseTime(input: string): Temporal.PlainTime {
  */
 export function parseDateTime(input: string): Temporal.PlainDateTime {
   const trimmed = input.trim();
-
-  // Try ISO format first (with T separator)
-  if (trimmed.includes("T")) {
-    try {
-      return Temporal.PlainDateTime.from(trimmed);
-    } catch {
-      // Continue to other formats
-    }
-  }
-
-  // Try common formats
-  const result = parseDateTimeFormats(trimmed);
+  // Without "T", PlainDateTime.from would silently accept a bare date as midnight.
+  const result =
+    (trimmed.includes("T") ? attempt(() => Temporal.PlainDateTime.from(trimmed)) : null) ??
+    parseDateTimeFormats(trimmed);
   if (result) {
     return result;
   }
@@ -201,173 +136,59 @@ export function parseDateTime(input: string): Temporal.PlainDateTime {
   );
 }
 
-// Helper functions for parsing common formats
+function attempt<T>(parse: () => T | null): T | null {
+  try {
+    return parse();
+  } catch {
+    return null;
+  }
+}
+
+// [pattern, year group, month group, day group]
+const DATE_FORMATS: Array<[RegExp, number, number, number]> = [
+  [/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/, 3, 2, 1], // DD.MM.YYYY
+  [/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, 3, 1, 2], // MM/DD/YYYY
+  [/^(\d{1,2})-(\d{1,2})-(\d{4})$/, 3, 2, 1], // DD-MM-YYYY
+  [/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/, 1, 2, 3], // YYYY/MM/DD
+];
 
 function parseDateFormats(input: string): Temporal.PlainDate | null {
-  // DD.MM.YYYY (European format)
-  const europeanMatch = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/.exec(input);
-  if (europeanMatch?.[1] && europeanMatch[2] && europeanMatch[3]) {
-    return Temporal.PlainDate.from(
-      {
-        year: Number.parseInt(europeanMatch[3], 10),
-        month: Number.parseInt(europeanMatch[2], 10),
-        day: Number.parseInt(europeanMatch[1], 10),
-      },
-      { overflow: "reject" },
-    );
-  }
-
-  // MM/DD/YYYY (US format)
-  const usMatch = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(input);
-  if (usMatch?.[1] && usMatch[2] && usMatch[3]) {
-    return Temporal.PlainDate.from(
-      {
-        year: Number.parseInt(usMatch[3], 10),
-        month: Number.parseInt(usMatch[1], 10),
-        day: Number.parseInt(usMatch[2], 10),
-      },
-      { overflow: "reject" },
-    );
-  }
-
-  // DD-MM-YYYY (alternative format)
-  const dashMatch = /^(\d{1,2})-(\d{1,2})-(\d{4})$/.exec(input);
-  if (dashMatch?.[1] && dashMatch[2] && dashMatch[3]) {
-    return Temporal.PlainDate.from(
-      {
-        year: Number.parseInt(dashMatch[3], 10),
-        month: Number.parseInt(dashMatch[2], 10),
-        day: Number.parseInt(dashMatch[1], 10),
-      },
-      { overflow: "reject" },
-    );
-  }
-
-  // YYYY/MM/DD (alternative ISO-like)
-  const isoSlashMatch = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.exec(input);
-  if (isoSlashMatch?.[1] && isoSlashMatch[2] && isoSlashMatch[3]) {
-    return Temporal.PlainDate.from(
-      {
-        year: Number.parseInt(isoSlashMatch[1], 10),
-        month: Number.parseInt(isoSlashMatch[2], 10),
-        day: Number.parseInt(isoSlashMatch[3], 10),
-      },
-      { overflow: "reject" },
-    );
-  }
-
-  return null;
-}
-
-function parseTimeFormats(input: string): Temporal.PlainTime | null {
-  // 12-hour format with AM/PM
-  const ampmMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i.exec(input);
-  if (ampmMatch?.[1] && ampmMatch[2] && ampmMatch[4]) {
-    let hour = Number.parseInt(ampmMatch[1], 10);
-    const minute = ampmMatch[2];
-    const second = ampmMatch[3];
-    const period = ampmMatch[4];
-
-    // Convert to 24-hour format
-    if (period.toUpperCase() === "PM" && hour !== 12) {
-      hour += 12;
-    } else if (period.toUpperCase() === "AM" && hour === 12) {
-      hour = 0;
+  for (const [pattern, year, month, day] of DATE_FORMATS) {
+    const match = pattern.exec(input);
+    if (match) {
+      return Temporal.PlainDate.from(
+        { year: Number(match[year]), month: Number(match[month]), day: Number(match[day]) },
+        { overflow: "reject" },
+      );
     }
-
-    return Temporal.PlainTime.from(
-      {
-        hour,
-        minute: Number.parseInt(minute, 10),
-        second: second ? Number.parseInt(second, 10) : 0,
-      },
-      { overflow: "reject" },
-    );
   }
-
-  // 24-hour format without seconds (HH:MM)
-  const simpleMatch = /^(\d{1,2}):(\d{2})$/.exec(input);
-  if (simpleMatch?.[1] && simpleMatch[2]) {
-    return Temporal.PlainTime.from(
-      {
-        hour: Number.parseInt(simpleMatch[1], 10),
-        minute: Number.parseInt(simpleMatch[2], 10),
-        second: 0,
-      },
-      { overflow: "reject" },
-    );
-  }
-
   return null;
 }
 
-/**
- * Helper to combine a date and time into a PlainDateTime
- */
-function combineDateAndTime(
-  date: Temporal.PlainDate,
-  time: Temporal.PlainTime,
-): Temporal.PlainDateTime {
-  return Temporal.PlainDateTime.from({
-    year: date.year,
-    month: date.month,
-    day: date.day,
-    hour: time.hour,
-    minute: time.minute,
-    second: time.second,
-    millisecond: time.millisecond,
-    microsecond: time.microsecond,
-    nanosecond: time.nanosecond,
-  });
+/** Parses H:MM, H:MM:SS and their 12-hour variants with AM/PM. */
+function parseTimeFormats(input: string): Temporal.PlainTime | null {
+  const match = /^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?$/i.exec(input);
+  if (!match) return null;
+
+  const period = match[4]?.toUpperCase();
+  let hour = Number(match[1]);
+  if (period) {
+    if (hour < 1 || hour > 12) return null;
+    hour = (hour % 12) + (period === "PM" ? 12 : 0);
+  }
+
+  return Temporal.PlainTime.from(
+    { hour, minute: Number(match[2]), second: Number(match[3] ?? 0) },
+    { overflow: "reject" },
+  );
 }
 
-/**
- * Try parsing datetime as space-separated date and time strings
- */
+/** Parses "<date> <time>" where each part may be ISO or one of the common formats. */
 function parseDateTimeFormats(input: string): Temporal.PlainDateTime | null {
   const spaceIdx = input.indexOf(" ");
   if (spaceIdx === -1) return null;
 
-  const dateStr = input.slice(0, spaceIdx);
-  const timeStr = input.slice(spaceIdx + 1).trim();
-
-  // Try ISO date + ISO time
-  try {
-    const date = Temporal.PlainDate.from(dateStr);
-    const time = Temporal.PlainTime.from(timeStr);
-    return combineDateAndTime(date, time);
-  } catch {
-    // Try next combination
-  }
-
-  // Try ISO date + common time format
-  try {
-    const date = Temporal.PlainDate.from(dateStr);
-    const time = parseTimeFormats(timeStr);
-    if (time) {
-      return combineDateAndTime(date, time);
-    }
-  } catch {
-    // Try next combination
-  }
-
-  // Try common date format + ISO time
-  try {
-    const date = parseDateFormats(dateStr);
-    const time = date ? Temporal.PlainTime.from(timeStr) : null;
-    if (date && time) {
-      return combineDateAndTime(date, time);
-    }
-  } catch {
-    // Try next combination
-  }
-
-  // Try common date format + common time format
-  const date = parseDateFormats(dateStr);
-  const time = parseTimeFormats(timeStr);
-  if (date && time) {
-    return combineDateAndTime(date, time);
-  }
-
-  return null;
+  const date = attempt(() => parseDate(input.slice(0, spaceIdx)));
+  const time = attempt(() => parseTime(input.slice(spaceIdx + 1)));
+  return date && time ? date.toPlainDateTime(time) : null;
 }
