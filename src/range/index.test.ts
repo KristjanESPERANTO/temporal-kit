@@ -98,9 +98,11 @@ describe("range", () => {
       const end = Temporal.PlainDateTime.from("2025-01-01T12:00:00");
       const result = Array.from(stepInterval({ start, end }, { hours: 1 }));
       expect(result).toHaveLength(3);
-      expect(result[0].toString()).toBe("2025-01-01T10:00:00");
-      expect(result[1].toString()).toBe("2025-01-01T11:00:00");
-      expect(result[2].toString()).toBe("2025-01-01T12:00:00");
+      expect(result.map((date) => date.toString())).toEqual([
+        "2025-01-01T10:00:00",
+        "2025-01-01T11:00:00",
+        "2025-01-01T12:00:00",
+      ]);
     });
 
     it("should iterate over ZonedDateTime", () => {
@@ -109,9 +111,11 @@ describe("range", () => {
       const end = Temporal.ZonedDateTime.from("2025-01-01T12:00:00+01:00[Europe/Berlin]");
       const result = Array.from(stepInterval({ start, end }, { hours: 1 }));
       expect(result).toHaveLength(3);
-      expect(result[0].toString()).toContain("10:00:00");
-      expect(result[1].toString()).toContain("11:00:00");
-      expect(result[2].toString()).toContain("12:00:00");
+      expect(result.map((date) => date.toPlainTime().toString())).toEqual([
+        "10:00:00",
+        "11:00:00",
+        "12:00:00",
+      ]);
     });
 
     it("should throw for unsupported type", () => {
@@ -131,9 +135,7 @@ describe("range", () => {
       const days = eachDayOfInterval({ start, end });
 
       expect(days).toHaveLength(3);
-      expect(days[0].toString()).toBe("2025-01-01");
-      expect(days[1].toString()).toBe("2025-01-02");
-      expect(days[2].toString()).toBe("2025-01-03");
+      expect(days.map((day) => day.toString())).toEqual(["2025-01-01", "2025-01-02", "2025-01-03"]);
     });
 
     it("should work with ZonedDateTime", () => {
@@ -142,8 +144,11 @@ describe("range", () => {
       const days = eachDayOfInterval({ start, end });
 
       expect(days).toHaveLength(3);
-      expect(days[0].toString()).toContain("2025-01-01");
-      expect(days[2].toString()).toContain("2025-01-03");
+      expect(days.map((day) => day.toPlainDate().toString())).toEqual([
+        "2025-01-01",
+        "2025-01-02",
+        "2025-01-03",
+      ]);
     });
   });
 
@@ -153,9 +158,11 @@ describe("range", () => {
       const end = Temporal.PlainDate.from("2025-03-15");
       const result = eachMonthOfInterval({ start, end });
       expect(result).toHaveLength(3);
-      expect(result[0].toString()).toBe("2025-01-15");
-      expect(result[1].toString()).toBe("2025-02-15");
-      expect(result[2].toString()).toBe("2025-03-15");
+      expect(result.map((date) => date.toString())).toEqual([
+        "2025-01-15",
+        "2025-02-15",
+        "2025-03-15",
+      ]);
     });
 
     it("should return a single entry when start equals end", () => {
@@ -171,9 +178,11 @@ describe("range", () => {
       const end = Temporal.PlainDate.from("2025-06-01");
       const result = eachYearOfInterval({ start, end });
       expect(result).toHaveLength(3);
-      expect(result[0].toString()).toBe("2023-06-01");
-      expect(result[1].toString()).toBe("2024-06-01");
-      expect(result[2].toString()).toBe("2025-06-01");
+      expect(result.map((date) => date.toString())).toEqual([
+        "2023-06-01",
+        "2024-06-01",
+        "2025-06-01",
+      ]);
     });
 
     it("should return a single entry when start equals end", () => {
@@ -190,9 +199,11 @@ describe("range", () => {
       const weeks = eachWeekOfInterval({ start, end });
 
       expect(weeks).toHaveLength(3); // 1st, 8th, 15th
-      expect(weeks[0].toString()).toBe("2025-01-01");
-      expect(weeks[1].toString()).toBe("2025-01-08");
-      expect(weeks[2].toString()).toBe("2025-01-15");
+      expect(weeks.map((date) => date.toString())).toEqual([
+        "2025-01-01",
+        "2025-01-08",
+        "2025-01-15",
+      ]);
     });
   });
 
@@ -221,7 +232,7 @@ describe("range", () => {
           const days = eachDayOfInterval({ start, end });
 
           expect(days).toHaveLength(spanDays + 1);
-          expect(days[0].equals(start)).toBe(true);
+          expect(days.at(0)?.equals(start)).toBe(true);
           expect(days.at(-1)?.equals(end)).toBe(true);
         }),
       );
@@ -238,11 +249,16 @@ describe("range", () => {
             const values = Array.from(stepInterval({ start, end }, { days: stepDays }));
 
             expect(values.length).toBeGreaterThanOrEqual(1);
-            expect(values[0].equals(start)).toBe(true);
-            expect(values.at(-1)?.since(end, { largestUnit: "day" }).days).toBeLessThanOrEqual(0);
+            expect(values.at(0)?.equals(start)).toBe(true);
+            const last = values.at(-1);
+            if (!last) throw new Error("stepInterval yielded no values");
+            expect(last.since(end, { largestUnit: "day" }).days).toBeLessThanOrEqual(0);
 
-            for (let i = 1; i < values.length; i += 1) {
-              const diff = values[i].since(values[i - 1], { largestUnit: "day" }).days;
+            for (let index = 1; index < values.length; index += 1) {
+              const previous = values.at(index - 1);
+              const current = values.at(index);
+              if (!previous || !current) throw new Error("stepInterval yielded a missing value");
+              const diff = current.since(previous, { largestUnit: "day" }).days;
               expect(diff).toBe(stepDays);
             }
           },

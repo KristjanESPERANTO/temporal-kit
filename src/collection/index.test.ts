@@ -11,9 +11,11 @@ describe("collection", () => {
         Temporal.PlainDate.from("2025-02-01"),
       ];
       const sorted = sortAsc(dates);
-      expect(sorted[0].toString()).toBe("2025-01-01");
-      expect(sorted[1].toString()).toBe("2025-02-01");
-      expect(sorted[2].toString()).toBe("2025-03-01");
+      expect(sorted.map((date) => date.toString())).toEqual([
+        "2025-01-01",
+        "2025-02-01",
+        "2025-03-01",
+      ]);
     });
 
     it("does not mutate original array", () => {
@@ -32,9 +34,11 @@ describe("collection", () => {
         Temporal.PlainDate.from("2025-02-01"),
       ];
       const sorted = sortDesc(dates);
-      expect(sorted[0].toString()).toBe("2025-03-01");
-      expect(sorted[1].toString()).toBe("2025-02-01");
-      expect(sorted[2].toString()).toBe("2025-01-01");
+      expect(sorted.map((date) => date.toString())).toEqual([
+        "2025-03-01",
+        "2025-02-01",
+        "2025-01-01",
+      ]);
     });
   });
 
