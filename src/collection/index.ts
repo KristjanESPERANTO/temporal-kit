@@ -3,7 +3,6 @@
  * @module collection
  */
 
-import type { Temporal } from "temporal-spec";
 import { compare } from "../compare/index.js";
 import { isZonedDateTime } from "../guards/index.js";
 import type { DateLike } from "../types/index.js";
@@ -77,44 +76,22 @@ export function sortDesc<T extends DateLike>(dates: T[]): T[] {
  * ```
  */
 export function closestTo<T extends DateLike>(dateToCompare: T, dates: T[]): T | undefined {
-  if (dates.length === 0) return undefined;
-
   let closest: T | undefined;
   let closestDiff = 0n;
 
   for (const current of dates) {
-    const diffCurrent = getAbsDifference(dateToCompare, current);
-    if (closest === undefined || diffCurrent < closestDiff) {
+    const diff = epochNanoseconds(dateToCompare) - epochNanoseconds(current);
+    const absDiff = diff < 0n ? -diff : diff;
+    if (closest === undefined || absDiff < closestDiff) {
       closest = current;
-      closestDiff = diffCurrent;
+      closestDiff = absDiff;
     }
   }
 
   return closest;
 }
 
-/**
- * Helper to calculate absolute difference in nanoseconds.
- * Normalizes everything to ZonedDateTime (UTC) or Instant logic.
- */
-function getAbsDifference(a: DateLike, b: DateLike): bigint {
-  // If both are ZonedDateTime, use epochNanoseconds
-  if ("epochNanoseconds" in a && "epochNanoseconds" in b) {
-    const diff = a.epochNanoseconds - b.epochNanoseconds;
-    const absDiff = diff < 0n ? -diff : diff;
-    return absDiff;
-  }
-
-  // For mixed types or Plain types, normalize to ZonedDateTime UTC
-  const dtA = toZonedDateTime(a);
-  const dtB = toZonedDateTime(b);
-
-  const diff = dtA.epochNanoseconds - dtB.epochNanoseconds;
-  const absDiff = diff < 0n ? -diff : diff;
-  return absDiff;
-}
-
-function toZonedDateTime(d: DateLike): Temporal.ZonedDateTime {
-  const result = isZonedDateTime(d) ? d : d.toZonedDateTime("UTC");
-  return result;
+/** Plain values are interpreted in UTC so mixed types can be measured on one timeline. */
+function epochNanoseconds(date: DateLike): bigint {
+  return (isZonedDateTime(date) ? date : date.toZonedDateTime("UTC")).epochNanoseconds;
 }
