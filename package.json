@@ -85,27 +85,27 @@
   },
   "homepage": "https://kristjanesperanto.github.io/temporal-kit/",
   "devDependencies": {
-    "@biomejs/biome": "^2.5.13",
-    "@commitlint/cli": "^21.2.2",
-    "@commitlint/config-conventional": "^21.2.2",
-    "@commitlint/types": "^21.2.0",
-    "@vitest/coverage-v8": "^5.0.0",
-    "@vitest/ui": "^5.0.0",
-    "commit-and-tag-version": "^13.2.1",
-    "fast-check": "^4.10.0",
-    "lint-staged": "^17.5.1",
+    "@biomejs/biome": "^2.6.5",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@commitlint/types": "^21.2.3",
+    "@vitest/coverage-v8": "^5.1.0",
+    "@vitest/ui": "^5.1.0",
+    "commit-and-tag-version": "^13.3.0",
+    "fast-check": "^4.10.2",
+    "lint-staged": "^17.6.0",
     "simple-git-hooks": "^2.14.0",
-    "temporal-polyfill": "^1.0.5",
+    "temporal-polyfill": "^1.0.7",
     "temporal-spec": "^1.0.1",
-    "tsup": "^8.5.1",
-    "typescript": "^6.0.3",
-    "vitest": "^5.0.0"
+    "tsup": "^9.0.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
   },
   "engines": {
     "node": ">=24"
   },
   "allowScripts": {
-    "esbuild@0.27.7": true,
-    "simple-git-hooks@2.14.0": true
+    "simple-git-hooks@2.14.0": true,
+    "esbuild@0.28.2": true
   }
 }
