@@ -23,10 +23,10 @@ npm install temporal-kit
 
 ```typescript
 // Node.js 26+ or modern browsers — native Temporal, no polyfill needed:
-import { isPlainDate, add, startOf } from 'temporal-kit';
+import { isPlainDate, add, startOf } from "temporal-kit";
 
 // Node.js 24 or older browsers — polyfill included:
-import { isPlainDate } from 'temporal-kit/polyfilled';
+import { isPlainDate } from "temporal-kit/polyfilled";
 ```
 
 ### Browser Usage (without bundlers)
@@ -43,6 +43,7 @@ For environments that don't use bundlers (e.g., MagicMirror modules):
 ```
 
 Or via CDN:
+
 ```html
 <script src="https://unpkg.com/temporal-kit/dist/temporal-kit.browser.polyfilled.global.js"></script>
 ```
@@ -52,7 +53,15 @@ Or via CDN:
 ## Common Recipes
 
 ```typescript
-import { formatRelative, startOf, endOf, add, nextDay, isBetween, addBusinessDays } from 'temporal-kit';
+import {
+  formatRelative,
+  startOf,
+  endOf,
+  add,
+  nextDay,
+  isBetween,
+  addBusinessDays,
+} from "temporal-kit";
 // On Node.js 24/25: import { Temporal } from 'temporal-polyfill';
 // On Node.js 26+ or modern browsers: Temporal is available globally
 
@@ -66,7 +75,7 @@ formatRelative(now.subtract({ minutes: 5 })); // "5 minutes ago"
 const nextFriday = nextDay(now, 5); // 5 = Friday
 
 // 3. Check if date is in range
-isBetween(now, startOf(now, 'year'), endOf(now, 'year')); // true
+isBetween(now, startOf(now, "year"), endOf(now, "year")); // true
 
 // 4. Business Days
 const monday = addBusinessDays(today, 1); // Skips weekend
@@ -81,8 +90,13 @@ const monday = addBusinessDays(today, 1); // Skips weekend
 ## Why Temporal Kit?
 
 Temporal provides precise date and time primitives. Temporal Kit brings common application workflows together as small, typed functions that compose naturally:
+
 ```typescript
-pipe(date, d => startOf(d, 'month'), d => add(d, { days: 1 }))
+pipe(
+  date,
+  (d) => startOf(d, "month"),
+  (d) => add(d, { days: 1 }),
+);
 ```
 
 Use the helpers you need independently: the API is tree-shakable, works directly with Temporal types, and has zero runtime dependencies in its native entry point.
@@ -96,13 +110,13 @@ Use the helpers you need independently: the API is tree-shakable, works directly
 **Functional.** Pure functions, tree-shakable, designed for `pipe` and `compose`. No wrapper classes or hidden state. Example:
 
 ```typescript
-import { add, startOf, pipe } from 'temporal-kit'
+import { add, startOf, pipe } from "temporal-kit";
 
 const endOfNextMonth = pipe(
   today,
-  d => add(d, { months: 1 }),
-  d => endOf(d, 'month')
-)
+  (d) => add(d, { months: 1 }),
+  (d) => endOf(d, "month"),
+);
 ```
 
 **Polyfill as opt-in.** Main entry expects native Temporal (Node 26+, modern browsers). `temporal-kit/polyfilled` includes the polyfill. No global surprises.
@@ -131,14 +145,12 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 ## Comparison
 
-| Feature | [Moment.js](https://momentjs.com/) | [date-fns v4](https://date-fns.org/) | [Luxon](https://moment.github.io/luxon/) | [Native Temporal](https://tc39.es/proposal-temporal/docs/) | **Temporal Kit** |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Base Object** | Mutable Wrapper | Legacy `Date` | Custom Class | `Temporal` | **`Temporal`** |
-| **Paradigm** | OO / Mutable | Functional | OO / Immutable | Low-level OO | **Functional** |
-| **Timezones** | Separate lib | Separate lib | Built-in | Native | **Native** |
-| **Calendar Systems** | No | No | No | Yes | **Yes** |
-| **Tree-Shaking** | No | Yes | No | N/A | **Yes** |
-| **Polyfill Needed?** | No | No | No | No (Native) | **Optional** |
-| **Temporal-native** | No | No | No | Yes | **Yes** |
-
-
+| Feature              | [Moment.js](https://momentjs.com/) | [date-fns v4](https://date-fns.org/) | [Luxon](https://moment.github.io/luxon/) | [Native Temporal](https://tc39.es/proposal-temporal/docs/) | **Temporal Kit** |
+| :------------------- | :--------------------------------- | :----------------------------------- | :--------------------------------------- | :--------------------------------------------------------- | :--------------- |
+| **Base Object**      | Mutable Wrapper                    | Legacy `Date`                        | Custom Class                             | `Temporal`                                                 | **`Temporal`**   |
+| **Paradigm**         | OO / Mutable                       | Functional                           | OO / Immutable                           | Low-level OO                                               | **Functional**   |
+| **Timezones**        | Separate lib                       | Separate lib                         | Built-in                                 | Native                                                     | **Native**       |
+| **Calendar Systems** | No                                 | No                                   | No                                       | Yes                                                        | **Yes**          |
+| **Tree-Shaking**     | No                                 | Yes                                  | No                                       | N/A                                                        | **Yes**          |
+| **Polyfill Needed?** | No                                 | No                                   | No                                       | No (Native)                                                | **Optional**     |
+| **Temporal-native**  | No                                 | No                                   | No                                       | Yes                                                        | **Yes**          |

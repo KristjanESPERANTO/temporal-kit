@@ -5,17 +5,20 @@ Thank you for your interest in contributing! We welcome contributions from the c
 ## Development Setup
 
 1.  **Clone the repository:**
+
     ```bash
     git clone https://github.com/KristjanESPERANTO/temporal-kit.git
     cd temporal-kit
     ```
 
 2.  **Install dependencies:**
+
     ```bash
     npm install
     ```
 
 3.  **Start development mode:**
+
     ```bash
     node --run dev          # Watch mode for development
     ```
@@ -32,6 +35,7 @@ node --run test:coverage # Coverage report (100% threshold)
 ```
 
 You can also run the full CI pipeline locally:
+
 ```bash
 node --run ci
 ```
@@ -56,6 +60,7 @@ node --run release:major  # Bump major version (0.0.2 → 1.0.0)
 ```
 
 This process automatically:
+
 - Generates/updates `CHANGELOG.md` from conventional commits
 - Bumps version in `package.json`
 - Creates git commit and tag
@@ -73,17 +78,22 @@ This process automatically:
 2. Bump and tag using `node --run release` / `release:minor` / `release:major`.
    This updates `CHANGELOG.md`, `package.json`, `docs/index.html`, and creates a local git tag.
 3. Push commit and tag to GitHub:
+
    ```bash
    git push --follow-tags
    ```
 4. Create a GitHub Release from the tag – this is what triggers the npm publish workflow:
+
    ```bash
    gh release create vX.Y.Z --generate-notes
    ```
+
    For a pre-release (e.g. `v1.0.0-rc.1`), add `--prerelease`:
+
    ```bash
    gh release create vX.Y.Z-rc.1 --generate-notes --prerelease
    ```
+
    > **Note:** Pushing the tag alone is not enough. The publish workflow only triggers on a GitHub Release event (`on: release: types: [released]`), not on tag pushes.
 5. Verify workflow success and npm package visibility.
 
@@ -112,10 +122,12 @@ src/
 ```
 
 **Entry points:**
+
 - `temporal-kit` — Expects native Temporal, throws a clear error if missing.
 - `temporal-kit/polyfilled` — Auto-loads `temporal-polyfill` for Node.js 24/25 and older browsers.
 
 **Tooling:**
+
 - **Biome** — Linting and formatting
 - **Vitest** — Type-checked tests with 100% coverage threshold
 - **tsup** — ESNext bundling, `sideEffects: false` for perfect tree-shaking

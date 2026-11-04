@@ -5,6 +5,7 @@
 **Node.js 26+** ships with native Temporal support — no polyfill needed. For older Node.js versions, use the polyfilled examples.
 
 ### Recommended: Start Here
+
 ```bash
 node --run build
 node examples/01-basic-usage.js    # Feature overview
@@ -12,13 +13,16 @@ node examples/02-real-world.js     # Practical patterns
 ```
 
 ### Native Temporal Support
+
 Native Temporal is available without polyfill in:
+
 - **Node.js 26+**
 - Modern browsers (Chrome, Edge, Firefox — see [MDN compatibility table](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal#browser_compatibility))
 
 For older Node.js versions or older browsers, use the polyfilled entry point (`temporal-kit/polyfilled`).
 
 ### TypeScript Examples
+
 ```bash
 # Compile TypeScript first
 npx tsc examples/03-typescript-usage.ts --outDir examples/dist --module esnext --target esnext --moduleResolution bundler
