@@ -14,13 +14,7 @@ import { Temporal } from "../temporal.js";
  */
 export function isValidTimezone(timezone: string): boolean {
   try {
-    // Use ZonedDateTime to validate the timezone string.
-    Temporal.ZonedDateTime.from({
-      year: 2024,
-      month: 1,
-      day: 1,
-      timeZone: timezone,
-    });
+    getTimezoneName(timezone);
     return true;
   } catch {
     return false;
@@ -28,11 +22,11 @@ export function isValidTimezone(timezone: string): boolean {
 }
 
 /**
- * Gets the canonical timezone ID from a string or TimeZone object.
- * Throws an error if the timezone is invalid.
+ * Gets the timezone ID from a string or ZonedDateTime.
+ * Throws a RangeError if the timezone is invalid.
  *
- * @param timezone - The timezone string or object
- * @returns The canonical timezone ID
+ * @param timezone - The timezone string or ZonedDateTime
+ * @returns The timezone ID
  *
  * @example
  * ```ts
@@ -44,19 +38,7 @@ export function getTimezoneName(
   timezone: string | { id: string } | Temporal.ZonedDateTime,
 ): string {
   if (typeof timezone === "string") {
-    const zdt = Temporal.ZonedDateTime.from({
-      year: 2024,
-      month: 1,
-      day: 1,
-      timeZone: timezone,
-    });
-    return zdt.timeZoneId;
+    return Temporal.Now.zonedDateTimeISO(timezone).timeZoneId;
   }
-
-  if ("timeZoneId" in timezone) {
-    return timezone.timeZoneId;
-  }
-
-  // It's a TimeZone object (or similar)
-  return timezone.id;
+  return "timeZoneId" in timezone ? timezone.timeZoneId : timezone.id;
 }
