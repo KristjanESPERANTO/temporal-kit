@@ -28,12 +28,7 @@ export interface FormatOptions {
  */
 export function format(date: DateLike, opts: FormatOptions = {}): string {
   const { locale, dateStyle = "medium", timeStyle, options } = opts;
-  const { date: formattable, timeZone } = toFormattable(date);
-
-  // Build format options
-  const formatOptions = withTimeZone(options || { dateStyle, timeStyle }, timeZone);
-
-  return new Intl.DateTimeFormat(locale, formatOptions).format(formattable);
+  return formatWithIntl(date, locale, options || { dateStyle, timeStyle });
 }
 
 /**
@@ -49,12 +44,7 @@ export function format(date: DateLike, opts: FormatOptions = {}): string {
  */
 export function formatTime(time: TimeLike, opts: FormatOptions = {}): string {
   const { locale, timeStyle = "medium", options } = opts;
-  const { date: formattable, timeZone } = toFormattable(time);
-
-  // Build format options
-  const formatOptions = withTimeZone(options || { timeStyle }, timeZone);
-
-  return new Intl.DateTimeFormat(locale, formatOptions).format(formattable);
+  return formatWithIntl(time, locale, options || { timeStyle });
 }
 
 /**
@@ -69,12 +59,7 @@ export function formatTime(time: TimeLike, opts: FormatOptions = {}): string {
  */
 export function formatDateTime(date: DateLike, opts: FormatOptions = {}): string {
   const { locale, dateStyle = "medium", timeStyle = "medium", options } = opts;
-  const { date: formattable, timeZone } = toFormattable(date);
-
-  // Build format options
-  const formatOptions = withTimeZone(options || { dateStyle, timeStyle }, timeZone);
-
-  return new Intl.DateTimeFormat(locale, formatOptions).format(formattable);
+  return formatWithIntl(date, locale, options || { dateStyle, timeStyle });
 }
 
 type Formattable = {
@@ -103,14 +88,16 @@ function toFormattable(value: DateLike | TimeLike): Formattable {
   return { date: new Date(value.epochMilliseconds), timeZone: value.timeZoneId };
 }
 
-function withTimeZone(
+function formatWithIntl(
+  value: DateLike | TimeLike,
+  locale: string | string[] | undefined,
   options: Intl.DateTimeFormatOptions,
-  timeZone: string | undefined,
-): Intl.DateTimeFormatOptions {
+): string {
+  const { date, timeZone } = toFormattable(value);
   if (timeZone && options.timeZone === undefined) {
-    return { ...options, timeZone };
+    options = { ...options, timeZone };
   }
-  return options;
+  return new Intl.DateTimeFormat(locale, options).format(date);
 }
 
 /**
