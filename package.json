@@ -42,9 +42,10 @@
     "format": "biome format --write .",
     "ci": "node --run typecheck && node --run lint && node --run test:coverage && node --run build",
     "prepublishOnly": "node --run ci",
-    "release": "node --run ci && commit-and-tag-version",
-    "release:minor": "node --run ci && commit-and-tag-version --release-as minor",
-    "release:major": "node --run ci && commit-and-tag-version --release-as major",
+    "release": "node --run ci && commit-and-tag-version --npmPublishHint \"npm run release:publish\"",
+    "release:minor": "node --run ci && commit-and-tag-version --release-as minor --npmPublishHint \"npm run release:publish\"",
+    "release:major": "node --run ci && commit-and-tag-version --release-as major --npmPublishHint \"npm run release:publish\"",
+    "release:publish": "node scripts/publish-release.js",
     "prepare": "simple-git-hooks"
   },
   "simple-git-hooks": {
