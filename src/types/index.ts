@@ -29,21 +29,6 @@ export type DateLike = PlainDate | PlainDateTime | ZonedDateTime;
 export type TimeLike = PlainTime | PlainDateTime | ZonedDateTime;
 
 /**
- * Options for operations that depend on locale.
- */
-export type LocaleOptions = {
-  locale?: Intl.LocalesArgument;
-};
-
-/**
- * Options for operations that depend on week start day.
- * ISO 8601 standard: Monday = 1
- */
-export type WeekStartOptions = {
-  weekStartsOn?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
-};
-
-/**
  * Duration-like object that can be passed to add/subtract.
  * Matches Temporal.DurationLike but more explicit.
  */
@@ -64,5 +49,3 @@ export type DurationInput = {
  * Units that can be used for date/time manipulation.
  */
 export type DateUnit = "year" | "month" | "week" | "day";
-export type TimeUnit = "hour" | "minute" | "second" | "millisecond" | "microsecond" | "nanosecond";
-export type DateTimeUnit = DateUnit | TimeUnit;
