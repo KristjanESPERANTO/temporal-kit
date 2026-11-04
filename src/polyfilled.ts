@@ -5,10 +5,11 @@
  * that don't have native Temporal support.
  */
 
-// Load/install the polyfill globally (uses native Temporal when available)
 import "temporal-polyfill/global";
 
-const TemporalApi = globalThis.Temporal;
+import type { Temporal as TemporalTypes } from "temporal-spec";
+
+const TemporalApi = (globalThis as typeof globalThis & { Temporal: typeof TemporalTypes }).Temporal;
 
 // Re-export everything from the main entry
 export * from "./index.js";

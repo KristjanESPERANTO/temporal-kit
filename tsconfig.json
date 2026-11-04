@@ -25,7 +25,7 @@
     "sourceMap": true,
     "removeComments": false,
     "importHelpers": false,
-    "noEmit": true, // tsup handles building
+    "noEmit": true, // Build scripts override this to emit JavaScript and declarations
 
     // Interop Constraints
     "esModuleInterop": true,

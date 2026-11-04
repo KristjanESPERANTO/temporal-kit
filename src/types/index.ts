@@ -5,7 +5,7 @@
  * convenience unions for functions that can handle multiple types.
  */
 
-// Use temporal-spec for type definitions (types-only package, inlined at build)
+// Emitted declarations retain this type dependency for Temporal definitions.
 import type { Temporal } from "temporal-spec";
 
 // Re-export Temporal types for convenience

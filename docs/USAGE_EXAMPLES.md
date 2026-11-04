@@ -22,6 +22,8 @@ Practical examples for common use cases with temporal-kit.
 
 ```bash
 npm install temporal-kit
+# Only needed when importing temporal-kit/polyfilled:
+npm install temporal-polyfill
 ```
 
 ```typescript
@@ -31,7 +33,7 @@ import { isPlainDate, add, format } from "temporal-kit";
 // Or import everything
 import * as tk from "temporal-kit";
 
-// For Node.js 24 or older environments without native Temporal support:
+// For Node.js 24 or older; install temporal-polyfill first:
 import { isPlainDate, add } from "temporal-kit/polyfilled";
 ```
 

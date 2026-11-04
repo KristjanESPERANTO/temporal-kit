@@ -3,7 +3,9 @@
   "version": "0.3.3",
   "description": "A modern, functional utility library for the Temporal API - experiment with Temporal today.",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/polyfilled.js"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -30,8 +32,11 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "clean": "node scripts/clean-dist.js",
+    "build": "node --run clean && node --run build:modules && node --run build:browser",
+    "build:modules": "tsc --project tsconfig.build.json --noEmit false --outDir dist",
+    "build:browser": "esbuild src/index.ts --bundle --format=iife --global-name=TemporalKit --target=esnext --minify --sourcemap --outfile=dist/temporal-kit.browser.global.js && esbuild src/polyfilled.ts --bundle --format=iife --global-name=TemporalKit --target=esnext --minify --sourcemap --outfile=dist/temporal-kit.browser.polyfilled.global.js",
+    "dev": "node --run clean && tsc --project tsconfig.build.json --noEmit false --outDir dist --watch",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
@@ -96,10 +101,20 @@
     "lint-staged": "^17.6.0",
     "simple-git-hooks": "^2.14.0",
     "temporal-polyfill": "^1.0.7",
-    "temporal-spec": "^1.0.1",
-    "tsup": "^9.0.0",
+    "esbuild": "^0.28.2",
     "typescript": "^7.0.2",
     "vitest": "^5.1.0"
+  },
+  "dependencies": {
+    "temporal-spec": "^1.0.1"
+  },
+  "peerDependencies": {
+    "temporal-polyfill": "^1.0.7"
+  },
+  "peerDependenciesMeta": {
+    "temporal-polyfill": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=24"

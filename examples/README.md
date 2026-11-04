@@ -4,6 +4,12 @@
 
 **Node.js 26+** ships with native Temporal support — no polyfill needed. For older Node.js versions, use the polyfilled examples.
 
+Install the optional polyfill peer before running them:
+
+```bash
+npm install temporal-polyfill
+```
+
 ### Recommended: Start Here
 
 ```bash

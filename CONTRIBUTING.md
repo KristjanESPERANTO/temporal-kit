@@ -124,11 +124,12 @@ src/
 **Entry points:**
 
 - `temporal-kit` — Expects native Temporal, throws a clear error if missing.
-- `temporal-kit/polyfilled` — Auto-loads `temporal-polyfill` for Node.js 24/25 and older browsers.
+- `temporal-kit/polyfilled` — Auto-loads the optional `temporal-polyfill` peer for Node.js 24/25 and older browsers.
 
 **Tooling:**
 
 - **Biome** — Linting and formatting
 - **Vitest** — Type-checked tests with 100% coverage threshold
-- **tsup** — ESNext bundling, `sideEffects: false` for perfect tree-shaking
+- **TypeScript** — ESM modules and declarations
+- **esbuild** — Standalone browser IIFEs
 - **TypeScript** — Strict mode, latest compiler features

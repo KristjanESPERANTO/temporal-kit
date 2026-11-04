@@ -17,6 +17,8 @@
 
 ```bash
 npm install temporal-kit
+# Only needed when importing temporal-kit/polyfilled:
+npm install temporal-polyfill
 ```
 
 ### Basic Usage
@@ -25,7 +27,7 @@ npm install temporal-kit
 // Node.js 26+ or modern browsers — native Temporal, no polyfill needed:
 import { isPlainDate, add, startOf } from "temporal-kit";
 
-// Node.js 24 or older browsers — polyfill included:
+// Node.js 24 or older — install temporal-polyfill first:
 import { isPlainDate } from "temporal-kit/polyfilled";
 ```
 
@@ -119,7 +121,7 @@ const endOfNextMonth = pipe(
 );
 ```
 
-**Polyfill as opt-in.** Main entry expects native Temporal (Node 26+, modern browsers). `temporal-kit/polyfilled` includes the polyfill. No global surprises.
+**Polyfill as opt-in.** The main entry expects native Temporal (Node 26+, modern browsers). The `temporal-kit/polyfilled` entry loads the optional `temporal-polyfill` peer dependency; the standalone browser IIFE includes it.
 
 ## Features & Capabilities
 
