@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.3.2](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.3.1...v0.3.2) (2026-09-15)
+
+### Chores
+
+* update devDependencies ([bc4b8d2](https://github.com/KristjanESPERANTO/temporal-kit/commit/bc4b8d2a92d6db4de4731e8664a5a69e4a44d59a))
+
+### Performance Improvements
+
+* **collection:** optimize closestTo ([b3bf7e6](https://github.com/KristjanESPERANTO/temporal-kit/commit/b3bf7e67450e4e304471b9564a9bdac6bc6ee4e7))
+* **test:** remove duplicate typecheck ([53f8792](https://github.com/KristjanESPERANTO/temporal-kit/commit/53f8792896787b625b0805a053c23ae43fa6d32f))
+
 ## [0.3.1](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.3.0...v0.3.1) (2026-08-02)
 
 ### Bug Fixes
