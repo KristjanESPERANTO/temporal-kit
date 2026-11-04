@@ -28,22 +28,7 @@ export type DateLike = PlainDate | PlainDateTime | ZonedDateTime;
  */
 export type TimeLike = PlainTime | PlainDateTime | ZonedDateTime;
 
-/**
- * Duration-like object that can be passed to add/subtract.
- * Matches Temporal.DurationLike but more explicit.
- */
-export type DurationInput = {
-  years?: number;
-  months?: number;
-  weeks?: number;
-  days?: number;
-  hours?: number;
-  minutes?: number;
-  seconds?: number;
-  milliseconds?: number;
-  microseconds?: number;
-  nanoseconds?: number;
-};
+export type DurationInput = Temporal.DurationLike;
 
 /**
  * Units that can be used for date/time manipulation.

@@ -1463,21 +1463,11 @@ type DateUnit = "day" | "week" | "month" | "year";
 
 ### `DurationInput`
 
-Input format for durations (used by `add` and `subtract`).
+Native Temporal duration input accepted by `add` and `subtract`: a duration
+object, `Temporal.Duration`, or an ISO 8601 duration string.
 
 ```typescript
-type DurationInput = {
-  years?: number;
-  months?: number;
-  weeks?: number;
-  days?: number;
-  hours?: number;
-  minutes?: number;
-  seconds?: number;
-  milliseconds?: number;
-  microseconds?: number;
-  nanoseconds?: number;
-};
+type DurationInput = Temporal.DurationLike;
 ```
 
 ---

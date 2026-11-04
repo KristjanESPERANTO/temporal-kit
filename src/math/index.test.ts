@@ -102,6 +102,11 @@ describe("Math Functions", () => {
       expect(result.toString()).toBe("2027-02-02");
     });
 
+    it("accepts native Temporal duration strings", () => {
+      const date = Temporal.PlainDate.from("2025-11-30");
+      expect(add(date, "P5D").toString()).toBe("2025-12-05");
+    });
+
     it("should add hours to PlainDateTime", () => {
       const dt = Temporal.PlainDateTime.from("2025-11-30T10:00:00");
       const result = add(dt, { hours: 5 });
