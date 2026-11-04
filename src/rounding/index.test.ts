@@ -44,6 +44,34 @@ describe("rounding", () => {
   });
 
   describe("round", () => {
+    it("supports Instant and plural time units", () => {
+      const instant = Temporal.Instant.from("2025-01-01T15:30:45Z");
+      expect(round(instant, "minutes").toString()).toBe("2025-01-01T15:31:00Z");
+    });
+
+    it("supports calendar duration rounding with a reference date", () => {
+      const duration = Temporal.Duration.from({ months: 1, days: 16 });
+      expect(
+        round(duration, "month", {
+          relativeTo: Temporal.PlainDate.from("2025-01-01"),
+          largestUnit: "month",
+        }).toString(),
+      ).toBe("P2M");
+    });
+
+    it("rejects units unsupported by the input type", () => {
+      const time = Temporal.PlainTime.from("15:30");
+      const instant = Temporal.Instant.from("2025-01-01T00:00Z");
+      // @ts-expect-error PlainTime does not support day rounding.
+      expect(() => floor(time, "day")).toThrow(RangeError);
+      // @ts-expect-error Instant does not support day rounding.
+      expect(() => ceil(instant, "day")).toThrow(RangeError);
+      // @ts-expect-error Calendar month rounding is not supported on PlainTime.
+      expect(() => round(time, "month")).toThrow(RangeError);
+      // @ts-expect-error The explicit unit cannot be overridden through options.
+      expect(round(time, "hour", { smallestUnit: "minute" }).toString()).toBe("16:00:00");
+    });
+
     it("rounds to nearest hour (halfExpand default)", () => {
       const dt1 = Temporal.PlainDateTime.from("2025-01-01T15:29:00");
       const dt2 = Temporal.PlainDateTime.from("2025-01-01T15:31:00");

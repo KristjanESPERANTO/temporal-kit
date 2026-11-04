@@ -857,6 +857,8 @@ Functions for date/time arithmetic and boundary operations.
 changing the input type (`PlainDate`, `PlainDateTime`, or `ZonedDateTime`).
 They preserve the calendar and local time where that time exists; zoned arithmetic
 uses Temporal's native resolution for skipped or repeated local times.
+Non-ISO calendar arithmetic requires support from the runtime's Temporal
+implementation; unsupported operations propagate its errors.
 
 Numeric inputs must be finite and are truncated toward zero. The default
 `{ overflow: "constrain" }` clamps to the field's valid range; use
@@ -1241,6 +1243,19 @@ isValidDateTimeString("invalid"); // false
 
 Functional wrappers for rounding Temporal objects.
 
+Units and options are derived from the input's native `.round()` signature:
+`PlainTime` and `Instant` accept hour through nanosecond; `PlainDateTime` and
+`ZonedDateTime` additionally accept day. `Duration` also supports calendar units,
+with `relativeTo` where required. Both singular and plural unit names are accepted.
+The result retains the input type. These wrappers do not implement rounding to
+calendar boundaries for date/time values; use native Temporal operations where suitable.
+
+**TypeScript migration:** Arbitrary `string` units are no longer accepted. Use a
+unit literal (for example `const unit = "minute" as const`) or
+`RoundingUnit<typeof value>`. Invalid units still throw at runtime in JavaScript.
+The explicit `unit` argument takes precedence over a stray `smallestUnit` property
+in a JavaScript options object.
+
 ### `floor(value, unit)`
 
 Rounds a value down to the specified unit.
@@ -1248,7 +1263,7 @@ Rounds a value down to the specified unit.
 **Parameters:**
 
 - `value: Roundable` - The value to round (Instant, ZonedDateTime, PlainDateTime, PlainTime, Duration)
-- `unit: string` - The unit to round to (e.g. 'hour', 'minute')
+- `unit: RoundingUnit<T>` - A unit supported by the input (e.g. 'hour', 'minute')
 
 **Returns:** `Roundable` - The rounded value
 
@@ -1270,7 +1285,7 @@ Rounds a value up to the specified unit.
 **Parameters:**
 
 - `value: Roundable` - The value to round
-- `unit: string` - The unit to round to
+- `unit: RoundingUnit<T>` - A unit supported by the input
 
 **Returns:** `Roundable` - The rounded value
 
@@ -1292,8 +1307,8 @@ Rounds a value to the nearest unit (half-expand by default).
 **Parameters:**
 
 - `value: Roundable` - The value to round
-- `unit: string` - The unit to round to
-- `options?: object` - Additional options
+- `unit: RoundingUnit<T>` - A unit supported by the input
+- `options?: RoundingOptions<T>` - Native options except `smallestUnit`, which is supplied by `unit`
   - `roundingMode?: string` - 'ceil', 'floor', 'expand', 'trunc', 'halfCeil', 'halfFloor', 'halfExpand', 'halfTrunc', 'halfEven'
   - `roundingIncrement?: number` - Increment to round to (e.g. 15 for 15 minutes)
 

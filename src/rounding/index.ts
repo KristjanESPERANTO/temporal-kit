@@ -15,6 +15,12 @@ export type Roundable =
   | Temporal.PlainTime
   | Temporal.Duration;
 
+export type RoundingUnit<T extends Roundable> = NonNullable<
+  Parameters<T["round"]>[0]["smallestUnit"]
+>;
+
+export type RoundingOptions<T extends Roundable> = Omit<Parameters<T["round"]>[0], "smallestUnit">;
+
 /**
  * Rounds a value down (floor) to the specified unit.
  *
@@ -31,10 +37,11 @@ export type Roundable =
  * floor(dt, 'hour'); // 2025-01-01T15:00:00
  * ```
  */
-export function floor<T extends Roundable>(value: T, unit: string): T {
-  // Cast to any to avoid complex union type compatibility issues with .round() signatures
-  // biome-ignore lint/suspicious/noExplicitAny: Union type compatibility is complex here
-  return (value as any).round({ smallestUnit: unit, roundingMode: "floor" });
+export function floor<T extends Roundable>(value: T, unit: RoundingUnit<NoInfer<T>>): T {
+  return (value as unknown as { round(options: object): T }).round({
+    smallestUnit: unit,
+    roundingMode: "floor",
+  });
 }
 
 /**
@@ -53,9 +60,11 @@ export function floor<T extends Roundable>(value: T, unit: string): T {
  * ceil(dt, 'hour'); // 2025-01-01T16:00:00
  * ```
  */
-export function ceil<T extends Roundable>(value: T, unit: string): T {
-  // biome-ignore lint/suspicious/noExplicitAny: Union type compatibility is complex here
-  return (value as any).round({ smallestUnit: unit, roundingMode: "ceil" });
+export function ceil<T extends Roundable>(value: T, unit: RoundingUnit<NoInfer<T>>): T {
+  return (value as unknown as { round(options: object): T }).round({
+    smallestUnit: unit,
+    roundingMode: "ceil",
+  });
 }
 
 /**
@@ -78,21 +87,11 @@ export function ceil<T extends Roundable>(value: T, unit: string): T {
  */
 export function round<T extends Roundable>(
   value: T,
-  unit: string,
-  options: {
-    roundingMode?:
-      | "ceil"
-      | "floor"
-      | "expand"
-      | "trunc"
-      | "halfCeil"
-      | "halfFloor"
-      | "halfExpand"
-      | "halfTrunc"
-      | "halfEven";
-    roundingIncrement?: number;
-  } = {},
+  unit: RoundingUnit<NoInfer<T>>,
+  options?: RoundingOptions<NoInfer<T>>,
 ): T {
-  // biome-ignore lint/suspicious/noExplicitAny: Union type compatibility is complex here
-  return (value as any).round({ smallestUnit: unit, ...options });
+  return (value as unknown as { round(options: object): T }).round({
+    ...options,
+    smallestUnit: unit,
+  });
 }
