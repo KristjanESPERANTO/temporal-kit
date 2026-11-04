@@ -168,6 +168,30 @@ describe("Math Functions", () => {
       expect(result.toString()).toContain("00:00:00");
     });
 
+    it("should choose the first occurrence of repeated midnight", () => {
+      const zdt = Temporal.ZonedDateTime.from("2020-11-01T12:00[America/Havana]");
+      const result = startOf(zdt, "day");
+
+      expect(result.toPlainTime().toString()).toBe("00:00:00");
+      expect(result.offset).toBe("-04:00");
+    });
+
+    it("should choose the first occurrence of midnight at the start of the month", () => {
+      const zdt = Temporal.ZonedDateTime.from("2020-11-15T12:00[America/Havana]");
+      const result = startOf(zdt, "month");
+
+      expect(result.toPlainDate().toString()).toBe("2020-11-01");
+      expect(result.offset).toBe("-04:00");
+    });
+
+    it("should start at the first valid time when midnight is skipped", () => {
+      const zdt = Temporal.ZonedDateTime.from("2018-11-04T12:00[America/Sao_Paulo]");
+      const result = startOf(zdt, "day");
+
+      expect(result.toPlainDate().toString()).toBe("2018-11-04");
+      expect(result.toPlainTime().toString()).toBe("01:00:00");
+    });
+
     it("should throw for invalid unit", () => {
       const date = Temporal.PlainDate.from("2025-11-30");
       // @ts-expect-error - testing invalid unit
@@ -232,6 +256,14 @@ describe("Math Functions", () => {
       const result = endOf(zdt, "day");
       expect(result.toString()).toContain("2025-11-30");
       expect(result.toString()).toContain("23:59:59");
+    });
+
+    it("should keep the end of day on the same date when midnight is skipped", () => {
+      const zdt = Temporal.ZonedDateTime.from("2018-11-04T12:00[America/Sao_Paulo]");
+      const result = endOf(zdt, "day");
+
+      expect(result.toPlainDate().toString()).toBe("2018-11-04");
+      expect(result.toPlainTime().toString()).toBe("23:59:59.999999999");
     });
 
     it("should throw for invalid unit", () => {

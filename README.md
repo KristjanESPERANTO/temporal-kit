@@ -1,13 +1,13 @@
 # Temporal Kit
 
-> **The missing ergonomics layer for the Temporal API.**
+> **A functional toolbox for working with Temporal.**
 
 [![Status](https://img.shields.io/badge/Status-Ready%20for%20Early%20Adopters-success)](https://github.com/KristjanESPERANTO/temporal-kit)
 [![npm version](https://img.shields.io/npm/v/temporal-kit)](https://www.npmjs.com/package/temporal-kit)
 [![Min+gzip](https://img.shields.io/bundlejs/size/temporal-kit?label=minzip)](https://bundlejs.com/?q=temporal-kit)
 [![License](https://img.shields.io/npm/l/temporal-kit)](https://github.com/KristjanESPERANTO/temporal-kit/blob/main/LICENSE.md)
 
-**Temporal Kit** is a lightweight, tree-shakable library that fills the gap between the raw `Temporal` API and the ergonomic needs of daily development. It provides the missing helper functions—like `startOf`, `isBetween`, or `formatRelative`—in a pure, functional, and type-safe way.
+**Temporal Kit** is a lightweight, tree-shakable collection of composable helpers for common date and time workflows. It complements Temporal with focused APIs for comparison, formatting, parsing, ranges, business-day arithmetic, and more, while keeping Temporal objects at the center.
 
 🌐 **[Try the Live Playground →](https://kristjanesperanto.github.io/temporal-kit/)**
 
@@ -80,21 +80,12 @@ const monday = addBusinessDays(today, 1); // Skips weekend
 
 ## Why Temporal Kit?
 
-Temporal is low-level by design. You get precise types but miss the daily helpers—`startOf`, `isBetween`, `formatRelative`, business day math. You'd rebuild these in every project.
+Temporal provides precise date and time primitives. Temporal Kit brings common application workflows together as small, typed functions that compose naturally:
+```typescript
+pipe(date, d => startOf(d, 'month'), d => add(d, { days: 1 }))
+```
 
-**Why not write them yourself?**
-
-Two reasons:
-
-1. **Readability:** Functional helpers let you compose dates in pipelines:
-   ```typescript
-   pipe(date, d => startOf(d, 'month'), d => add(d, { days: 1 }))
-   ```
-   Nesting gets messy fast: `add(startOf(date, 'month'), { days: 1 })`
-
-2. **Edge cases:** DST, leap years, timezone handling—these are subtle. `startOf('month')` breaks across DST transitions. Every project gets this wrong in production.
-
-**Temporal Kit** gives you ~30 well-tested, tree-shakable helpers that handle these edge cases and work well in pipelines. Zero runtime dependencies.
+Use the helpers you need independently: the API is tree-shakable, works directly with Temporal types, and has zero runtime dependencies in its native entry point.
 
 ## Design Principles
 

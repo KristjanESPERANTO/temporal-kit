@@ -1,6 +1,23 @@
 import { Temporal } from "../temporal.js";
 import type { DateLike, DateUnit, DurationInput } from "../types/index.js";
 
+function atStartOfDay<T extends Temporal.PlainDateTime | Temporal.ZonedDateTime>(date: T): T {
+  const fields = {
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+    nanosecond: 0,
+  };
+
+  if (date instanceof Temporal.ZonedDateTime) {
+    return date.with(fields, { offset: "ignore" }) as T;
+  }
+
+  return date.with(fields) as T;
+}
+
 /**
  * Add a duration to a date/time value.
  *
@@ -64,15 +81,7 @@ export function startOf<T extends DateLike>(date: T, unit: DateUnit): T {
     if (date instanceof Temporal.PlainDate) {
       return date;
     }
-    // For DateTime/ZonedDateTime, set time to 00:00:00
-    return date.with({
-      hour: 0,
-      minute: 0,
-      second: 0,
-      millisecond: 0,
-      microsecond: 0,
-      nanosecond: 0,
-    }) as T;
+    return atStartOfDay(date as Temporal.PlainDateTime | Temporal.ZonedDateTime) as T;
   }
 
   if (unit === "week") {
@@ -82,14 +91,7 @@ export function startOf<T extends DateLike>(date: T, unit: DateUnit): T {
 
     // If it has time, set to start of day
     if ("hour" in startOfWeek) {
-      return startOfWeek.with({
-        hour: 0,
-        minute: 0,
-        second: 0,
-        millisecond: 0,
-        microsecond: 0,
-        nanosecond: 0,
-      }) as T;
+      return atStartOfDay(startOfWeek as Temporal.PlainDateTime | Temporal.ZonedDateTime) as T;
     }
 
     return startOfWeek as T;
@@ -100,14 +102,7 @@ export function startOf<T extends DateLike>(date: T, unit: DateUnit): T {
 
     // If it has time, set to start of day
     if ("hour" in startOfMonth) {
-      return startOfMonth.with({
-        hour: 0,
-        minute: 0,
-        second: 0,
-        millisecond: 0,
-        microsecond: 0,
-        nanosecond: 0,
-      }) as T;
+      return atStartOfDay(startOfMonth as Temporal.PlainDateTime | Temporal.ZonedDateTime) as T;
     }
 
     return startOfMonth as T;
@@ -118,14 +113,7 @@ export function startOf<T extends DateLike>(date: T, unit: DateUnit): T {
 
     // If it has time, set to start of day
     if ("hour" in startOfYear) {
-      return startOfYear.with({
-        hour: 0,
-        minute: 0,
-        second: 0,
-        millisecond: 0,
-        microsecond: 0,
-        nanosecond: 0,
-      }) as T;
+      return atStartOfDay(startOfYear as Temporal.PlainDateTime | Temporal.ZonedDateTime) as T;
     }
 
     return startOfYear as T;
