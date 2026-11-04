@@ -107,10 +107,7 @@ export function compare(a: DateLike, b: DateLike): number {
   }
 
   if (kindA === "zoned") {
-    // For ZonedDateTime, convert to Instant for reliable comparison across timezones
-    const instantA = (a as Temporal.ZonedDateTime).toInstant();
-    const instantB = (b as Temporal.ZonedDateTime).toInstant();
-    return Temporal.Instant.compare(instantA, instantB);
+    return Temporal.ZonedDateTime.compare(a as Temporal.ZonedDateTime, b as Temporal.ZonedDateTime);
   }
   if (kindA === "datetime") {
     return Temporal.PlainDateTime.compare(a as Temporal.PlainDateTime, b as Temporal.PlainDateTime);
