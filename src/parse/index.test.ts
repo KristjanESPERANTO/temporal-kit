@@ -180,6 +180,10 @@ describe("parse", () => {
       expect(result).toBeInstanceOf(Temporal.PlainTime);
       expect(result.hour).toBe(15);
     });
+
+    it("rejects hours outside the 12-hour clock", () => {
+      expect(() => parse("13:30 PM")).toThrow(RangeError);
+    });
   });
 
   describe("DateTime combinations", () => {
