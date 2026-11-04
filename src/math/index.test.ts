@@ -45,7 +45,10 @@ describe("Math Functions", () => {
       expect(withWeekOfYear(date, 1).toString()).toBe("2020-01-03");
       expect(withWeekOfYear(date, 99).toString()).toBe("2021-01-01");
       expect(withWeekOfYear(Temporal.PlainDate.from("2021-07-01"), 53).weekOfYear).toBe(52);
-      expect(() => withWeekOfYear(date.withCalendar("hebrew"), 1)).toThrow(RangeError);
+      const nonIsoDate = { calendarId: "hebrew" } as unknown as Temporal.PlainDate;
+      expect(() => withWeekOfYear(nonIsoDate, 1)).toThrow(
+        "withWeekOfYear requires the ISO 8601 calendar",
+      );
     });
 
     it("preserves zoned local time across DST transitions", () => {
