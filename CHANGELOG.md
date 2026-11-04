@@ -2,6 +2,65 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.4.0](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.3.1...v0.4.0) (2026-11-04)
+
+### ⚠ BREAKING CHANGES
+
+* **business:** days must be a safe integer.
+* Install temporal-polyfill separately to use
+  temporal-kit/polyfilled.
+* **types:** Remove unused type exports.
+  Removed LocaleOptions, WeekStartOptions, TimeUnit, and DateTimeUnit.
+* Rounding units must match the input Temporal type.
+  Use a literal or RoundingUnit<T> instead of arbitrary string variables.
+  The explicit unit now takes precedence over smallestUnit in JS options.
+
+### build
+
+* make temporal-polyfill an optional peer ([c46f99d](https://github.com/KristjanESPERANTO/temporal-kit/commit/c46f99dd5b54ea8b39410db1491927f2d2534bed))
+
+### Features
+
+* add calendar field replacement helpers ([750c914](https://github.com/KristjanESPERANTO/temporal-kit/commit/750c914c436d94668a8c72bde9d5538e099c5486))
+
+### Bug Fixes
+
+* enforce input-specific rounding units ([189a684](https://github.com/KristjanESPERANTO/temporal-kit/commit/189a68476abb5a4268d5ce14ed367994fe5f5158))
+* handle DST boundaries and clarify scope ([d4af128](https://github.com/KristjanESPERANTO/temporal-kit/commit/d4af128c4e0383abe039c87cb960a8cca9173e1d))
+
+### Chores
+
+* fix new linter issues ([8a1aa95](https://github.com/KristjanESPERANTO/temporal-kit/commit/8a1aa956ca52644244805f3b905750b2a7c4997c))
+* **release:** 0.3.2 ([c8705cd](https://github.com/KristjanESPERANTO/temporal-kit/commit/c8705cdc85d41a577f4e0c31568970a262bd532a))
+* **release:** 0.3.3 ([3576aa5](https://github.com/KristjanESPERANTO/temporal-kit/commit/3576aa56dd4062675faf1589d50511dd0ac8c419))
+* **release:** automate GitHub publishing ([b92a721](https://github.com/KristjanESPERANTO/temporal-kit/commit/b92a72134b1ad12a32af64b2872f976c65fe2a55))
+* update devDependencies ([b6b61bc](https://github.com/KristjanESPERANTO/temporal-kit/commit/b6b61bcc505cd284147c86088cd6abac15b84e6c))
+* update devDependencies ([20616ba](https://github.com/KristjanESPERANTO/temporal-kit/commit/20616baf6e8717c85d07cbf3261bd82ce763e168))
+
+### Documentation
+
+* use release:publish in maintainer flow ([b94071b](https://github.com/KristjanESPERANTO/temporal-kit/commit/b94071b93f174c9240c6036545ee0e84342e8bd9))
+
+### Code Refactoring
+
+* **collection:** simplify closest date search ([65a6cfa](https://github.com/KristjanESPERANTO/temporal-kit/commit/65a6cfa698ae7dee68adbb81ffe12f54be9796d8))
+* **format:** share Intl formatting setup ([b0e3ac3](https://github.com/KristjanESPERANTO/temporal-kit/commit/b0e3ac3ecd8ae7410dd00f709f5928ca3cf14f58))
+* **math:** unify start and end boundaries ([d40d842](https://github.com/KristjanESPERANTO/temporal-kit/commit/d40d8425cb5e3ee7350dc1a6d9c5017b1fac9cd9))
+* **parse:** consolidate date and time parsing ([84f13ec](https://github.com/KristjanESPERANTO/temporal-kit/commit/84f13ec1da770f7ec8c995271ad6613a2726550c))
+* **polyfilled:** reuse Temporal export ([59fb9d5](https://github.com/KristjanESPERANTO/temporal-kit/commit/59fb9d52a5651da6845efe71070019a9f7a57732))
+* **range:** simplify interval stepping ([17b4f4f](https://github.com/KristjanESPERANTO/temporal-kit/commit/17b4f4f50fd0a70c4ca9684f39ab6a4a5af39fe0))
+* **timezone:** share timezone validation ([385bc97](https://github.com/KristjanESPERANTO/temporal-kit/commit/385bc978ca604fe482be540c322a037803fbad13))
+* **types:** remove unused public types ([c11804d](https://github.com/KristjanESPERANTO/temporal-kit/commit/c11804d324eb2735485019996d1325d3cb7818fa))
+* **types:** reuse native duration input type ([0826bc0](https://github.com/KristjanESPERANTO/temporal-kit/commit/0826bc06f1db5297d4d038ad2fe6de5fa0756e46))
+* **validation:** share parse guard ([2656569](https://github.com/KristjanESPERANTO/temporal-kit/commit/26565698652844add11e6bcb295b330707222d92))
+
+### Performance Improvements
+
+* **business:** jump full weeks ([b27d323](https://github.com/KristjanESPERANTO/temporal-kit/commit/b27d3233fd22fc28d768eb169f202a47dda7a757))
+* **collection:** optimize closestTo ([db05929](https://github.com/KristjanESPERANTO/temporal-kit/commit/db05929100583c566dd0a34781db182360bffc6d))
+* **compare:** use native zoned comparison ([2d2fa39](https://github.com/KristjanESPERANTO/temporal-kit/commit/2d2fa39787759d4e35f476c6c3136bbb77fe2a6c))
+* **test:** remove duplicate typecheck ([5a88ed2](https://github.com/KristjanESPERANTO/temporal-kit/commit/5a88ed2c267ff6fcfc6eabe12892129d0e61cdcd))
+
 ## [0.3.3](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.3.2...v0.3.3) (2026-09-15)
 
 ### Chores
