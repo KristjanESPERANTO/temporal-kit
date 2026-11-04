@@ -5,6 +5,15 @@
 
 import { Temporal } from "../temporal.js";
 
+function succeeds(parse: () => unknown): boolean {
+  try {
+    parse();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Checks if a string is a valid ISO 8601 date string (YYYY-MM-DD).
  *
@@ -20,12 +29,7 @@ import { Temporal } from "../temporal.js";
  * ```
  */
 export function isValidDateString(dateString: string): boolean {
-  try {
-    Temporal.PlainDate.from(dateString);
-    return true;
-  } catch {
-    return false;
-  }
+  return succeeds(() => Temporal.PlainDate.from(dateString));
 }
 
 /**
@@ -43,12 +47,7 @@ export function isValidDateString(dateString: string): boolean {
  * ```
  */
 export function isValidTimeString(timeString: string): boolean {
-  try {
-    Temporal.PlainTime.from(timeString);
-    return true;
-  } catch {
-    return false;
-  }
+  return succeeds(() => Temporal.PlainTime.from(timeString));
 }
 
 /**
@@ -66,12 +65,7 @@ export function isValidTimeString(timeString: string): boolean {
  * ```
  */
 export function isValidDateTimeString(dateTimeString: string): boolean {
-  try {
-    Temporal.PlainDateTime.from(dateTimeString);
-    return true;
-  } catch {
-    return false;
-  }
+  return succeeds(() => Temporal.PlainDateTime.from(dateTimeString));
 }
 
 /**
@@ -90,12 +84,7 @@ export function isValidDateTimeString(dateTimeString: string): boolean {
  * ```
  */
 export function isValidInstantString(instantString: string): boolean {
-  try {
-    Temporal.Instant.from(instantString);
-    return true;
-  } catch {
-    return false;
-  }
+  return succeeds(() => Temporal.Instant.from(instantString));
 }
 
 /**
@@ -114,10 +103,5 @@ export function isValidInstantString(instantString: string): boolean {
  * ```
  */
 export function isValidZonedString(zonedString: string): boolean {
-  try {
-    Temporal.ZonedDateTime.from(zonedString);
-    return true;
-  } catch {
-    return false;
-  }
+  return succeeds(() => Temporal.ZonedDateTime.from(zonedString));
 }
