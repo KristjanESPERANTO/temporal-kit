@@ -56,21 +56,41 @@ export function withWeekOfYear<T extends DateLike>(
   return date.add({ weeks: week - (date.weekOfYear as number) }) as T;
 }
 
-function atStartOfDay<T extends Temporal.PlainDateTime | Temporal.ZonedDateTime>(date: T): T {
-  const fields = {
-    hour: 0,
-    minute: 0,
-    second: 0,
-    millisecond: 0,
-    microsecond: 0,
-    nanosecond: 0,
-  };
+const END_OF_DAY = {
+  hour: 23,
+  minute: 59,
+  second: 59,
+  millisecond: 999,
+  microsecond: 999,
+  nanosecond: 999,
+};
 
-  if (date instanceof Temporal.ZonedDateTime) {
-    return date.with(fields, { offset: "ignore" }) as T;
+/** Returns the 1-based position of the date within the unit and the unit's length in days. */
+function position(date: DateLike, unit: DateUnit): [index: number, length: number] {
+  switch (unit) {
+    case "day":
+      return [1, 1];
+    case "week":
+      return [date.dayOfWeek, date.daysInWeek];
+    case "month":
+      return [date.day, date.daysInMonth];
+    case "year":
+      return [date.dayOfYear, date.daysInYear];
+    default:
+      throw new TypeError(`Invalid unit: ${unit}`);
   }
+}
 
-  return date.with(fields) as T;
+function boundary<T extends DateLike>(date: T, unit: DateUnit, edge: "start" | "end"): T {
+  const [index, length] = position(date, unit);
+  const day: DateLike = date.add({ days: (edge === "start" ? 1 : length) - index });
+
+  if (day instanceof Temporal.PlainDate) return day as T;
+  if (edge === "end") return day.with(END_OF_DAY) as T;
+  // startOfDay() picks the first instant of the day, even if midnight is skipped or repeated.
+  return (
+    day instanceof Temporal.ZonedDateTime ? day.startOfDay() : day.toPlainDate().toPlainDateTime()
+  ) as T;
 }
 
 /**
@@ -131,50 +151,7 @@ export function subtract<T extends DateLike>(date: T, duration: DurationInput): 
  * ```
  */
 export function startOf<T extends DateLike>(date: T, unit: DateUnit): T {
-  if (unit === "day") {
-    // For PlainDate, it's already at start of day
-    if (date instanceof Temporal.PlainDate) {
-      return date;
-    }
-    return atStartOfDay(date as Temporal.PlainDateTime | Temporal.ZonedDateTime) as T;
-  }
-
-  if (unit === "week") {
-    // Monday is day 1, Sunday is day 7
-    const daysToSubtract = date.dayOfWeek - 1;
-    const startOfWeek = date.subtract({ days: daysToSubtract });
-
-    // If it has time, set to start of day
-    if ("hour" in startOfWeek) {
-      return atStartOfDay(startOfWeek as Temporal.PlainDateTime | Temporal.ZonedDateTime) as T;
-    }
-
-    return startOfWeek as T;
-  }
-
-  if (unit === "month") {
-    const startOfMonth = date.with({ day: 1 });
-
-    // If it has time, set to start of day
-    if ("hour" in startOfMonth) {
-      return atStartOfDay(startOfMonth as Temporal.PlainDateTime | Temporal.ZonedDateTime) as T;
-    }
-
-    return startOfMonth as T;
-  }
-
-  if (unit === "year") {
-    const startOfYear = date.with({ month: 1, day: 1 });
-
-    // If it has time, set to start of day
-    if ("hour" in startOfYear) {
-      return atStartOfDay(startOfYear as Temporal.PlainDateTime | Temporal.ZonedDateTime) as T;
-    }
-
-    return startOfYear as T;
-  }
-
-  throw new TypeError(`Invalid unit: ${unit}`);
+  return boundary(date, unit, "start");
 }
 
 /**
@@ -195,79 +172,7 @@ export function startOf<T extends DateLike>(date: T, unit: DateUnit): T {
  * ```
  */
 export function endOf<T extends DateLike>(date: T, unit: DateUnit): T {
-  if (unit === "day") {
-    // For PlainDate, it's already representing the whole day
-    if (date instanceof Temporal.PlainDate) {
-      return date;
-    }
-    // For DateTime/ZonedDateTime, set time to 23:59:59.999999999
-    return date.with({
-      hour: 23,
-      minute: 59,
-      second: 59,
-      millisecond: 999,
-      microsecond: 999,
-      nanosecond: 999,
-    }) as T;
-  }
-
-  if (unit === "week") {
-    // Sunday is day 7
-    const daysToAdd = 7 - date.dayOfWeek;
-    const endOfWeek = date.add({ days: daysToAdd });
-
-    // If it has time, set to end of day
-    if ("hour" in endOfWeek) {
-      return endOfWeek.with({
-        hour: 23,
-        minute: 59,
-        second: 59,
-        millisecond: 999,
-        microsecond: 999,
-        nanosecond: 999,
-      }) as T;
-    }
-
-    return endOfWeek as T;
-  }
-
-  if (unit === "month") {
-    const lastDay = date.with({ day: date.daysInMonth });
-
-    // If it has time, set to end of day
-    if ("hour" in lastDay) {
-      return lastDay.with({
-        hour: 23,
-        minute: 59,
-        second: 59,
-        millisecond: 999,
-        microsecond: 999,
-        nanosecond: 999,
-      }) as T;
-    }
-
-    return lastDay as T;
-  }
-
-  if (unit === "year") {
-    const endOfYear = date.with({ month: 12, day: 31 });
-
-    // If it has time, set to end of day
-    if ("hour" in endOfYear) {
-      return endOfYear.with({
-        hour: 23,
-        minute: 59,
-        second: 59,
-        millisecond: 999,
-        microsecond: 999,
-        nanosecond: 999,
-      }) as T;
-    }
-
-    return endOfYear as T;
-  }
-
-  throw new TypeError(`Invalid unit: ${unit}`);
+  return boundary(date, unit, "end");
 }
 
 /**
