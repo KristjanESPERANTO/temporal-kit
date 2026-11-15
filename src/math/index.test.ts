@@ -325,6 +325,26 @@ describe("Math Functions", () => {
       expect(result.toString()).toContain("23:59:59");
     });
 
+    it("should end after the repeated hour at the end of a day", () => {
+      const zdt = Temporal.ZonedDateTime.from("2026-04-04T12:00[America/Santiago]");
+      const result = endOf(zdt, "day");
+
+      expect(result.toString()).toBe("2026-04-04T23:59:59.999999999-04:00[America/Santiago]");
+    });
+
+    it("should end before a skipped end-of-day time", () => {
+      const zdt = Temporal.ZonedDateTime.from("2026-03-28T12:00[America/Nuuk]");
+      const result = endOf(zdt, "day");
+
+      expect(result.toString()).toBe("2026-03-28T22:59:59.999999999-02:00[America/Nuuk]");
+    });
+
+    it("should get the end of a day near the maximum instant", () => {
+      const zdt = Temporal.ZonedDateTime.from("+275760-09-12T12:00[UTC]");
+
+      expect(endOf(zdt, "day").toString()).toBe("+275760-09-12T23:59:59.999999999+00:00[UTC]");
+    });
+
     it("should keep the end of day on the same date when midnight is skipped", () => {
       const zdt = Temporal.ZonedDateTime.from("2018-11-04T12:00[America/Sao_Paulo]");
       const result = endOf(zdt, "day");

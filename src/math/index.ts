@@ -86,7 +86,12 @@ function boundary<T extends DateLike>(date: T, unit: DateUnit, edge: "start" | "
   const day: DateLike = date.add({ days: (edge === "start" ? 1 : length) - index });
 
   if (day instanceof Temporal.PlainDate) return day as T;
-  if (edge === "end") return day.with(END_OF_DAY) as T;
+  if (edge === "end") {
+    if (day instanceof Temporal.ZonedDateTime) {
+      return day.startOfDay().add({ days: 1 }).startOfDay().subtract({ nanoseconds: 1 }) as T;
+    }
+    return day.with(END_OF_DAY) as T;
+  }
   // startOfDay() picks the first instant of the day, even if midnight is skipped or repeated.
   return (
     day instanceof Temporal.ZonedDateTime ? day.startOfDay() : day.toPlainDate().toPlainDateTime()
