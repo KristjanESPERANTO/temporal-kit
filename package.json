@@ -91,7 +91,7 @@
   },
   "homepage": "https://kristjanesperanto.github.io/temporal-kit/",
   "devDependencies": {
-    "@biomejs/biome": "^2.6.5",
+    "@biomejs/biome": "^2.6.7",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "@commitlint/types": "^21.2.3",
@@ -101,7 +101,7 @@
     "fast-check": "^4.10.2",
     "lint-staged": "^17.6.0",
     "simple-git-hooks": "^2.14.0",
-    "temporal-polyfill": "^1.0.7",
+    "temporal-polyfill": "^1.0.8",
     "esbuild": "^0.28.2",
     "typescript": "^7.0.2",
     "vitest": "^5.1.0"
