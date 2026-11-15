@@ -25,27 +25,21 @@ Thank you for your interest in contributing! We welcome contributions from the c
 
 ## Quality Checks
 
-We maintain high standards for code quality. Before submitting a PR, please ensure all checks pass:
+Run the full validation pipeline before submitting a PR:
 
 ```bash
-node --run typecheck     # TypeScript type checking
-node --run lint          # Biome linting
-node --run test:run      # Run all tests once
-node --run test:coverage # Coverage report (100% threshold)
+node --run test
 ```
 
-You can also run the full CI pipeline locally:
-
-```bash
-node --run ci
-```
+This runs both typechecks, linting, tests with coverage, and the build. To run
+only the tests once, use `node --run test:run`.
 
 ## Testing
 
 We use [Vitest](https://vitest.dev/) for testing.
 
 ```bash
-node --run test         # Run tests in watch mode
+node --run test:run     # Run tests once
 node --run test:ui      # Open Vitest UI
 ```
 
@@ -74,7 +68,7 @@ This process automatically:
 
 ### Maintainer Release Flow
 
-1. Run `node --run ci` locally and ensure branch CI is green.
+1. Run `node --run test` locally and ensure branch CI is green.
 2. Bump and tag using `node --run release` / `release:minor` / `release:major`.
    This updates `CHANGELOG.md`, `package.json`, `docs/index.html`, and creates a local git tag.
 3.  Push the release commit and tag, then create the GitHub Release:

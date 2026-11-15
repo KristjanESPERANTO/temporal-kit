@@ -30,5 +30,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run CI pipeline
-        run: node --run ci
+      - name: Typecheck source
+        run: node --run typecheck
+
+      - name: Typecheck tests
+        run: node --run typecheck:tests
+
+      - name: Lint
+        run: node --run lint
+
+      - name: Test with coverage
+        run: node --run test:coverage
+
+      - name: Build
+        run: node --run build

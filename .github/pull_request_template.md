@@ -18,4 +18,4 @@
 
 - [ ] Tests added or updated
 - [ ] Documentation updated (if applicable)
-- [ ] `npm run ci` passes locally
+- [ ] `node --run test` passes locally

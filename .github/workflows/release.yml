@@ -36,8 +36,5 @@ jobs:
             exit 1
           fi
 
-      - name: Run full CI gate
-        run: node --run ci
-
       - name: Publish package with provenance
         run: npm publish --provenance --access public
