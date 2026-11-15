@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.4.1](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.4.0...v0.4.1) (2026-11-15)
+
+### Bug Fixes
+
+* **math:** handle DST transitions in endOf ([562b2eb](https://github.com/KristjanESPERANTO/temporal-kit/commit/562b2eb0be66394c42eb711ee3a8dd487347c284))
+
+### Chores
+
+* consolidate validation scripts ([fed08fb](https://github.com/KristjanESPERANTO/temporal-kit/commit/fed08fbdfa42897f627f7f92e7aac2add4eca8c4))
+* update devDependencies ([7a2e5ee](https://github.com/KristjanESPERANTO/temporal-kit/commit/7a2e5ee8d273a8fbe1e19c9a2ec86774c7cfef80))
+
 ## [0.4.0](https://github.com/KristjanESPERANTO/temporal-kit/compare/v0.3.1...v0.4.0) (2026-11-04)
 
 ### ⚠ BREAKING CHANGES
