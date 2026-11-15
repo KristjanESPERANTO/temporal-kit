@@ -2,28 +2,30 @@ import { Temporal } from "temporal-polyfill";
 import { describe, expect, it } from "vitest";
 import { format, formatCalendar, formatDateTime, formatRelative, formatTime } from "./index.js";
 
+const englishLocale = "en-US";
+
 describe("format", () => {
   const date = Temporal.PlainDate.from("2025-11-30");
 
   describe("PlainDate", () => {
     it("formats with default options (medium)", () => {
-      const result = format(date);
-      expect(result).toMatch(/Nov.*30.*2025/); // Locale-independent check
+      const result = format(date, { locale: englishLocale });
+      expect(result).toMatch(/Nov.*30.*2025/);
     });
 
     it("formats with short style", () => {
-      const result = format(date, { dateStyle: "short" });
+      const result = format(date, { locale: englishLocale, dateStyle: "short" });
       expect(result).toContain("11");
       expect(result).toContain("30");
     });
 
     it("formats with long style", () => {
-      const result = format(date, { dateStyle: "long" });
+      const result = format(date, { locale: englishLocale, dateStyle: "long" });
       expect(result).toContain("November");
     });
 
     it("formats with full style", () => {
-      const result = format(date, { dateStyle: "full" });
+      const result = format(date, { locale: englishLocale, dateStyle: "full" });
       expect(result).toContain("Sunday");
       expect(result).toContain("November");
     });
@@ -40,6 +42,7 @@ describe("format", () => {
 
     it("formats with custom options", () => {
       const result = format(date, {
+        locale: englishLocale,
         options: { year: "numeric", month: "long" },
       });
       expect(result).toContain("November");
@@ -51,7 +54,7 @@ describe("format", () => {
     const dt = Temporal.PlainDateTime.from("2025-11-30T15:30:45");
 
     it("formats PlainDateTime (date only)", () => {
-      const result = format(dt);
+      const result = format(dt, { locale: englishLocale });
       expect(result).toMatch(/Nov.*30.*2025/);
     });
 
@@ -65,7 +68,7 @@ describe("format", () => {
     const zdt = Temporal.ZonedDateTime.from("2025-06-01T23:30:00-04:00[America/New_York]");
 
     it("formats ZonedDateTime", () => {
-      const result = format(zdt);
+      const result = format(zdt, { locale: englishLocale });
       expect(result).toMatch(/Jun.*1.*2025/);
     });
 
@@ -81,22 +84,22 @@ describe("formatTime", () => {
     const time = Temporal.PlainTime.from("15:30:45");
 
     it("formats with default options (medium)", () => {
-      const result = formatTime(time);
+      const result = formatTime(time, { locale: englishLocale });
       expect(result).toMatch(/3:30:45.*PM/);
     });
 
     it("formats with short style", () => {
-      const result = formatTime(time, { timeStyle: "short" });
+      const result = formatTime(time, { locale: englishLocale, timeStyle: "short" });
       expect(result).toMatch(/3:30.*PM/);
     });
 
     it("formats with medium style", () => {
-      const result = formatTime(time, { timeStyle: "medium" });
+      const result = formatTime(time, { locale: englishLocale, timeStyle: "medium" });
       expect(result).toMatch(/3:30:45.*PM/);
     });
 
     it("formats with long style", () => {
-      const result = formatTime(time, { timeStyle: "long" });
+      const result = formatTime(time, { locale: englishLocale, timeStyle: "long" });
       expect(result).toContain("3:30:45");
     });
 
@@ -115,7 +118,7 @@ describe("formatTime", () => {
     const dt = Temporal.PlainDateTime.from("2025-11-30T15:30:45");
 
     it("formats PlainDateTime time", () => {
-      const result = formatTime(dt);
+      const result = formatTime(dt, { locale: englishLocale });
       expect(result).toMatch(/3:30:45.*PM/);
     });
 
@@ -140,12 +143,13 @@ describe("formatDateTime", () => {
     const dt = Temporal.PlainDateTime.from("2025-11-30T15:30:45");
 
     it("formats with default options", () => {
-      const result = formatDateTime(dt);
+      const result = formatDateTime(dt, { locale: englishLocale });
       expect(result).toMatch(/Nov.*30.*2025.*3:30:45.*PM/);
     });
 
     it("formats with short date and time", () => {
       const result = formatDateTime(dt, {
+        locale: englishLocale,
         dateStyle: "short",
         timeStyle: "short",
       });
@@ -155,6 +159,7 @@ describe("formatDateTime", () => {
 
     it("formats with long date and medium time", () => {
       const result = formatDateTime(dt, {
+        locale: englishLocale,
         dateStyle: "long",
         timeStyle: "medium",
       });
@@ -164,6 +169,7 @@ describe("formatDateTime", () => {
 
     it("formats with full date and time", () => {
       const result = formatDateTime(dt, {
+        locale: englishLocale,
         dateStyle: "full",
         timeStyle: "full",
       });
@@ -181,7 +187,7 @@ describe("formatDateTime", () => {
     const date = Temporal.PlainDate.from("2025-11-30");
 
     it("formats PlainDate with time (uses midnight)", () => {
-      const result = formatDateTime(date);
+      const result = formatDateTime(date, { locale: englishLocale });
       expect(result).toMatch(/Nov.*30.*2025/);
       // Should show midnight time
       expect(result).toMatch(/12:00:00.*AM/);
@@ -217,43 +223,43 @@ describe("formatRelative", () => {
   describe("past dates", () => {
     it("formats yesterday", () => {
       const yesterday = base.subtract({ days: 1 });
-      const result = formatRelative(yesterday, base);
+      const result = formatRelative(yesterday, base, { locale: englishLocale });
       expect(result).toBe("yesterday");
     });
 
     it("formats 2 days ago", () => {
       const twoDaysAgo = base.subtract({ days: 2 });
-      const result = formatRelative(twoDaysAgo, base);
+      const result = formatRelative(twoDaysAgo, base, { locale: englishLocale });
       expect(result).toBe("2 days ago");
     });
 
     it("formats last week", () => {
       const lastWeek = base.subtract({ days: 7 });
-      const result = formatRelative(lastWeek, base);
+      const result = formatRelative(lastWeek, base, { locale: englishLocale });
       expect(result).toBe("last week");
     });
 
     it("formats 2 weeks ago", () => {
       const twoWeeksAgo = base.subtract({ days: 14 });
-      const result = formatRelative(twoWeeksAgo, base);
+      const result = formatRelative(twoWeeksAgo, base, { locale: englishLocale });
       expect(result).toBe("2 weeks ago");
     });
 
     it("formats last month", () => {
       const lastMonth = base.subtract({ days: 30 });
-      const result = formatRelative(lastMonth, base);
+      const result = formatRelative(lastMonth, base, { locale: englishLocale });
       expect(result).toBe("last month");
     });
 
     it("formats 3 months ago", () => {
       const threeMonthsAgo = base.subtract({ days: 90 });
-      const result = formatRelative(threeMonthsAgo, base);
+      const result = formatRelative(threeMonthsAgo, base, { locale: englishLocale });
       expect(result).toBe("3 months ago");
     });
 
     it("formats last year", () => {
       const lastYear = base.subtract({ days: 365 });
-      const result = formatRelative(lastYear, base);
+      const result = formatRelative(lastYear, base, { locale: englishLocale });
       expect(result).toBe("last year");
     });
   });
@@ -261,50 +267,50 @@ describe("formatRelative", () => {
   describe("future dates", () => {
     it("formats tomorrow", () => {
       const tomorrow = base.add({ days: 1 });
-      const result = formatRelative(tomorrow, base);
+      const result = formatRelative(tomorrow, base, { locale: englishLocale });
       expect(result).toBe("tomorrow");
     });
 
     it("formats in 2 days", () => {
       const inTwoDays = base.add({ days: 2 });
-      const result = formatRelative(inTwoDays, base);
+      const result = formatRelative(inTwoDays, base, { locale: englishLocale });
       expect(result).toBe("in 2 days");
     });
 
     it("formats next week", () => {
       const nextWeek = base.add({ days: 7 });
-      const result = formatRelative(nextWeek, base);
+      const result = formatRelative(nextWeek, base, { locale: englishLocale });
       expect(result).toBe("next week");
     });
 
     it("formats in 2 weeks", () => {
       const inTwoWeeks = base.add({ days: 14 });
-      const result = formatRelative(inTwoWeeks, base);
+      const result = formatRelative(inTwoWeeks, base, { locale: englishLocale });
       expect(result).toBe("in 2 weeks");
     });
 
     it("formats next month", () => {
       const nextMonth = base.add({ days: 30 });
-      const result = formatRelative(nextMonth, base);
+      const result = formatRelative(nextMonth, base, { locale: englishLocale });
       expect(result).toBe("next month");
     });
 
     it("formats in 3 months", () => {
       const inThreeMonths = base.add({ days: 90 });
-      const result = formatRelative(inThreeMonths, base);
+      const result = formatRelative(inThreeMonths, base, { locale: englishLocale });
       expect(result).toBe("in 3 months");
     });
 
     it("formats next year", () => {
       const nextYear = base.add({ days: 365 });
-      const result = formatRelative(nextYear, base);
+      const result = formatRelative(nextYear, base, { locale: englishLocale });
       expect(result).toBe("next year");
     });
   });
 
   describe("today", () => {
     it("formats today", () => {
-      const result = formatRelative(base, base);
+      const result = formatRelative(base, base, { locale: englishLocale });
       expect(result).toBe("today");
     });
   });
@@ -338,7 +344,7 @@ describe("formatRelative", () => {
     const yesterdayDT = baseDT.subtract({ days: 1 });
 
     it("formats ZonedDateTime relative to ZonedDateTime", () => {
-      const result = formatRelative(yesterdayDT, baseDT);
+      const result = formatRelative(yesterdayDT, baseDT, { locale: englishLocale });
       expect(result).toBe("yesterday");
     });
   });
@@ -386,21 +392,21 @@ describe("formatRelative", () => {
     it("formats without base argument", () => {
       // This will compare against current date, so just verify it doesn't throw
       const yesterday = Temporal.Now.zonedDateTimeISO().toPlainDate().subtract({ days: 1 });
-      const result = formatRelative(yesterday);
+      const result = formatRelative(yesterday, undefined, { locale: englishLocale });
       expect(result).toBe("yesterday");
     });
 
     it("formats PlainDateTime without base argument", () => {
       const now = Temporal.Now.plainDateTimeISO();
       const yesterday = now.subtract({ days: 1 });
-      const result = formatRelative(yesterday);
+      const result = formatRelative(yesterday, undefined, { locale: englishLocale });
       expect(result).toBe("yesterday");
     });
 
     it("formats ZonedDateTime without base argument", () => {
       const now = Temporal.Now.zonedDateTimeISO();
       const yesterday = now.subtract({ days: 1 });
-      const result = formatRelative(yesterday);
+      const result = formatRelative(yesterday, undefined, { locale: englishLocale });
       expect(result).toBe("yesterday");
     });
   });
@@ -409,14 +415,14 @@ describe("formatRelative", () => {
     it("formats PlainDate relative to PlainDateTime", () => {
       const date = Temporal.PlainDate.from("2025-11-30");
       const dt = Temporal.PlainDateTime.from("2025-12-01T12:00:00");
-      const result = formatRelative(date, dt);
+      const result = formatRelative(date, dt, { locale: englishLocale });
       expect(result).toBe("yesterday");
     });
 
     it("formats PlainDateTime relative to PlainDate", () => {
       const dt = Temporal.PlainDateTime.from("2025-11-30T12:00:00");
       const date = Temporal.PlainDate.from("2025-12-01");
-      const result = formatRelative(dt, date);
+      const result = formatRelative(dt, date, { locale: englishLocale });
       expect(result).toBe("12 hours ago");
     });
   });
